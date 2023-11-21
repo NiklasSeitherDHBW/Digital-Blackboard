@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import DualHousing from "../views/DualHousingView.vue"
 import StudyBuddy from "../views/StudyBuddyView.vue"
 import EventsParties from "../views/EventsPartiesView.vue"
+import LogIn from "../views/LogInView.vue"
 
 const routes = [
   {
@@ -24,7 +25,12 @@ const routes = [
     path: "/events",
     name: "events",
     component: EventsParties
-  }
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: LogIn
+  },
 ]
 
 const router = createRouter({

@@ -45,7 +45,8 @@ export default {
     return {
       appartments: [
         { name: 'Mannheim HBF', costs: 0, availability: "immer", note: "Mädchen WG, keine stinkenden NIGGLS erwünscht", image: 'https://th.bing.com/th/id/OIP.pa7AwPHFqSsgTfdf0UF5HAHaFj?rs=1&pid=ImgDetMain'},
-        { name: 'CAMPO NOVO MA', costs: 460, availability: "10.02.2024 - 08.05.2024", note: "Jungs WG", image: 'https://lh3.googleusercontent.com/p/AF1QipPXfKqY1uPB08p2ZOfytyjIA1YI0MJR-9xeXYze=s680-w680-h510'}
+        { name: 'CAMPO NOVO MA', costs: 460, availability: "10.02.2024 - 08.05.2024", note: "Jungs WG", image: 'https://lh3.googleusercontent.com/p/AF1QipPXfKqY1uPB08p2ZOfytyjIA1YI0MJR-9xeXYze=s680-w680-h510'},
+        { name: "Yannick Königstein", costs: "pegel abhängig", availability: "solange Freundin nicht da ist", image: "https://media.licdn.com/dms/image/D4E03AQEqErQPC1jgBQ/profile-displayphoto-shrink_800_800/0/1680527089493?e=2147483647&v=beta&t=roXOtGjzpjH8cKr5D9sh-N2SIF6VJNSrUbNAMPnG13A"},
       ],
     };
   },
