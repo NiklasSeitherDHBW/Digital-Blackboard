@@ -7,12 +7,19 @@
     </v-app-bar-title>
   </v-app-bar>
   <v-app>
-    <v-container>
+    <v-container
+    class="w-100">
       <!-- Event Categories -->
       <v-row>
-        <v-col v-for="(category, index) in eventCategories" :key="index" cols="12" md="4">
-          <v-card @click="showEvents(category)" :color="category === selectedCategory ? '#E0001BFF' : '#FFFFFF'">
-            <v-card-title class="text-center">
+        <v-col v-for="(category, index) in eventCategories"
+               :key="index"
+               cols="12"
+               md="4"
+        >
+          <v-card @click="showEvents(category)" :color="category === selectedCategory ? '#E0001BFF' : '#FFFFFF'"
+                  :style="{ width: category === selectedCategory ? '100%' : 'auto', 'font-size': category === selectedCategory ? '20px' : '16px' }"
+                  >
+            <v-card-title class="text-center transition-swing" :style="{ fontSize: category === selectedCategory ? '20px' : '16px' }">
               {{ category }}
             </v-card-title>
           </v-card>
@@ -21,8 +28,12 @@
 
       <!-- Display Events -->
       <v-row v-if="selectedCategory">
-        <v-col v-for="(event, index) in getEventsByCategory(selectedCategory)" :key="index" cols="12" md="4">
-          <v-card>
+        <v-col v-for="(event, index) in getEventsByCategory(selectedCategory)"
+               :key="index"
+               cols="12" md="6"
+
+        >
+          <v-card variant="tonal">
             <v-card-title>{{ event.title }}</v-card-title>
             <v-card-subtitle>{{ event.date }}</v-card-subtitle>
             <v-card-text>{{ event.description }}</v-card-text>
