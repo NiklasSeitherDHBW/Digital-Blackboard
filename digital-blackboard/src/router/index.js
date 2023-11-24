@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import DualHousing from "../views/DualHousingView.vue"
 import StudyBuddy from "../views/StudyBuddyView.vue"
 import EventsParties from "../views/EventsPartiesView.vue"
 import LogIn from "../views/LogInView.vue"
+import DualHousing from "../views/DualHousingView.vue"
 
 const routes = [
   {
@@ -15,7 +15,7 @@ const routes = [
     path: '/dualhousing',
     name: 'dualhousing',
     component: DualHousing
-  },
+    },
   {
     path: "/studybuddy",
     name: "studybuddy",

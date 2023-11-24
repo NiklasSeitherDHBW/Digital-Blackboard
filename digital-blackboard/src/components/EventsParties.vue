@@ -1,15 +1,8 @@
 <template>
-  <v-app-bar color="white" height="100">
-    <v-app-bar-title>
-      <h2 style="color: #7C868DFF; display: inline-block; margin-right: 5px;">Events</h2>
-      <h2 style="color: #7C868DFF; display: inline-block;"> & </h2>
-      <h2 style="color: #E0001BFF; display: inline-block; margin-left: 5px;">Feiern</h2>
-    </v-app-bar-title>
-  </v-app-bar>
+  <CustomAppBar titleGrey="Events &amp;" title-red="Feiern"/>
   <v-app>
     <v-container
     class="w-100">
-      <!-- Event Categories -->
       <v-row>
         <v-col v-for="(category, index) in eventCategories"
                :key="index"
@@ -30,9 +23,7 @@
       <v-row v-if="selectedCategory">
         <v-col v-for="(event, index) in getEventsByCategory(selectedCategory)"
                :key="index"
-               cols="12" md="6"
-
-        >
+               cols="12" md="6">
           <v-card variant="tonal">
             <v-card-title>{{ event.title }}</v-card-title>
             <v-card-subtitle>{{ event.date }}</v-card-subtitle>
@@ -46,6 +37,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import CustomAppBar from "@/components/util/CustomAppBar.vue";
 
 const eventCategories = ref(['Events', 'Feiern', 'Seminare']);
 const events = ref([

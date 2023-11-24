@@ -1,10 +1,5 @@
 <template>
-  <v-app-bar color="white" height="100">
-    <v-app-bar-title>
-      <h2 style="color: #7C868DFF; display: inline-block; margin-right: 5px;">Study</h2>
-      <h2 style="color: #E0001BFF; display: inline-block;">Buddy</h2>
-    </v-app-bar-title>
-  </v-app-bar>
+  <CustomAppBar titleGrey="Study" titleRed="Buddy" subtitle="Connect, Learn, Grow Together!"/>
 
   <v-container class="student-partnership-program">
     <v-card variant="tonal" class="text-center">
@@ -46,9 +41,11 @@
   <v-icon color="primary">mdi-account-plus</v-icon>
 </template>
 
+<script setup>
+import CustomAppBar from "@/components/util/CustomAppBar.vue";
+</script>
 
 <script scoped>
-
 export default {
   data() {
     return {
@@ -67,6 +64,8 @@ export default {
 };
 
 </script>
+
+
 
 <style scoped>
 /* Add your component-specific styles here */

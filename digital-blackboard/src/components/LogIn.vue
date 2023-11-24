@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <v-parallax
+      class=".blurred-parallax"
+      :src=imageSource>
+      <div>
     <v-img
         class="mx-auto my-6"
         max-width="228"
@@ -75,12 +78,21 @@
         </a>
       </v-card-text>
     </v-card>
-  </div>
+      </div>
+  </v-parallax>
 </template>
+
 <script>
 export default {
   data: () => ({
     visible: false,
+    imageSource: "https://static.vecteezy.com/system/resources/previews/002/967/554/original/back-to-school-seamless-black-and-white-pattern-free-vector.jpg",
   }),
 }
 </script>
+
+<style scoped>
+  .blurred-parallax {
+    backdrop-filter: blur(100px);
+  }
+</style>

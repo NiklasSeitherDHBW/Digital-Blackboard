@@ -6,7 +6,7 @@
 <script>
 import {defineComponent} from "vue";
 import StudyBuddy from "@/components/StudyBuddy.vue";
-import NavBar from "@/components/NavBar.vue";
+import NavBar from "@/components/util/CustomNavBar.vue";
 
 export default defineComponent({
   components: {StudyBuddy, NavBar}

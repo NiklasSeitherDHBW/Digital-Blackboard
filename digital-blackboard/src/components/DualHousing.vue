@@ -1,56 +1,102 @@
 <template>
-  <v-app-bar color="white" height="100">
-    <v-app-bar-title>
-      <h2 style="color: #7C868DFF; display: inline-block; margin-right: 5px;">Dual</h2>
-      <h2 style="color: #E0001BFF; display: inline-block;">Housing</h2>
-    </v-app-bar-title>
-  </v-app-bar>
+  <AppBar titleGrey="Dual" titleRed="Living"/>
 
-  <v-container>
-    <v-list>
-      <v-list-item v-for="(appartment, index) in appartments" :key="index">
-        <v-sheet class="mb-3 rounded pa-3">
-          <v-row no-gutters align="center">
-            <v-col cols="2">
-              <v-list-item-avatar>
-                <v-img
-                    :src="appartment.image"
-                    alt="Appartment Image"
-                    style="width: 200px; height: 200px;"
-                ></v-img>
-              </v-list-item-avatar>
-            </v-col>
+  <v-data-iterator
+      :items="contents"
+      item-value="name"
+  >
+    <template v-slot:default="{ items , isExpanded, toggleExpand}">
+      <v-container fluid="true" style="width: 85%;">
+        <v-row dense>
+          <v-col
+              v-for="item in items"
+              :key="item.raw.name"
+              :cols="item.raw.flex"
+          >
+            <v-card class="mx-auto" max-height="">
 
-            <v-col>
-              <v-list-item-content>
+              <v-img
+                  class="align-end"
+                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                  height="200px"
+                  cover
+                  :src="item.raw.src">
+              </v-img>
+              <v-card-title class="align-center">
+                <h4>{{ item.raw.name }}</h4>
+              </v-card-title>
+              <v-list-item-subtitle
+                  style="margin-top: 5px;
+                  margin-left: 15px">
+                <p> Einstellungsdatum: {{ item.raw.edate }} </p>
+              </v-list-item-subtitle>
 
-                <v-list-item-title>{{ appartment.name }}</v-list-item-title>
-                <v-divider style="width: 25%"/>
-                <v-list-item-title>Kosten: {{ appartment.costs }}</v-list-item-title>
-                <v-list-item-title>Verfügbar: {{ appartment.availability }}</v-list-item-title>
-                <v-list-item-subtitle>Anmerkung: {{ appartment.note }}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-col>
-          </v-row>
-        </v-sheet>
-        <v-divider></v-divider>
-      </v-list-item>
-    </v-list>
-  </v-container>
+              <v-card-text>
+                <div >
+                  <p>Zeitraum: {{item.raw.available }}</p>
+                  <p>Monatliche Miete: {{item.raw.price}} EUR</p>
+                  <p>Wohnfläche: {{item.raw.meter}}</p>
+
+                  <v-btn
+                      :model-value="isExpanded(item)"
+                      :icon="`${isExpanded(item) ? 'mdi-chevron-up' : 'mdi-chevron-down'}`"
+                      density="compact"
+                      inset
+                      class="float-right pd-5"
+                      @click="() => toggleExpand(item)"
+                      style="margin-bottom: 10px; color: #E0001BFF">
+                  </v-btn>
+                </div>
+              </v-card-text>
+
+              <v-expand-transition>
+                  <div v-if="isExpanded(item)">
+                    <v-card-text>
+                    <p>Beschreibung: {{item.raw.description}}</p>
+                      <p>Ort/ Stadtteil {{item.raw.location}}></p>
+                    <p>Möbliert: {{item.raw.furniture}}</p>
+                    <p>WG Zimmer: {{ item.raw.community}}</p>
+                    </v-card-text>
+                  <v-btn
+                      class="float-right mr-5 mt-5 mb-5 font-weight-medium"
+                      style="background-color:#E0001BFF; color: white;">
+                    Kontaktieren
+                  </v-btn>
+                </div>
+              </v-expand-transition>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </template>
+  </v-data-iterator>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      appartments: [
-        { name: 'Mannheim HBF', costs: 0, availability: "immer", note: "Mädchen WG, keine stinkenden NIGGLS erwünscht", image: 'https://th.bing.com/th/id/OIP.pa7AwPHFqSsgTfdf0UF5HAHaFj?rs=1&pid=ImgDetMain'},
-        { name: 'CAMPO NOVO MA', costs: 460, availability: "10.02.2024 - 08.05.2024", note: "Jungs WG", image: 'https://lh3.googleusercontent.com/p/AF1QipPXfKqY1uPB08p2ZOfytyjIA1YI0MJR-9xeXYze=s680-w680-h510'},
-        { name: "Yannick Königstein", costs: "pegel abhängig", availability: "solange Freundin nicht da ist", image: "https://media.licdn.com/dms/image/D4E03AQEqErQPC1jgBQ/profile-displayphoto-shrink_800_800/0/1680527089493?e=2147483647&v=beta&t=roXOtGjzpjH8cKr5D9sh-N2SIF6VJNSrUbNAMPnG13A"},
-      ],
-    };
-  },
-  methods: {
-  },
+  data: () => ({
+
+    contents: [
+      {
+        name: 'Sophies Rechner hebt ab!',
+        description: 'Hauptsache er sah schön aus!!!.',
+        location: "Mannheim Neuostheim",
+        edate:"08.11.2023",
+        available: "14.02.2023 - 15.05.2023",
+        furniture: "Ja",
+        community: "WG, 4 Jungs",
+        price: "450",
+        icon: 'mdi-ice-cream',
+        flex: 6,
+        src: "https://beyond-real-estate.de/wp-content/uploads/2019/09/wohnung-inselstrasse-duesseldorf-1.jpg",
+        cat: "Housing",
+      },
+    ],
+  }),
 };
+</script>
+
+<script setup>
+import AppBar from "@/components/util/CustomAppBar.vue";
+
 </script>

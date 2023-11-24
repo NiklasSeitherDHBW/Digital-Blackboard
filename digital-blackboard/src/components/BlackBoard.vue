@@ -39,6 +39,10 @@
 </template>
 
 <script setup>
+import CustomAppBar from "@/components/util/CustomAppBar.vue";
+</script>
+
+<script setup>
   import {ref} from "vue";
 
 
