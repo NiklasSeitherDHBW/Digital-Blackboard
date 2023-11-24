@@ -14,14 +14,17 @@
               :cols="item.raw.flex"
           >
             <v-card class="mx-auto" max-height="">
+              <v-carousel height="300px"
+                          show-arrows="hover"
+                          hide-delimiters
+                          progress="primary">
+                <v-carousel-item v-for="(image, index) in item.raw.images"
+                                 :src="image"
+                                 :key="index"
+                                 cover
+                                 class="align-end"/>
+              </v-carousel>
 
-              <v-img
-                  class="align-end"
-                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                  height="200px"
-                  cover
-                  :src="item.raw.src">
-              </v-img>
               <v-card-title class="align-center">
                 <h4>{{ item.raw.name }}</h4>
               </v-card-title>
@@ -32,32 +35,56 @@
               </v-list-item-subtitle>
 
               <v-card-text>
-                <div >
-                  <p>Zeitraum: {{item.raw.available }}</p>
-                  <p>Monatliche Miete: {{item.raw.price}} EUR</p>
-                  <p>Wohnfläche: {{item.raw.meter}}</p>
-
-                  <v-btn
-                      :model-value="isExpanded(item)"
-                      :icon="`${isExpanded(item) ? 'mdi-chevron-up' : 'mdi-chevron-down'}`"
-                      density="compact"
-                      inset
-                      class="float-right pd-5"
-                      @click="() => toggleExpand(item)"
-                      style="margin-bottom: 10px; color: #E0001BFF">
-                  </v-btn>
-                </div>
+                <v-row v-for="(field, index) in [
+                          { label: 'Zeitraum', value: item.raw.available },
+                          { label: 'Wohnfläche', value: `${item.raw.meter} m²` },
+                          { label: 'Miete', value: `${item.raw.price} EUR / Monat` },
+                        ]" :key="index" no-gutters>
+                  <v-col>
+                    <h4>{{ field.label }}:</h4>
+                  </v-col>
+                  <v-col>
+                    <p>{{ field.value }}</p>
+                  </v-col>
+                </v-row>
               </v-card-text>
+
+              <v-divider/>
+
+              <span style="display: flex; align-items: center;">
+                <v-btn
+                    :model-value="isExpanded(item)"
+                    :icon="`${isExpanded(item) ? 'mdi-chevron-up' : 'mdi-chevron-down'}`"
+                    density="compact"
+                    @click="() => toggleExpand(item)"
+                    style="margin: 10px; color: #E0001BFF">
+                </v-btn>
+                <p>
+                  Mehr Informationen
+                </p>
+              </span>
+
+              <v-divider/>
 
               <v-expand-transition>
                   <div v-if="isExpanded(item)">
                     <v-card-text>
-                    <p>Beschreibung: {{item.raw.description}}</p>
-                      <p>Ort/ Stadtteil {{item.raw.location}}></p>
-                    <p>Möbliert: {{item.raw.furniture}}</p>
-                    <p>WG Zimmer: {{ item.raw.community}}</p>
+                      <v-row v-for="(field, index) in [
+                          { label: 'Beschreibung', value: item.raw.description },
+                          { label: 'Ort / Stadtteil', value: item.raw.location },
+                          { label: 'Möbliert', value: item.raw.furniture },
+                          { label: 'WG Zimmer', value: item.raw.community },
+                        ]" :key="index" no-gutters>
+                        <v-col>
+                          <h4>{{ field.label }}:</h4>
+                        </v-col>
+                        <v-col>
+                          <p>{{ field.value }}</p>
+                        </v-col>
+                      </v-row>
                     </v-card-text>
-                  <v-btn
+
+                    <v-btn
                       class="float-right mr-5 mt-5 mb-5 font-weight-medium"
                       style="background-color:#E0001BFF; color: white;">
                     Kontaktieren
@@ -68,14 +95,29 @@
           </v-col>
         </v-row>
       </v-container>
+      <p style="margin: 50px;"/>
     </template>
   </v-data-iterator>
+
+  <v-btn
+      style="position: fixed; bottom: 20px; right: 20px; border-radius: 5px; background-color:#E0001BFF; color: white;"
+      icon="mdi-plus"
+      text="+">
+        <v-icon>mdi-plus</v-icon>
+        <v-dialog
+            v-model="dialog"
+            activator="parent"
+            width="auto">
+          <AddApartment/>
+        </v-dialog>
+  </v-btn>
+
 </template>
 
 <script>
 export default {
   data: () => ({
-
+    dialog: false,
     contents: [
       {
         name: 'Sophies Rechner hebt ab!',
@@ -83,13 +125,23 @@ export default {
         location: "Mannheim Neuostheim",
         edate:"08.11.2023",
         available: "14.02.2023 - 15.05.2023",
-        furniture: "Ja",
+        furniture: "Nein",
         community: "WG, 4 Jungs",
-        price: "450",
-        icon: 'mdi-ice-cream',
-        flex: 6,
-        src: "https://beyond-real-estate.de/wp-content/uploads/2019/09/wohnung-inselstrasse-duesseldorf-1.jpg",
+        price: "650",
+        meter: "120",
+        images: ["https://beyond-real-estate.de/wp-content/uploads/2019/09/wohnung-inselstrasse-duesseldorf-1.jpg",],
         cat: "Housing",
+      },
+      {
+        name: "Suche Tauschpartner/in für eine Wohnung in Mannheim",
+        edate: "25.10.2023",
+        price: 450 ,
+        available: "01.01.24 – 31.03.24",
+        furniture: "Ja",
+        description: "Hallo, ich heiße Xenia, bin 20 Jahre alt und werde ab dem 01.10.2023 in Mannheim, mit der Praxisphase meines Studiums beginnen. Ich werde aber schon im September, in Mannheim, mit einem einmonatigen Praktikum starten. Das Studium ist dual, das bedeutet ich bin ab dem 01.09.23-31.12.2023 in Mannheim (1.09 wegen dem Praktikum, sonst wäre es 1.10) und danach 3 Monate nicht mehr und dann 3 Monate wieder in Mannheim. Also ich bin alle 3 Monate für 3 Monate in Mannheim. Daher suche ich jemanden der genau im Gegensatz seine Praxisphase hat. Falls du Interesse hast, würde es mich freuen, wenn du dich meldest und wir gemeinsam eine Wohnung finden können :) " ,
+        contact: "Xenia Frietsch",
+        meter: "21",
+        images: ["https://dualeswohnen.de/storage/apartments/2KvNpOoDYKZkuHnIGnL4PhquPtvU1M8CfMYqUBGXjHxrTt7AdDGIErec1mtHLVCP/QWMy1j0ydvT9A1TYw98sO84bAp0FY615kOdYvtz-2023-04-02-18-25-41.jpeg","https://cf.bstatic.com/xdata/images/hotel/max1024x768/407682874.jpg?k=76a5b9c92a3f2a41f3d2f7a564722b27cb19fa06e74dc10539daf5f8f575f0dd&o=&hp=1", "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"],
       },
     ],
   }),
@@ -98,5 +150,5 @@ export default {
 
 <script setup>
 import AppBar from "@/components/util/CustomAppBar.vue";
-
+import AddApartment from "@/components/util/AddAppartment.vue"
 </script>
