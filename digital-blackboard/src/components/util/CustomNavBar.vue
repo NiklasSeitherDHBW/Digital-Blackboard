@@ -10,7 +10,7 @@
     </v-bottom-navigation>
 
   <v-navigation-drawer v-else expand-on-hover rail class="sticky-navbar">
-    <v-list dense nav>
+    <v-list nav>
       <v-list-item
           prepend-avatar="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
           title="Digital Blackboard"
@@ -22,11 +22,9 @@
       <v-list-item
           v-for="item in menuItems"
           :key="item.value"
-          @click="navigateTo(item.value)">
-        <v-list-item-title>
-          <v-icon class="navbar-icon">{{ item.icon }}</v-icon>
-          <h style="margin-left: 15px">{{ item.title }}</h>
-        </v-list-item-title>
+          :to="item.value"
+          :prepend-icon="item.icon"
+          :title="item.title">
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
@@ -48,6 +46,7 @@ export default {
         { icon: 'mdi-calendar-clock', title: 'Events', value: 'events' },
         { icon: 'mdi-school', title: 'StudyBuddy', value: 'studybuddy' },
         { icon: 'mdi-login-variant', title: 'Login', value: 'login' },
+        { icon: "mdi-wrench", title: "Test", value: "test"},
       ],
     };
   },

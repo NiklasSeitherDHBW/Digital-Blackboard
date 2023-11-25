@@ -1,15 +1,17 @@
 <template>
   <NavBar/>
-  <DualHousing/>
+  <Test/>
 </template>
 
 <script>
 import {defineComponent} from "vue";
-import DualHousing from "@/components/dualLiving/DualHousing.vue";
+import Test from "@/components/TestPage.vue";
 import NavBar from "@/components/util/CustomNavBar.vue";
 export default defineComponent({
   components: {
-    DualHousing,
-    NavBar}
+    Test,
+    NavBar
+  },
 })
+
 </script>
