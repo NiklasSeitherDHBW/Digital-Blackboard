@@ -22,8 +22,36 @@
                                  :src="image"
                                  :key="index"
                                  cover
-                                 class="align-end"/>
+                                 class="align-end"
+                                 @click="openDialogImagesFullscreen(item)"/>
               </v-carousel>
+
+              <v-dialog v-model="showDialogImages"
+                        max-width="1200px">
+                <v-card>
+                  <v-row class="pa-5 d-flex align-center">
+
+                  <v-card-title>{{selectedItem.raw.name}}</v-card-title>
+
+                    <v-btn @click="showDialogImages=false"
+                            style="background-color: #E0001BFF; color: white;"
+                            icon="mdi-close"
+                           class="ml-auto mr-1"
+                      size="30"/>
+                  </v-row>
+                  <v-divider/>
+                  <v-carousel show-arrows="hover"
+                            progress="primary"
+                  >
+                  <v-carousel-item v-for="(image, index) in selectedItem.raw.images"
+                  :key="index"
+                  :src="image">
+
+                  </v-carousel-item>
+                </v-carousel>
+                </v-card>
+              </v-dialog>
+
 
               <v-card-title class="align-center">
                 <h4>{{ item.raw.name }}</h4>
@@ -105,7 +133,7 @@
       text="+">
         <v-icon>mdi-plus</v-icon>
         <v-dialog
-            v-model="dialog"
+            v-model="showDialogAddApartment"
             activator="parent"
             width="auto">
           <AddApartment/>
@@ -117,7 +145,9 @@
 <script>
 export default {
   data: () => ({
-    dialog: false,
+    showDialogAddApartment: false,
+    showDialogImages: false,
+    selectedItem: null,
     contents: [
       {
         name: 'Sophies Rechner hebt ab!',
@@ -145,6 +175,12 @@ export default {
       },
     ],
   }),
+  methods: {
+    openDialogImagesFullscreen(item) {
+      this.selectedItem = item;
+      this.showDialogImages = true;
+    },
+  },
 };
 </script>
 
