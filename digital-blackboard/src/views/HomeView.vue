@@ -5,7 +5,7 @@
 
 <script>
 import {defineComponent} from "vue";
-import BlackBoard from "@/components/BlackBoard.vue";
+import BlackBoard from "@/components/blackBoard/BlackBoard.vue";
 import NavBar from "@/components/util/CustomNavBar.vue";
 
 export default defineComponent({

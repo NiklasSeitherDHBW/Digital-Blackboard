@@ -3,7 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import StudyBuddy from "../views/StudyBuddyView.vue"
 import EventsParties from "../views/EventsPartiesView.vue"
 import LogIn from "../views/LogInView.vue"
-import DualHousing from "../views/DualHousingView.vue"
+import DualHousing from "../views/DualLivingView.vue"
 import TestPage from "@/views/TestPageView.vue"
 
 const routes = [
@@ -13,13 +13,13 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/dualhousing',
-    name: 'dualhousing',
+    path: '/dualliving',
+    name: 'dualliving',
     component: DualHousing
     },
   {
-    path: "/studybuddy",
-    name: "studybuddy",
+    path: "/studyhub",
+    name: "studyhub",
     component: StudyBuddy
   },
   {

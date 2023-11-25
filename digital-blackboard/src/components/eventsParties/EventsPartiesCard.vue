@@ -3,6 +3,7 @@
       :item="item"
       :basicInfos="basicInfos"
       :extraInfos="extraInfos"
+      action="Mitmachen"
   ></CustomCard>
 </template>
 
@@ -21,7 +22,7 @@ export default {
         "price", "description"
       ],
       extraInfosKeywords: [
-        "location", "furniture", "community", "availability"
+        "community", "availability", "description"
       ],
       dictionary: {
         "availability": "Maximale Anzahl Teilnehmer",

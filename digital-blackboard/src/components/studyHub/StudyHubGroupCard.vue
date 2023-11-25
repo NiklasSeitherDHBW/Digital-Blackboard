@@ -1,19 +1,20 @@
 <template>
-  <v-card>
+
+  <v-card style="max-width: 700px;">
     <!-- Images -->
     <v-carousel
-      :height="item.images.length < 1 ? '0px' : '300px'"
-      :show-arrows="item.images.length > 1 ? 'hover' : false"
-      hide-delimiters
-      progress="primary"
+        :height="item.images.length < 1 ? '0px' : '300px'"
+        :show-arrows="item.images.length > 1 ? 'hover' : false"
+        hide-delimiters
+        progress="primary"
     >
       <v-carousel-item
-        v-for="(image, index) in item.images"
-        :key="index"
-        :src="image"
-        cover
-        class="align-end"
-        @click="showDialogImagesFullscreen=true"
+          v-for="(image, index) in item.images"
+          :key="index"
+          :src="image"
+          cover
+          class="align-end"
+          @click="showDialogImagesFullscreen=true"
       ></v-carousel-item>
 
       <v-dialog
@@ -36,7 +37,7 @@
           <v-divider></v-divider>
 
           <v-carousel
-              show-arrows="hover"
+              :show-arrows="item.images.length > 1 ? 'hover' : false"
               progress="primary"
           >
             <v-carousel-item
@@ -129,9 +130,9 @@
         </v-card-text>
 
         <v-btn
-          class="button-default float-right ma-5 font-weight-medium"
+            class="button-default float-right ma-5 font-weight-medium"
         >
-          Kontaktieren
+          {{ action }}
         </v-btn>
       </div>
     </v-expand-transition>
@@ -142,19 +143,49 @@
 export default {
   props: {
     item: Object,
-    basicInfos: Object,
-    extraInfos: Object,
     action: String,
   },
   data() {
     return {
       showAll: false,
       showDialogImagesFullscreen: false,
+
+      basicInfosKeywords: [
+        "subject", "members"
+      ],
+      extraInfosKeywords: [
+        "description", "activities"
+      ],
+      dictionary: {
+        "members": "Mitglieder",
+        "activities" : "Aktivitäten",
+        "description": "Beschreibung",
+        "subject": "Studienrichtung",
+      }
     };
   },
+  computed: {
+    basicInfos() {
+      let basicInfos = [];
+      for (const attribute of this.basicInfosKeywords) {
+        let value = this.item[attribute]
+        basicInfos.push({label: this.dictionary[attribute], value: value});
+      }
+
+      return basicInfos;
+    },
+    extraInfos() {
+      let extraInfos = [];
+      for (const attribute of this.extraInfosKeywords) {
+        let value = this.item[attribute]
+        extraInfos.push({label: this.dictionary[attribute], value: value});
+      }
+
+      return extraInfos;
+    }
+  }
 };
 </script>
-
 
 <style scoped>
 .button-round {
