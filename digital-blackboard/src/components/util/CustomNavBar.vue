@@ -61,10 +61,10 @@ export default {
   data() {
     return {
       menuItems: [
-        { icon: 'mdi-bulletin-board', title: 'Blackboard', value: 'blackboard' },
-        { icon: 'mdi-domain', title: 'Dual Housing', value: 'dualhousing' },
+        { icon: 'mdi-bulletin-board', title: 'Blackboard', value: '/' },
+        { icon: 'mdi-domain', title: 'Dual Living', value: 'dualliving' },
         { icon: 'mdi-calendar-clock', title: 'Events', value: 'events' },
-        { icon: 'mdi-school', title: 'StudyBuddy', value: 'studybuddy' },
+        { icon: 'mdi-school', title: 'Study Hub', value: 'studyhub' },
         { icon: 'mdi-login-variant', title: 'Login', value: 'login' },
         { icon: "mdi-wrench", title: "Test", value: "test"},
       ],
