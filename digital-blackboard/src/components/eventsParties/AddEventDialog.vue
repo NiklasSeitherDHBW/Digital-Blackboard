@@ -1,101 +1,140 @@
 <template>
-  <v-card style="padding: 20px; width: 400px;">
-    <v-card-title>Event teilen</v-card-title>
-    <form @submit.prevent="submit">
-      <v-text-field
-          v-model="name.value.value"
-          :counter="10"
-          :error-messages="name.errorMessage.value"
-          label="Name"
-          variant="outlined"
-      ></v-text-field>
-
-      <v-text-field
-          v-model="phone.value.value"
-          :counter="7"
-          :error-messages="phone.errorMessage.value"
-          label="Phone Number"
-          variant="outlined"
-      ></v-text-field>
-
-      <v-text-field
-          v-model="email.value.value"
-          :error-messages="email.errorMessage.value"
-          label="E-mail"
-          variant="outlined"
-      ></v-text-field>
-
-      <v-select
-          v-model="select.value.value"
-          :items="items"
-          :error-messages="select.errorMessage.value"
-          label="Select"
-          variant="outlined"
-      ></v-select>
-
-      <v-checkbox
-          v-model="checkbox.value.value"
-          :error-messages="checkbox.errorMessage.value"
-          value="1"
-          label="Option"
-          type="checkbox"
-          variant="outlined"
-      ></v-checkbox>
-
-      <v-btn
-          class="me-4"
-          type="submit"
+  <v-stepper editable alt-labels v-model="step">
+    <v-stepper-header>
+      <v-stepper-item
+          title="Angaben zum Event"
+          :value="1"
       >
-        submit
-      </v-btn>
+      </v-stepper-item>
 
-      <v-btn @click="handleReset">
-        clear
-      </v-btn>
-    </form>
-  </v-card>
+      <v-divider></v-divider>
+
+      <v-stepper-item
+          subtitle="Optional"
+          title="Fotos"
+          :value="2"
+      >
+      </v-stepper-item>
+
+    </v-stepper-header>
+    <v-stepper-window>
+      <v-card-title class="text-h6 font-weight-regular justify-space-between pa-2">
+        <span>{{ currentTitle }}</span>
+      </v-card-title>
+
+      <v-window v-model="step">
+        <v-window-item :value="1">
+          <v-card-text>
+            <v-text-field
+                label="Email"
+                placeholder="john@google.com"
+            ></v-text-field>
+            <span class="text-caption text-grey-darken-1">
+            Das ist die Email, welche zur Kontaktaufnahme den Interesenten zur Verfügung gestellt wird!
+          </span>
+          </v-card-text>
+        </v-window-item>
+
+        <v-window-item :value="2">
+          <v-card-text>
+            <v-text-field
+                label="Password"
+                type="password"
+            ></v-text-field>
+            <v-text-field
+                label="Confirm Password"
+                type="password"
+            ></v-text-field>
+            <span class="text-caption text-grey-darken-1">
+            Please enter a password for your account
+          </span>
+          </v-card-text>
+        </v-window-item>
+
+        <v-window-item :value="3">
+          <div class="pa-4 text-center">
+            <v-img
+                class="mb-4"
+                contain
+                height="128"
+                src="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
+            ></v-img>
+            <h3 class="text-h6 font-weight-light mb-2">
+              Ihr Event wurde erfolgreich geteilt
+            </h3>
+            <span class="text-caption text-grey">Danke das sie das Digital Blackboard nutzen!</span>
+          </div>
+        </v-window-item>
+      </v-window>
+
+      <v-divider></v-divider>
+
+      <v-card-actions>
+        <v-btn
+            v-if="step > 1 && step < 3"
+            variant="text"
+            @click="step--"
+        >
+          Zurück
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn
+            v-if="step < 2"
+            color="red"
+            variant="flat"
+            class="float right"
+            @click="step++"
+        >
+          Nächste
+        </v-btn>
+        <v-btn
+            v-if="step === 2"
+            color="red"
+            variant="flat"
+            class="float right"
+            @click="step++"
+        >
+          Event teilen
+        </v-btn>
+        <v-btn
+            v-if="step === 3"
+            color="red"
+            variant="flat"
+            class="float right"
+            @click="closeDialog"
+        >
+          Schließen
+        </v-btn>
+      </v-card-actions>
+    </v-stepper-window>
+  </v-stepper>
 </template>
-<script setup>
 
-import { useField, useForm } from 'vee-validate'
 
-const { handleSubmit, handleReset } = useForm({
-  validationSchema: {
-    name (value) {
-      if (value?.length >= 2) return true
-
-      return 'Name needs to be at least 2 characters.'
-    },
-    phone (value) {
-      if (value?.length > 9 && /[0-9-]+/.test(value)) return true
-
-      return 'Phone number needs to be at least 9 digits.'
-    },
-    email (value) {
-      if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
-
-      return 'Must be a valid e-mail.'
-    },
-    select (value) {
-      if (value) return true
-
-      return 'Select an item.'
-    },
-    checkbox (value) {
-      if (value === '1') return true
-
-      return 'Must be checked.'
+<script>
+export default {
+  data: () => ({
+    step: 1,
+  }),
+  methods: {
+    closeDialog() {
+      this.$emit('close-dialog');
+    }
+  },
+  computed: {
+    currentTitle () {
+      switch (this.step) {
+        case 1: return 'Infos zum Event'
+        case 2: return 'Fotos'
+        default: return 'Event erfolgreich geteilt'
+      }
     },
   },
-})
-
-const name = useField('name')
-const phone = useField('phone')
-const email = useField('email')
-const select = useField('select')
-const checkbox = useField('checkbox')
-
-const submit = handleSubmit(values => {
-  alert(JSON.stringify(values, null, 2))
-})
+};
 </script>
+
+
+
+<style>
+
+</style>
