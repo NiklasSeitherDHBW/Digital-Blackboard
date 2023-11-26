@@ -20,8 +20,8 @@
   </v-container>
 
   <v-btn
-      v-if="mobile"
-      style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; bottom: 75px; right: 20px;"
+      style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; right: 20px;"
+      :style="{ bottom: mobile ? '75px' : '20px' }"
       icon="mdi-plus"
       text="+">
         <v-icon>
@@ -30,27 +30,11 @@
         <v-dialog
             v-model="showDialogAddApartment"
             activator="parent"
-            width="auto">
-          <AddApartment></AddApartment>
+            :style="{ maxWidth: mobile ? '100%' : '60%' }"
+        >
+          <AddApartment @close-dialog="closeDialogAddAppartment"></AddApartment>
         </v-dialog>
   </v-btn>
-
-  <v-btn
-      v-if="!mobile"
-      style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; bottom: 20px; right: 20px;"
-      icon="mdi-plus"
-      text="+">
-    <v-icon>
-      mdi-plus
-    </v-icon>
-    <v-dialog
-        v-model="showDialogAddApartment"
-        activator="parent"
-        width="auto">
-      <AddApartment></AddApartment>
-    </v-dialog>
-  </v-btn>
-
 </template>
 
 <script>
@@ -145,6 +129,9 @@ export default {
       this.selectedItem = item;
       this.showDialogImages = true;
     },
+    closeDialogAddAppartment() {
+      this.showDialogAddApartment = false;
+    }
   },
 };
 </script>
