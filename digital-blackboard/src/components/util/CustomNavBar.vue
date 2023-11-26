@@ -1,16 +1,36 @@
 <template>
-    <v-bottom-navigation v-if="mobile">
-      <v-btn
+  <v-bottom-navigation
+      v-if="mobile"
+  >
+    <v-list
+        :nav="true"
+        class="d-flex"
+        style="overflow: hidden"
+    >
+      <v-list-item
           v-for="item in menuItems"
           :key="item.value"
-          :value="item.value"
-          @click="navigateTo(item.value)">
-        <v-icon class="navbar-icon">{{item.icon}}</v-icon>
-      </v-btn>
-    </v-bottom-navigation>
+          :to="item.value"
+          class="dynamic-spacing"
+      >
+        <v-icon
+            size="20"
+        >
+          {{ item.icon }}
+        </v-icon>
+      </v-list-item>
+    </v-list>
+  </v-bottom-navigation>
 
-  <v-navigation-drawer v-else expand-on-hover rail class="sticky-navbar">
-    <v-list nav>
+  <v-navigation-drawer
+      v-else
+      expand-on-hover
+      :rail=true
+      class="sticky-navbar"
+  >
+    <v-list
+        :nav=true
+    >
       <v-list-item
           prepend-avatar="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
           title="Digital Blackboard"
@@ -24,8 +44,8 @@
           :key="item.value"
           :to="item.value"
           :prepend-icon="item.icon"
-          :title="item.title">
-      </v-list-item>
+          :title="item.title"
+      ></v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -53,7 +73,6 @@ export default {
   methods: {
     navigateTo(itemValue) {
       if (itemValue) {
-        // Use Vue Router to navigate to the corresponding route
         this.$router.push({ name: itemValue });
       }
     },
@@ -62,13 +81,7 @@ export default {
 </script>
 
 <style scoped>
-.d-flex {
-  display: flex;
+.dynamic-spacing {
+  margin-right: 1em;
 }
-
-.align-center {
-  align-items: center;
-}
-
-
 </style>
