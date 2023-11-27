@@ -89,8 +89,8 @@
 
     <v-rating
         v-if="item.rating > 0"
-        hover:true
-        readonly:true
+        hover
+        readonly
         style="margin-left: 15px; margin-bottom: 10px;"
         :length="5"
         :size="35"
