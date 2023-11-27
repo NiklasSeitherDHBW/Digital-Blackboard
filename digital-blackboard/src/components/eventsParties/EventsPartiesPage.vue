@@ -35,18 +35,40 @@
         </v-row>
       </v-container>
     </v-container>
+    <v-btn
+        style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; right: 20px;"
+        :style="{ bottom: mobile ? '75px' : '20px' }"
+        icon="mdi-plus"
+        text="+">
+      <v-icon>
+        mdi-plus
+      </v-icon>
+      <v-dialog
+          transition="dialog-bottom-transition"
+          v-model="showDialogAddApartment"
+          activator="parent"
+          :style="{ maxWidth: mobile ? '100%' : '60%' }"
+      >
+        <AddEventDialog @close-dialog="closeDialogAddAppartment"></AddEventDialog>
+      </v-dialog>
+    </v-btn>
   </v-app>
 </template>
 
 <script setup>
 import CustomAppBar from "@/components/util/CustomAppBar.vue";
 import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue";
+import AddEventDialog from "@/components/eventsParties/AddEventDialog.vue";
+import {useDisplay} from "vuetify";
+
+const { mobile } = useDisplay()
 </script>
 
 <script>
 export default {
   data() {
     return {
+      showDialogAddApartment: false,
       eventCategories: ["Events", "Feiern", "Seminare"],
       events: [
         {
@@ -104,6 +126,10 @@ export default {
   methods: {
     getEventsByCategory(category) {
       return this.events.filter(event => event.category === category);
+    },
+
+    closeDialogAddAppartment() {
+      this.showDialogAddApartment = false;
     },
     setDefaultImages() {
       this.events.forEach(event => {
