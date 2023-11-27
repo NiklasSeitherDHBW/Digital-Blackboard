@@ -74,7 +74,7 @@ export default {
         description: '"Nenn mich einfach Meister oder Sensei"',
         subject: "Kann eigentlich nichts",
         images: ['https://media.licdn.com/dms/image/D4D03AQE1rqeodXQqtQ/profile-displayphoto-shrink_200_200/0/1691487446798?e=2147483647&v=beta&t=SeFrL8y5GMt4bNt8AHJgM1AXrQOmr5HdVZmMkuwMWbY'],
-        price: "250 €",
+        price: "250",
         rating: 1,
         category: "buddy",
         availability: "Niemals, immer busy"

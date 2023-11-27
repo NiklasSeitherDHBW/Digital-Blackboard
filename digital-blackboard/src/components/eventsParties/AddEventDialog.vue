@@ -39,29 +39,90 @@
         >
           <v-card-text>
             <v-text-field
-                label="Email"
-                placeholder="john@google.com"
+                label="Name des Events *"
+                variant="outlined"
             ></v-text-field>
-            <span class="text-caption text-grey-darken-1">
-            Das ist die Email, welche zur Kontaktaufnahme den Interesenten zur Verfügung gestellt wird!
-          </span>
+
+            <v-text-field
+                label="Beschreibung"
+                variant="outlined"
+            ></v-text-field>
+
+            <v-text-field
+                label="Datum *"
+                placeholder="TT.MM.JJJJ"
+                variant="outlined"
+            ></v-text-field>
+
+            <v-text-field
+                label="Ort *"
+                placeholder="Coblitzallee 1-9, 68163 Mannheim"
+                variant="outlined"
+            ></v-text-field>
+
+            <v-text-field
+                label="Zielgruppe *"
+                placeholder="Wirtschaftsinformatik Studenten"
+                variant="outlined"
+            ></v-text-field>
+
+            <v-text-field
+                label="Preis p.p. in €"
+                placeholder="Optional"
+                variant="outlined"
+            ></v-text-field>
+
+            <v-text-field
+                label="Maximale Teilnehmeranzahl"
+                placeholder="Optional"
+                variant="outlined"
+            ></v-text-field>
           </v-card-text>
         </v-window-item>
 
-        <v-window-item :value="2">
-          <v-card-text>
-            <v-text-field
-                label="Password"
-                type="password"
-            ></v-text-field>
-            <v-text-field
-                label="Confirm Password"
-                type="password"
-            ></v-text-field>
-            <span class="text-caption text-grey-darken-1">
-            Please enter a password for your account
-          </span>
-          </v-card-text>
+        <v-window-item
+            :value="2"
+        >
+          <v-container>
+            <v-file-input
+                v-model="selectedImages"
+                label="Choose images"
+                variant="outlined"
+                multiple
+                show-size
+                @change="onFileChange"
+            ></v-file-input>
+
+            <v-row>
+              <v-col
+                  v-for="(image, index) in selectedImages"
+                  :key="index"
+                  cols="12"
+                  sm="6"
+                  md="4"
+              >
+                <v-card>
+                  <v-img
+                      v-if="image.url"
+                      :src="image.url"
+                      :alt="'Image ' + (index + 1)"
+                      height="200px"
+                  ></v-img>
+                  <v-card-actions>
+                    <v-btn
+                        color="red"
+                        class="ml-auto"
+                        @click="deleteImage(index)" icon
+                    >
+                      <v-icon>
+                        mdi-delete
+                      </v-icon>
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-container>
         </v-window-item>
 
         <v-window-item :value="3">
@@ -164,7 +225,7 @@ export default {
   computed: {
     currentTitle () {
       switch (this.step) {
-        case 1: return 'Infos zum Event'
+        case 1: return 'Angaben zum Event'
         case 2: return 'Fotos'
         default: return 'Event erfolgreich geteilt'
       }

@@ -12,8 +12,7 @@
           subtitle="Optional"
           title="Fotos des Objektes"
           :value="2"
-      >
-      </v-stepper-item>
+      ></v-stepper-item>
 
       <v-divider></v-divider>
 
@@ -32,49 +31,97 @@
         </span>
       </v-card-title>
 
-      <v-window v-model="step">
-        <v-window-item :value="1">
-          <v-card-text>
-            <v-text-field
-                label="Email"
-                placeholder="john@google.com"
-            ></v-text-field>
-            <span class="text-caption text-grey-darken-1">
-            Das ist die Email, welche zur Kontaktaufnahme den Interesenten zur Verfügung gestellt wird!
-          </span>
-          </v-card-text>
+      <v-window
+          v-model="step"
+      >
+        <v-window-item
+            :value="1"
+        >
+          <v-text-field
+              variant="outlined"
+              label="Titel des Inserats *"
+              class="mt-2"
+          ></v-text-field>
+
+          <v-text-field
+              label="Beschreibung"
+              textarea
+              auto-grow
+              rows="5"
+              variant="outlined"
+          ></v-text-field>
+
+          <v-text-field
+              label="Zeitraum *"
+              placeholder="TT.MM.JJJJ - TT.MM.JJJJ"
+              variant="outlined"
+          ></v-text-field>
+
+          <v-text-field
+              label="Ort *"
+              placeholder="Mannheim Neuostheim"
+              variant="outlined"
+          ></v-text-field>
+
+          <v-text-field
+              label="Monatliche Miete in € *"
+              placeholder="450"
+              variant="outlined"
+          ></v-text-field>
+
+          <v-text-field
+              label="Wohnfläche in m² *"
+              placeholder="17"
+              variant="outlined"
+          ></v-text-field>
+
+
+          <v-checkbox
+              label="Möbliert"
+              variant="outlined"
+          ></v-checkbox>
+
+          <v-checkbox-btn
+              v-model="enabled"
+              label="WG"
+              class="pe-2"
+              variant="outlined"
+          ></v-checkbox-btn>
+
+          <v-combobox
+              :disabled="!enabled"
+              :items="['Jungs', 'Mädchen', 'Gemischt']"
+              variant="outlined"
+          ></v-combobox>
         </v-window-item>
 
         <v-window-item :value="2">
-          <v-card-text>
-            <v-text-field
-                label="Password"
-                type="password"
-            ></v-text-field>
-            <v-text-field
-                label="Confirm Password"
-                type="password"
-            ></v-text-field>
-            <span class="text-caption text-grey-darken-1">
-            Please enter a password for your account
-          </span>
-          </v-card-text>
+          <UploadImagesStep></UploadImagesStep>
         </v-window-item>
 
         <v-window-item :value="3">
-          <v-card-text>
-            <v-text-field
-                label="Password"
-                type="password"
-            ></v-text-field>
-            <v-text-field
-                label="Confirm Password"
-                type="password"
-            ></v-text-field>
-            <span class="text-caption text-grey-darken-1">
-            Please enter a password for your account
+          <v-text-field
+              label="Vor- & Nachname *"
+              placeholder="Maxime Musterfrau"
+              variant="outlined"
+          ></v-text-field>
+
+          <v-text-field
+              label="Mobil"
+              placeholder="+49123456789"
+              variant="outlined"
+          ></v-text-field>
+
+          <v-text-field
+              label="Email *"
+              placeholder="john@google.com"
+              variant="outlined"
+          ></v-text-field>
+
+          <span class="text-caption text-grey-darken-1">
+              Das ist die Email, welche zur Kontaktaufnahme den Interesenten zur Verfügung gestellt wird!
           </span>
-          </v-card-text>
+
         </v-window-item>
 
         <v-window-item :value="4">
@@ -144,6 +191,7 @@ export default {
   components: {UploadImagesStep},
   data: () => ({
     step: 1,
+    enabled: false,
   }),
   methods: {
     closeDialog() {

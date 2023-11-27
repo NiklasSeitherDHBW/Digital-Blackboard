@@ -19,14 +19,14 @@ export default {
   data() {
     return {
       basicInfosKeywords: [
-        "price", "description"
+        "price", "location"
       ],
       extraInfosKeywords: [
         "community", "availability", "description"
       ],
       dictionary: {
         "availability": "Maximale Anzahl Teilnehmer",
-        "price" : "Monatliche Miete",
+        "price" : "Preis p.p. in €",
         "description": "Beschreibung",
         "location": "Wo?",
         "community": "Wer?",

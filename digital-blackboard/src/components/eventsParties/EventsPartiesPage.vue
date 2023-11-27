@@ -113,7 +113,7 @@ export default {
           date: "Jeden Freitag und Samstag, manchmal auch Dienstag :)",
           date_created: "01.01.2023",
           description: "Name ist Programm",
-          price: "4,99 € / Flasche, besser geht nicht",
+          price: "4,99 / Flasche, besser geht nicht",
           availability: "Komm in die Gruppe",
           location: "Überall",
           community: "Jeder ist willkommen",

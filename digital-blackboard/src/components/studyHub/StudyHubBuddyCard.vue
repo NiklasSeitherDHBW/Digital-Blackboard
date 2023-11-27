@@ -172,7 +172,7 @@ export default {
       ],
       dictionary: {
         "availability": "Verfügbarkeit",
-        "price" : "Preis pro stunde",
+        "price" : "Preis pro stunde in €",
         "description": "Beschreibung",
         "subject": "Fächer",
       }
