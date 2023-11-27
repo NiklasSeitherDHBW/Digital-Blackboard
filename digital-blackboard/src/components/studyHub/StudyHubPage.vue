@@ -65,13 +65,14 @@ export default {
         description: "Ich fahr das besde Audo der Welt und damit mein ich net so nen doofen Tesla",
         price: "alles nur Abzocke",
         rating: 5,
-        category: "buddy"
+        category: "buddy",
+        availability: "Wenn die IBM nicht schon wieder rumgepfuscht hat"
       },
       {
         title: "Niggl",
         date_created: "25.10.2018",
         description: '"Nenn mich einfach Meister oder Sensei"',
-        subject: "Web Programmierung, Statistik",
+        subject: "Kann eigentlich nichts",
         images: ['https://media.licdn.com/dms/image/D4D03AQE1rqeodXQqtQ/profile-displayphoto-shrink_200_200/0/1691487446798?e=2147483647&v=beta&t=SeFrL8y5GMt4bNt8AHJgM1AXrQOmr5HdVZmMkuwMWbY'],
         price: "250 €",
         rating: 1,
