@@ -28,6 +28,7 @@
           mdi-plus
         </v-icon>
         <v-dialog
+            transition="dialog-bottom-transition"
             v-model="showDialogAddApartment"
             activator="parent"
             :style="{ maxWidth: mobile ? '100%' : '60%' }"
