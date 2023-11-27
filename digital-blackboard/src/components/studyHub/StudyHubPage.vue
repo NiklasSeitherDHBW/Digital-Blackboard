@@ -31,38 +31,20 @@
   </v-container>
 
   <v-btn
-      v-if="mobile"
-      style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; bottom: 75px; right: 20px;"
+      style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; right: 20px;"
+      :style="{ bottom: mobile ? '75px' : '20px' }"
       icon="mdi-plus"
-      text="+"
-  >
+      text="+">
     <v-icon>
       mdi-plus
     </v-icon>
     <v-dialog
+        transition="dialog-bottom-transition"
         v-model="showDialogAddApartment"
         activator="parent"
-        width="auto"
+        :style="{ maxWidth: mobile ? '100%' : '60%' }"
     >
-      <AddApartment></AddApartment>
-    </v-dialog>
-  </v-btn>
-
-  <v-btn
-      v-if="!mobile"
-      style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; bottom: 20px; right: 20px;"
-      icon="mdi-plus"
-      text="+"
-  >
-    <v-icon>
-      mdi-plus
-    </v-icon>
-    <v-dialog
-        v-model="showDialogAddApartment"
-        activator="parent"
-        width="auto"
-    >
-      <AddApartment></AddApartment>
+      <AddStudyHubDialog @close-dialog="closeDialogAddAppartment"></AddStudyHubDialog>
     </v-dialog>
   </v-btn>
 </template>
@@ -122,13 +104,16 @@ export default {
       this.selectedItem = item;
       this.showDialogImages = true;
     },
+    closeDialogAddAppartment() {
+      this.showDialogAddApartment = false;
+    }
   },
 };
 </script>
 
 <script setup>
 import AppBar from "@/components/util/CustomAppBar.vue";
-import AddApartment from "@/components/dualLiving/AddAppartmentDialog.vue";
+import AddStudyHubDialog from "@/components/studyHub/AddStudyHubDialog.vue";
 import StudyHubBuddyCard from "@/components/studyHub/StudyHubBuddyCard.vue";
 import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
 
