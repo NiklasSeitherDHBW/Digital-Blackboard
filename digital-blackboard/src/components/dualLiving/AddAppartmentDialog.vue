@@ -4,8 +4,7 @@
       <v-stepper-item
           title="Angaben zur Wohnung"
           :value="1"
-      >
-      </v-stepper-item>
+      ></v-stepper-item>
 
       <v-divider></v-divider>
 
@@ -21,13 +20,16 @@
       <v-stepper-item
           title="Deine Kontaktdaten"
           :value="3"
-      >
-      </v-stepper-item>
-
+      ></v-stepper-item>
     </v-stepper-header>
+
     <v-stepper-window>
-      <v-card-title class="text-h6 font-weight-regular justify-space-between pa-2">
-        <span>{{ currentTitle }}</span>
+      <v-card-title
+          class="text-h6 font-weight-regular justify-space-between pa-2"
+      >
+        <span>
+          {{ currentTitle }}
+        </span>
       </v-card-title>
 
       <v-window v-model="step">
@@ -136,7 +138,10 @@
 
 
 <script>
+import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
+
 export default {
+  components: {UploadImagesStep},
   data: () => ({
     step: 1,
   }),

@@ -1,11 +1,17 @@
 <template>
-  <v-stepper editable alt-labels v-model="step">
-    <v-stepper-header>
+  <v-stepper
+      v-model="step"
+      :editable=true
+      alt-labels
+      class="sticky-stepper"
+  >
+    <v-stepper-header
+      class="sticky-stepper-header"
+    >
       <v-stepper-item
           title="Angaben zum Event"
           :value="1"
-      >
-      </v-stepper-item>
+      ></v-stepper-item>
 
       <v-divider></v-divider>
 
@@ -13,17 +19,24 @@
           subtitle="Optional"
           title="Fotos"
           :value="2"
-      >
-      </v-stepper-item>
-
+      ></v-stepper-item>
     </v-stepper-header>
+
     <v-stepper-window>
-      <v-card-title class="text-h6 font-weight-regular justify-space-between pa-2">
-        <span>{{ currentTitle }}</span>
+      <v-card-title
+          class="text-h6 font-weight-regular justify-space-between pa-2"
+      >
+        <span>
+          {{ currentTitle }}
+        </span>
       </v-card-title>
 
-      <v-window v-model="step">
-        <v-window-item :value="1">
+      <v-window
+          v-model="step"
+      >
+        <v-window-item
+            :value="1"
+        >
           <v-card-text>
             <v-text-field
                 label="Email"
@@ -52,7 +65,9 @@
         </v-window-item>
 
         <v-window-item :value="3">
-          <div class="pa-4 text-center">
+          <div
+              class="pa-4 text-center"
+          >
             <v-img
                 class="mb-4"
                 contain
@@ -62,7 +77,11 @@
             <h3 class="text-h6 font-weight-light mb-2">
               Ihr Event wurde erfolgreich geteilt
             </h3>
-            <span class="text-caption text-grey">Danke das sie das Digital Blackboard nutzen!</span>
+            <span
+                class="text-caption text-grey"
+            >
+              Danke, dass du das Digital Blackboard nutzt!
+            </span>
           </div>
         </v-window-item>
       </v-window>
@@ -77,7 +96,9 @@
         >
           Zurück
         </v-btn>
+
         <v-spacer></v-spacer>
+
         <v-btn
             v-if="step < 2"
             color="red"
@@ -87,6 +108,7 @@
         >
           Nächste
         </v-btn>
+
         <v-btn
             v-if="step === 2"
             color="red"
@@ -96,6 +118,7 @@
         >
           Event teilen
         </v-btn>
+
         <v-btn
             v-if="step === 3"
             color="red"
@@ -115,11 +138,28 @@
 export default {
   data: () => ({
     step: 1,
+    selectedImages: [],
   }),
   methods: {
     closeDialog() {
       this.$emit('close-dialog');
-    }
+    },
+    onFileChange() {
+      this.selectedImages = this.selectedImages.map((file) => ({
+        file,
+        url: URL.createObjectURL(file),
+      }));
+    },
+    deleteImage(index) {
+      this.selectedImages.splice(index, 1);
+    },
+    uploadImages() {
+      this.selectedImages.forEach((image) => {
+        if (image.file instanceof Blob) {
+          console.log('Uploading:', image.url);
+        }
+      });
+    },
   },
   computed: {
     currentTitle () {
@@ -133,8 +173,15 @@ export default {
 };
 </script>
 
-
-
 <style>
+.sticky-stepper {
+  position: sticky;
+  overflow: visible;
+}
 
+.sticky-stepper-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
 </style>
