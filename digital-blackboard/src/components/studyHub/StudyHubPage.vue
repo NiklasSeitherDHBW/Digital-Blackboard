@@ -90,6 +90,13 @@ export default {
         members: 4,
       },
       {
+        title: "New Students Network (NSN)",
+        subject: "Lerne neue Leute kennen und tausche dich in entspannter Atmosphäre aus!",
+        date_created: "27.11.2024",
+        category: "group",
+        images: ['https://www.peoplegrove.com/wp-content/uploads/2022/07/networking-hero.png'],
+      },
+      {
         title: "IBM Udo",  images: ["https://cdn.discordapp.com/attachments/685223087133949963/1178105743782727700/PHOTO-2023-06-13-13-47-51.jpg?ex=6574ef79&is=65627a79&hm=f242fbcb8e4b87fba84c3dfa6222177ec3109c39bff02d2620af0ba8750f6df5&"],
         date_created: "25.11.2023",
         subject: "IBM, Windoofs",
