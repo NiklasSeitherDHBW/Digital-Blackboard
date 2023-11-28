@@ -104,6 +104,7 @@
               label="Vor- & Nachname *"
               placeholder="Maxime Musterfrau"
               variant="outlined"
+              class="mt-2"
           ></v-text-field>
 
           <v-text-field

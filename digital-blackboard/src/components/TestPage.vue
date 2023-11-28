@@ -1,5 +1,5 @@
 <template>
-  <v-stepper editable alt-labels v-model="step">
+  <v-stepper alt-labels v-model="step" style="width: 80%;">
     <v-stepper-header>
       <v-stepper-item
           title="Angaben zur Wohnung"
@@ -33,47 +33,62 @@
 
       <v-window v-model="step">
         <v-window-item :value="1">
+          <v-form @submit.prevent="submit">
+            <v-text-field
+                v-model="title.value.value"
+                :counter="10"
+                class="mt-2"
+                :error-messages="name.errorMessage.value"
+                label="Titel des Inserats"
+                variant="outlined"
+            ></v-text-field>
+
+            <v-text-field
+                v-model="description.value.value"
+                :counter="10"
+                :error-messages="description.errorMessage.value"
+                label="Beschreibung"
+                variant="outlined"
+            ></v-text-field>
+
+            <v-text-field
+                v-model="availability.value.value"
+                :counter="10"
+                :error-messages="availability.errorMessage.value"
+                label="Zeitraum"
+                placeholder="TT.MM.JJJJ - TT.MM.JJJJ"
+                variant="outlined"
+            ></v-text-field>
 
           <v-text-field
-              outlined
-              label="Titel des Inserats"
-              v-model="formData.title"
-          ></v-text-field>
+                v-model="location.value.value"
+                :counter="6"
+                :error-messages="location.errorMessage.value"
+                label="Ort"
+                placeholder="Mannheim Neuostheim"
+                variant="outlined"
+            ></v-text-field>
 
-          <v-text-field
-              label="Beschreibung"
-              v-model="formData.description"
-          ></v-text-field>
+            <v-text-field
+                v-model="price.value.value"
+                :error-messages="price.errorMessage.value"
+                label="Monatliche Miete in €"
+                variant="outlined"
+            ></v-text-field>
 
-          <v-text-field
-              label="Zeitraum"
-              placeholder="TT.MM.JJJJ - TT.MM.JJJJ"
-              v-model="formData.availability"
-          ></v-text-field>
+            <v-text-field
+                v-model="area.value.value"
+                :error-messages="area.errorMessage.value"
+                label="Wohnfläche in m²"
+                variant="outlined"
+            ></v-text-field>
 
-          <v-text-field
-              label="Ort"
-              placeholder="Mannheim Neuostheim"
-              v-model="formData.location"
-          ></v-text-field>
-
-          <v-text-field
-              label="Monatliche Miete in €"
-              placeholder="450"
-              v-model="formData.price"
-          ></v-text-field>
-
-          <v-text-field
-              label="Wohnfläche in m²"
-              placeholder="17"
-              v-model="formData.area"
-          ></v-text-field>
-
-
-          <v-checkbox
-              label="Möbliert"
-              v-model="formData.furniture"
-          ></v-checkbox>
+            <v-checkbox
+                v-model="furniture.value.value"
+                value="mdi-check"
+                label="Möbliert"
+                type="checkbox"
+            ></v-checkbox>
 
           <v-checkbox-btn
               v-model="enabled"
@@ -81,11 +96,13 @@
               class="pe-2"
           ></v-checkbox-btn>
           <v-combobox
+              variant="outlined"
               :disabled="!enabled"
+              v-model="community.value.value"
               :items="['Jungs', 'Mädchen', 'Gemischt']"
           ></v-combobox>
 
-
+          </v-form>
         </v-window-item>
 
         <v-window-item :value="2">
@@ -93,21 +110,31 @@
         </v-window-item>
 
         <v-window-item :value="3">
+
           <v-text-field
+              v-model="name.value.value"
+              :counter="10"
+              :error-messages="name.errorMessage.value"
               label="Vor- & Nachname *"
               placeholder="Maxime Musterfrau"
               variant="outlined"
+              class="mt-2"
           ></v-text-field>
 
           <v-text-field
               label="Mobil"
               placeholder="+49123456789"
+              v-model="mobil.value.value"
+              :counter="10"
+              :error-messages="mobil.errorMessage.value"
               variant="outlined"
           ></v-text-field>
 
           <v-text-field
-              label="Email *"
+              label="E-Mail *"
               placeholder="john@google.com"
+              v-model="email.value.value"
+              :error-messages="email.errorMessage.value"
               variant="outlined"
           ></v-text-field>
 
@@ -146,6 +173,32 @@
                   </h4>
                 </v-col>
                 <v-col>
+                  <p v-if="item.value.startsWith('mdi-')">
+                    <v-icon>{{ item.value }}</v-icon>
+                  </p>
+                  <p v-else>
+                    {{ item.value }}
+                  </p>
+                </v-col>
+              </v-row>
+            </v-card>
+          </div>
+          <div>
+            <v-card
+                class="ma-2"
+                title="Kontakt angaben">
+
+              <v-row
+                  v-for="item in extraInfos"
+                  :key="item.label"
+                  no-gutters
+              >
+                <v-col>
+                  <h4>
+                    {{ item.label }}
+                  </h4>
+                </v-col>
+                <v-col>
                   <p>
                     {{ item.value }}
                   </p>
@@ -172,7 +225,8 @@
             color="red"
             variant="flat"
             class="float right"
-            @click="step++; saveFormData"
+            type="submit"
+            @click="step++;"
         >
           Nächste
         </v-btn>
@@ -181,6 +235,7 @@
             color="red"
             variant="flat"
             class="float right"
+            type="submit"
             @click="step++"
         >
           Inserat fertigstellen
@@ -201,6 +256,44 @@
 
 <script setup>
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
+import { useField, useForm } from 'vee-validate'
+
+  const { handleSubmit } = useForm({
+  validationSchema: {
+  name (value) {
+  if (value?.length >= 2) return true
+
+  return 'Name needs to be at least 2 characters.'
+},
+  mobil (value) {
+  if (value?.length > 9 && /[0-9-]+/.test(value)) return true
+
+  return 'Phone number needs to be at least 9 digits.'
+},
+  email (value) {
+  if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
+
+  return 'Must be a valid e-mail.'
+},
+},
+  })
+
+  const description = useField('description')
+  const community = useField('community')
+  const title = useField('title')
+  const availability = useField('availability')
+  const location = useField('location')
+  const area = useField('area')
+  const furniture = useField('furniture')
+  const price = useField('price')
+
+  const name = useField('name')
+  const mobil = useField('mobil')
+  const email = useField('email')
+
+  const submit = handleSubmit(values => {
+    alert(JSON.stringify(values, null, 2))
+  })
 </script>
 
 <script>
@@ -208,47 +301,34 @@ export default {
   data: () => ({
     step: 1,
     enabled: false,
-    formData: {
-      title: "",
-      description: "",
-      availability: "",
-      location: "",
-      price : "",
-      area: "",
-      furniture: "",
-      community: "",
-    },
-    contactData: {
-
-    },
+    valid: true,
 
     basicInfosKeywords: [
       "title", "description", "availability", "location", "price", "area", "furniture", "community"
     ],
-    contactKeywords: [
-      "name"
+    extraInfosKeywords: [
+      "name", "mobil", "email"
     ],
 
     dictionary: {
-      "title": "Titel",
-      "availability": "Zeitraum",
-      "area": "Wohnfläche in m²",
-      "price" : "Monatliche Miete in €",
-      "description": "Beschreibung",
-      "location": "Ort / Stadtteil",
-      "furniture": "Möbiliert",
-      "community": "WG Zimmer",
-    }
+      "title": "Titel:",
+      "availability": "Zeitraum:",
+      "area": "Wohnfläche in m²:",
+      "price": "Warmmiete in €:",
+      "description": "Beschreibung:",
+      "location": "Ort / Stadtteil:",
+      "furniture": "Möbiliert:",
+      "community": "WG Zimmer:",
+      "name": "Vor- & Nachname:",
+      "mobil": "Handynummer:",
+      "email": "E-Mail:",
+    },
   }),
-  methods: {
+
     closeDialog() {
       this.$emit('close-dialog');
     },
-    saveFormData() {
-      // Here you can save or use the formData object as needed
-      console.log('Form Data saved:', this.formData);
-    },
-  },
+
     computed: {
       currentTitle() {
         switch (this.step) {
@@ -263,21 +343,27 @@ export default {
         }
       },
       basicInfos() {
-        console.log("Ich werde aufgerufen")
         let basicInfos = [];
         for (const attribute of this.basicInfosKeywords) {
-          let value = this.formData[attribute]
-          basicInfos.push({label: this.dictionary[attribute], value: value});
+          let value = this.formData[attribute].value;
+          basicInfos.push({ label: this.dictionary[attribute], value: value });
         }
         console.log(basicInfos)
         return basicInfos;
       },
+      extraInfos() {
+        let extraInfos = [];
+        for (const attribute of this.extraInfosKeywords) {
+          let value = this.contactData[attribute].value;
+          extraInfos.push({ label: this.dictionary[attribute], value: value });
+        }
+        console.log(extraInfos)
+        return extraInfos;
+      }
 
     },
 };
 </script>
-
-
 
 <style>
 
