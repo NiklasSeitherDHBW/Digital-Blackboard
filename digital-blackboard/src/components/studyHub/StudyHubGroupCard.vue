@@ -154,13 +154,14 @@ export default {
         "subject", "members"
       ],
       extraInfosKeywords: [
-        "description", "activities"
+        "description", "activities", "contact"
       ],
       dictionary: {
         "members": "Mitglieder",
         "activities" : "Aktivitäten",
         "description": "Beschreibung",
         "subject": "Studienrichtung",
+        "contact": "Kontakt",
       }
     };
   },
