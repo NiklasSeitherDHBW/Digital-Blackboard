@@ -246,7 +246,7 @@
             color="red"
             variant="flat"
             class="float right"
-            @click="closeDialog"
+            @click="'dumb donkey'"
         >
           Schließen
         </v-btn>
@@ -272,6 +272,14 @@ export default {
     extraInfosKeywords: [
       "name", "mobil", "email"
     ],
+
+    fromData: {
+
+    },
+
+    contactData: {
+
+    },
 
     dictionary: {
       "title": "Titel:",
