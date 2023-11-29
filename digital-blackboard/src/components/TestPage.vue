@@ -26,6 +26,7 @@
       </v-stepper-item>
 
     </v-stepper-header>
+
     <v-stepper-window>
       <v-card-title class="text-h6 font-weight-regular justify-space-between pa-2">
         <span>{{ currentTitle }}</span>
@@ -256,44 +257,6 @@
 
 <script setup>
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
-import { useField, useForm } from 'vee-validate'
-
-  const { handleSubmit } = useForm({
-  validationSchema: {
-  name (value) {
-  if (value?.length >= 2) return true
-
-  return 'Name needs to be at least 2 characters.'
-},
-  mobil (value) {
-  if (value?.length > 9 && /[0-9-]+/.test(value)) return true
-
-  return 'Phone number needs to be at least 9 digits.'
-},
-  email (value) {
-  if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
-
-  return 'Must be a valid e-mail.'
-},
-},
-  })
-
-  const description = useField('description')
-  const community = useField('community')
-  const title = useField('title')
-  const availability = useField('availability')
-  const location = useField('location')
-  const area = useField('area')
-  const furniture = useField('furniture')
-  const price = useField('price')
-
-  const name = useField('name')
-  const mobil = useField('mobil')
-  const email = useField('email')
-
-  const submit = handleSubmit(values => {
-    alert(JSON.stringify(values, null, 2))
-  })
 </script>
 
 <script>
@@ -325,10 +288,11 @@ export default {
     },
   }),
 
+  methods: {
     closeDialog() {
       this.$emit('close-dialog');
-    },
-
+    }
+  },
     computed: {
       currentTitle() {
         switch (this.step) {
@@ -345,7 +309,7 @@ export default {
       basicInfos() {
         let basicInfos = [];
         for (const attribute of this.basicInfosKeywords) {
-          let value = this.formData[attribute].value;
+          let value = this.values[attribute].value;
           basicInfos.push({ label: this.dictionary[attribute], value: value });
         }
         console.log(basicInfos)
@@ -354,7 +318,7 @@ export default {
       extraInfos() {
         let extraInfos = [];
         for (const attribute of this.extraInfosKeywords) {
-          let value = this.contactData[attribute].value;
+          let value = this.values[attribute].value;
           extraInfos.push({ label: this.dictionary[attribute], value: value });
         }
         console.log(extraInfos)
