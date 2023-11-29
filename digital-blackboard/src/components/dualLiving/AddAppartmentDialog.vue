@@ -76,6 +76,16 @@
           ></v-text-field>
 
           <v-text-field
+              label="Bis"
+              placeholder="TT.MM.JJJJ"
+              :rules="notEmptyRules"
+              type="date"
+              :min="formData.availabelFrom"
+              v-model="formData.availabelTill"
+              variant="outlined"
+          ></v-text-field>
+
+          <v-text-field
               label="Ort"
               placeholder="Mannheim Neuostheim"
               variant="outlined"
