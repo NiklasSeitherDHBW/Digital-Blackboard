@@ -1,4 +1,4 @@
-<template >
+<template>
   <AppBar
       titleGrey="Dual"
       titleRed="Living"
@@ -11,6 +11,7 @@
       <v-col
           v-for="(item, index) in contents"
           :key="index"
+          cols="6"
       >
         <DualLivingCard
             :item="item"
@@ -20,21 +21,25 @@
   </v-container>
 
   <v-btn
-      style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; right: 20px;"
-      :style="{ bottom: mobile ? '75px' : '20px' }"
-      icon="mdi-plus"
-      text="+">
-        <v-icon>
-          mdi-plus
-        </v-icon>
-        <v-dialog
-            transition="dialog-bottom-transition"
-            v-model="showDialogAddApartment"
-            activator="parent"
-            :style="{ maxWidth: mobile ? '100%' : '60%' }"
-        >
-          <AddApartment @close-dialog="closeDialogAddAppartment"></AddApartment>
-        </v-dialog>
+    style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; right: 20px;"
+    :style="{ bottom: mobile ? '75px' : '20px' }"
+    icon="mdi-plus"
+    text="+"
+  >
+    <v-icon>
+      mdi-plus
+    </v-icon>
+
+    <v-dialog
+        transition="dialog-bottom-transition"
+        v-model="showDialogAddApartment"
+        activator="parent"
+        :style="{ maxWidth: mobile ? '100%' : '60%' }"
+    >
+      <AddApartment
+          @close-dialog="closeDialogAddAppartment"
+      ></AddApartment>
+    </v-dialog>
   </v-btn>
 </template>
 
@@ -130,8 +135,20 @@ export default {
       this.selectedItem = item;
       this.showDialogImages = true;
     },
-    closeDialogAddAppartment() {
+    closeDialogAddAppartment(formData) {
       this.showDialogAddApartment = false;
+      this.contents.push({
+        title: formData.title,
+        description: formData.description,
+        location: formData.location,
+        date_created: "29.11.2023",
+        availability: `${formData.availabelFrom} - ${formData.availabelTill}`,
+        furniture: formData.furniture ? "Ja" : "Nein",
+        community: `${formData.community ? 'Ja -' : 'Nein'} ${formData.selectedGender}`,
+        price: formData.price,
+        area: formData.area,
+        images: [],
+      });
     }
   },
 };
