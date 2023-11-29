@@ -1,5 +1,5 @@
-<template>
-  <v-card>
+7<template>
+  <v-card style="max-width: 600px;">
     <!-- Images -->
     <v-carousel
       :height="item.images.length < 1 ? '0px' : '300px'"
@@ -36,7 +36,7 @@
           <v-divider></v-divider>
 
           <v-carousel
-              show-arrows="hover"
+              :show-arrows="item.images.length > 1 ? 'hover' : false"
               progress="primary"
           >
             <v-carousel-item
@@ -131,7 +131,7 @@
         <v-btn
           class="button-default float-right ma-5 font-weight-medium"
         >
-          Kontaktieren
+          {{ action }}
         </v-btn>
       </div>
     </v-expand-transition>
@@ -153,6 +153,7 @@ export default {
     };
   },
 };
+
 </script>
 
 
