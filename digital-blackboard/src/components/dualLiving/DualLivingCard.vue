@@ -3,6 +3,7 @@
       :item="item"
       :basicInfos="basicInfos"
       :extraInfos="extraInfos"
+      action="Kontaktieren"
   ></CustomCard>
 </template>
 
