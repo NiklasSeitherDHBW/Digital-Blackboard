@@ -11,7 +11,6 @@
       <v-col
           v-for="(item, index) in contents"
           :key="index"
-          cols="6"
       >
         <DualLivingCard
             :item="item"
@@ -135,8 +134,9 @@ export default {
       this.selectedItem = item;
       this.showDialogImages = true;
     },
-    closeDialogAddAppartment(formData) {
+    closeDialogAddAppartment(formData, images, contactData) {
       this.showDialogAddApartment = false;
+      console.log(contactData)
       this.contents.push({
         title: formData.title,
         description: formData.description,
@@ -147,7 +147,7 @@ export default {
         community: `${formData.community ? 'Ja -' : 'Nein'} ${formData.selectedGender}`,
         price: formData.price,
         area: formData.area,
-        images: [],
+        images: images,
       });
     }
   },

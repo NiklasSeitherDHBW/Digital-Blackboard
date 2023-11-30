@@ -17,7 +17,10 @@
       </v-col>
     </v-row>
 
-    <v-row v-if="uploadedImages.length > 0">
+    <v-row
+        v-if="uploadedImages.length > 0"
+        align="stretch"
+    >
       <v-col
           v-for="(preview, index) in imagePreviews"
           :key="index"
@@ -26,11 +29,26 @@
           md="4"
           lg="3"
       >
-        <v-card v-if="imagePreviews.length > 0">
-          <v-card-text class="text-h7">{{ uploadedImages[index].name }}</v-card-text>
+        <v-card
+            v-if="imagePreviews.length > 0"
+        >
+          <v-card-text
+              class="text-h7"
+          >
+            {{ uploadedImages[index].name }}
+          </v-card-text>
+
           <v-divider></v-divider>
-          <v-img :src="preview" contain max-height="200px"></v-img>
+
+          <v-img
+              :src="preview"
+              height="200px"
+              contain
+              max-height="200px"
+          ></v-img>
+
           <v-divider></v-divider>
+
           <v-card-actions>
             <v-btn
                 color="#eb1b2a"

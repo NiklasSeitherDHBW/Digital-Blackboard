@@ -12,7 +12,7 @@
       <v-divider></v-divider>
 
       <v-stepper-item
-          title="Foto(s) des Objektes"
+          title="Fotos des Objektes"
           subtitle="Optional"
           :value="2"
       ></v-stepper-item>
@@ -32,8 +32,12 @@
       ></v-stepper-item>
     </v-stepper-header>
 
-    <v-stepper-window v-model="step">
-      <v-card-title class="text-h6">
+    <v-stepper-window
+        v-model="step"
+    >
+      <v-card-title
+          class="text-h6"
+      >
         <span>
           {{ currentTitle }}
         </span>
@@ -50,7 +54,6 @@
               class="mt-2"
               label="Titel des Inserats"
               variant="outlined"
-              :rules="notEmptyRules"
               v-model="formData.title"
               maxlength="60"
               counter
@@ -68,7 +71,6 @@
           <v-text-field
               label="Von"
               placeholder="TT.MM.JJJJ"
-              :rules="notEmptyRules"
               type="date"
               v-model="formData.availabelFrom"
               :max="formData.availabelTill"
@@ -78,7 +80,6 @@
           <v-text-field
               label="Bis"
               placeholder="TT.MM.JJJJ"
-              :rules="notEmptyRules"
               type="date"
               :min="formData.availabelFrom"
               v-model="formData.availabelTill"
@@ -126,12 +127,20 @@
         </v-form>
       </v-window-item>
 
-      <v-window-item :value="2">
-        <UploadImagesStep></UploadImagesStep>
+      <v-window-item
+          :value="2"
+      >
+        <UploadImagesStep
+          ref="uploadImagesForm"
+        ></UploadImagesStep>
       </v-window-item>
 
-      <v-window-item :value="3">
-        <v-form ref="form">
+      <v-window-item
+          :value="3"
+      >
+        <v-form
+            ref="form"
+        >
           <v-text-field
               label="Vor- & Nachname *"
               placeholder="Maxime Musterfrau"
@@ -156,14 +165,20 @@
               v-model="contactData.email"
           ></v-text-field>
         </v-form>
-        <span class="text-caption text-grey-darken-1">
+        <span
+            class="text-caption text-grey-darken-1"
+        >
               Das ist die Email, welche den Interesenten zur Kontaktaufnahme zur Verfügung gestellt wird!
         </span>
 
       </v-window-item>
 
-      <v-window-item :value="4">
-        <div class="pa-4 text-center">
+      <v-window-item
+          :value="4"
+      >
+        <v-container
+            class="pa-4 text-center"
+        >
           <v-img
               class="mb-4"
               contain
@@ -173,8 +188,12 @@
           <h3 class="text-h6 font-weight-light mb-2">
             Ihr Inserat wurde erfolgreich erstellt
           </h3>
-          <span class="text-caption text-grey">Danke das sie das Digital Blackboard nutzen!</span>
-        </div>
+          <span
+              class="text-caption text-grey"
+          >
+            Danke das sie das Digital Blackboard nutzen!
+          </span>
+        </v-container>
 
         <v-card
             class="ma-1"
@@ -196,10 +215,15 @@
               </v-col>
 
               <v-col>
-                <p v-if="item && typeof item.value === 'boolean'">
+                <p
+                    v-if="item && typeof item.value === 'boolean'"
+                >
                   <v-icon>{{ item.value ? 'mdi-check' : 'mdi-close' }}</v-icon>
                 </p>
-                <p v-else>
+
+                <p
+                    v-else
+                >
                   {{ item.value }}
                 </p>
 
@@ -207,30 +231,33 @@
             </v-row>
           </v-card-text>
 
-          <v-divider style="width: 85%; margin: auto; margin-top: 10px; margin-bottom: 10px;"></v-divider>
+          <v-divider
+              style="width: 85%; margin: auto; margin-top: 10px; margin-bottom: 10px;"
+          ></v-divider>
 
-            <v-card-title>Kontakdaten</v-card-title>
+          <v-card-title>Kontakdaten</v-card-title>
 
-            <v-card-text>
-              <v-row
-                  v-for="item in extraInfos"
-                  :key="item.label"
-                  no-gutters
-                  class="mt-1"
-              >
-                <v-col>
-                  <p>
-                    {{ item.label }}
-                  </p>
-                </v-col>
-                <v-col>
-                  <p>
-                    {{ item.value }}
-                  </p>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
+          <v-card-text>
+            <v-row
+                v-for="item in extraInfos"
+                :key="item.label"
+                no-gutters
+                class="mt-1"
+            >
+              <v-col>
+                <p>
+                  {{ item.label }}
+                </p>
+              </v-col>
+
+              <v-col>
+                <p>
+                  {{ item.value }}
+                </p>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
       </v-window-item>
     </v-stepper-window>
 
@@ -290,7 +317,7 @@ export default {
       selectedDate: null,
 
       infosAppartment: [
-        "title", "description", "availabelFrom", "availabelTill","location", "price", "area", "furniture", "community", "selectedGender"
+        "title", "description", "availabelFrom", "availabelTill", "location", "price", "area", "furniture", "community", "selectedGender",
       ],
       infosContact: [
         "name", "mobil", "email"
@@ -307,6 +334,7 @@ export default {
         furniture: false,
         community: false,
         selectedGender: '',
+        images: [],
       },
 
       contactData: {
@@ -341,7 +369,7 @@ export default {
       this.step++
     },
     closeDialog() {
-      this.$emit("close-dialog", this.formData)
+      this.$emit("close-dialog", this.formData, this.$refs.uploadImagesForm.imagePreviews, this.contactData)
     }
   },
   computed: {
@@ -361,7 +389,7 @@ export default {
       let basicInfos = [];
       for (const attribute of this.infosAppartment) {
         let value = this.formData[attribute];
-        basicInfos.push({ label: this.dictionary[attribute], value: value });
+        basicInfos.push({label: this.dictionary[attribute], value: value});
       }
       return basicInfos;
     },
@@ -369,7 +397,7 @@ export default {
       let extraInfos = [];
       for (const attribute of this.infosContact) {
         let value = this.contactData[attribute];
-        extraInfos.push({ label: this.dictionary[attribute], value: value });
+        extraInfos.push({label: this.dictionary[attribute], value: value});
       }
       return extraInfos;
     },
