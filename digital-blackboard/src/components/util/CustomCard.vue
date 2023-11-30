@@ -1,19 +1,21 @@
-7<template>
-  <v-card style="max-width: 600px;">
+<template>
+  <v-card
+      :style="{ 'min-width': '125px', 'height': showAll ? '100%' : 'auto', 'padding-bottom': showAll ? '50px' : '0px'}"
+  >
     <!-- Images -->
     <v-carousel
-      :height="item.images.length < 1 ? '0px' : '300px'"
-      :show-arrows="item.images.length > 1 ? 'hover' : false"
-      hide-delimiters
-      progress="primary"
+        :height="item.images.length < 1 ? '0px' : '300px'"
+        :show-arrows="item.images.length > 1 ? 'hover' : false"
+        hide-delimiters
+        progress="primary"
     >
       <v-carousel-item
-        v-for="(image, index) in item.images"
-        :key="index"
-        :src="image"
-        cover
-        class="align-end"
-        @click="showDialogImagesFullscreen=true"
+          v-for="(image, index) in item.images"
+          :key="index"
+          :src="image"
+          cover
+          class="align-end"
+          @click="showDialogImagesFullscreen=true"
       ></v-carousel-item>
 
       <v-dialog
@@ -50,7 +52,7 @@
     </v-carousel>
 
     <!-- Information shown -->
-    <v-card-title class="align-center">
+    <v-card-title>
       <h4>
         {{ item.title }}
       </h4>
@@ -70,6 +72,7 @@
           v-for="(field, index) in basicInfos"
           :key="index"
           no-gutters
+          class="mt-1"
       >
         <v-col>
           <h4>
@@ -87,8 +90,8 @@
     <v-divider></v-divider>
 
     <!-- Button: Click for more information -->
-    <span
-        style="display: flex; align-items: center; margin: 10px;"
+    <v-container
+        style="display: flex; align-items: center; align: bottom"
     >
       <v-btn
           class="button-round"
@@ -102,18 +105,22 @@
       >
         Mehr Informationen
       </p>
-    </span>
+    </v-container>
 
     <v-divider></v-divider>
 
     <!-- Information shown when expanded-->
     <v-expand-transition>
-      <div v-if="showAll">
-        <v-card-text class="">
+
+      <div
+          v-if="showAll"
+      >
+        <v-card-text class="ma-1">
           <v-row
               v-for="(field, index) in extraInfos"
               :key="index"
               no-gutters
+              class="mt-1"
           >
             <v-col>
               <h4>
@@ -127,14 +134,23 @@
             </v-col>
           </v-row>
         </v-card-text>
-
-        <v-btn
-          class="button-default float-right ma-5 font-weight-medium"
-        >
-          {{ action }}
-        </v-btn>
       </div>
+
     </v-expand-transition>
+
+    <v-spacer></v-spacer>
+    <v-card-actions
+        v-if="showAll"
+        style="position: absolute; bottom: 0; right:0;"
+    >
+      <v-spacer></v-spacer>
+
+      <v-btn
+        class="button-default mr-1 mb-1"
+      >
+        {{ action }}
+      </v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
