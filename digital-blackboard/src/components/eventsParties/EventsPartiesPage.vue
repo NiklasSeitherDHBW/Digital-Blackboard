@@ -27,6 +27,12 @@
           <v-col
             v-for="(item, index) in getEventsByCategory(this.selectedCategory)"
             :key="index"
+            cols="12"
+            sm="12"
+            md="6"
+            lg="6"
+            xl="4"
+            xxl="3"
           >
             <EventsPartiesCard
               :item="item"

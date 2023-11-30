@@ -3,29 +3,36 @@
       titleGrey="Study"
       titleRed="Hub"
   ></AppBar>
+
   <v-container
-      :fluid=true
-      style="width: 85%; display: flex; flex-wrap: wrap;"
+      :fluid="true"
+      style="width: 85%;"
+      align="center"
   >
-    <v-row class="w-100">
+    <v-row
+        align="stretch"
+    >
       <v-col
           v-for="(item, index) in contents"
           :key="index"
-          sm="6"
-          class="d-flex"
+          cols="12"
+          sm="12"
+          md="6"
+          lg="6"
+          xl="4"
+          xxl="3"
+          align="left"
       >
-        <div class="w-100">
-          <StudyHubBuddyCard
-              v-if="item.category === 'buddy'"
-              :item="item"
-              :action="item.category === 'group' ? 'Beitreten' : 'Kontaktieren'"
-          ></StudyHubBuddyCard>
-          <StudyHubGroupCard
-              v-if="item.category === 'group'"
-              :item="item"
-              :action="item.category === 'group' ? 'Beitreten' : 'Kontaktieren'"
-          ></StudyHubGroupCard>
-        </div>
+        <StudyHubBuddyCard
+            v-if="item.category === 'buddy'"
+            :item="item"
+            :action="item.category === 'group' ? 'Beitreten' : 'Kontaktieren'"
+        ></StudyHubBuddyCard>
+        <StudyHubGroupCard
+            v-if="item.category === 'group'"
+            :item="item"
+            :action="item.category === 'group' ? 'Beitreten' : 'Kontaktieren'"
+        ></StudyHubGroupCard>
       </v-col>
     </v-row>
   </v-container>
@@ -118,8 +125,8 @@ import AddStudyHubDialog from "@/components/studyHub/AddStudyHubDialog.vue";
 import StudyHubBuddyCard from "@/components/studyHub/StudyHubBuddyCard.vue";
 import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
 
-import { useDisplay } from "vuetify";
+import {useDisplay} from "vuetify";
 
-const { mobile } = useDisplay()
+const {mobile} = useDisplay()
 
 </script>
