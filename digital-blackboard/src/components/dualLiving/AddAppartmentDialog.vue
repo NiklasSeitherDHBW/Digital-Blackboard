@@ -378,7 +378,7 @@ export default {
         case 1:
           return "Angaben zur Wohnung";
         case 2:
-          return "Foto(s) des Objektes";
+          return "Fotos des Objektes";
         case 3:
           return "Deine Kontaktdaten";
         default:
