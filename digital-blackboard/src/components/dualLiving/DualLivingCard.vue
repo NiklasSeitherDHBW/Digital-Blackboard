@@ -3,12 +3,27 @@
       :item="item"
       :basicInfos="basicInfos"
       :extraInfos="extraInfos"
+      class="text-left"
       action="Kontaktieren"
+      @action-clicked="showDialogContactInfo=true"
   ></CustomCard>
+
+  <v-dialog
+      v-model="showDialogContactInfo"
+      transition="dialog-bottom-transition"
+  >
+    <ContactCard
+        :name="item.name"
+        :phone="item.phone"
+        :email="item.email"
+        @close-dialog="showDialogContactInfo=false"
+    ></ContactCard>
+  </v-dialog>
 </template>
 
 <script setup>
 import CustomCard from "@/components/util/CustomCard.vue"
+import ContactCard from "@/components/util/ContactCard.vue";
 </script>
 
 <script>
@@ -18,6 +33,8 @@ export default {
   },
   data() {
     return {
+      showDialogContactInfo: false,
+
       basicInfosKeywords: [
         "availability", "area", "price"
       ],
@@ -32,7 +49,7 @@ export default {
         "location": "Ort / Stadtteil",
         "furniture": "Möbiliert",
         "community": "WG Zimmer",
-      }
+      },
     };
   },
   computed: {
@@ -54,7 +71,7 @@ export default {
 
       return extraInfos;
     }
-  }
+  },
 };
 </script>
 
