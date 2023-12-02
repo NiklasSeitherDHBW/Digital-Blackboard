@@ -59,13 +59,4 @@ export default {
 </script>
 
 <style scoped>
-.button-round {
-  background: white;
-  color: #E0001BFF; /* TODO: Change to color-dhbw-red */
-}
-
-.button-default {
-  background: #E0001BFF;
-  color: white;
-}
 </style>
