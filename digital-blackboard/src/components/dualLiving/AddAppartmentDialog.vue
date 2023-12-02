@@ -150,11 +150,11 @@
           ></v-text-field>
 
           <v-text-field
-              label="Mobil"
+              label="Phone"
               placeholder="+49123456789"
               variant="outlined"
               type="tel"
-              v-model="contactData.mobil"
+              v-model="contactData.phone"
           ></v-text-field>
 
           <v-text-field
@@ -320,7 +320,7 @@ export default {
         "title", "description", "availabelFrom", "availabelTill", "location", "price", "area", "furniture", "community", "selectedGender",
       ],
       infosContact: [
-        "name", "mobil", "email"
+        "name", "phone", "email"
       ],
 
       formData: {
@@ -339,7 +339,7 @@ export default {
 
       contactData: {
         name: '',
-        mobil: '',
+        phone: '',
         email: '',
       },
 
@@ -356,7 +356,7 @@ export default {
         "selectedGender": "WG-Typ:",
 
         "name": "Vor- & Nachname:",
-        "mobil": "Handynummer:",
+        "phone": "Handynummer:",
         "email": "E-Mail:",
       },
     };
