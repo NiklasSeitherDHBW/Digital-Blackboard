@@ -2,7 +2,6 @@
   <v-card
       :style="{ 'min-width': '125px', 'height': showAll ? '100%' : 'auto', 'padding-bottom': showAll ? '50px' : '0px'}"
   >
-    <!-- Images -->
     <v-carousel
         :height="item.images.length < 1 ? '0px' : '300px'"
         :show-arrows="item.images.length > 1 ? 'hover' : false"
@@ -13,7 +12,7 @@
           v-for="(image, index) in item.images"
           :key="index"
           :src="image"
-          cover
+          :cover=true
           class="align-end"
           @click="showDialogImagesFullscreen=true"
       ></v-carousel-item>
@@ -146,7 +145,8 @@
       <v-spacer></v-spacer>
 
       <v-btn
-        class="button-default mr-1 mb-1"
+          class="button-default mr-1 mb-1"
+          @click="this.$emit('action-clicked')"
       >
         {{ action }}
       </v-btn>
