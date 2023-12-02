@@ -22,8 +22,6 @@
       >
         <DualLivingCard
             :item="item"
-            class="text-left"
-            :actionFunc="() => openDialogContact()"
         ></DualLivingCard>
       </v-col>
     </v-row>
@@ -169,9 +167,6 @@ export default {
 
       this.contents.push(new_item);
     },
-    openDialogContact() {
-      this.showDialogsContact = true;
-    }
   },
 };
 </script>
