@@ -1,10 +1,13 @@
 <template>
-  <v-bottom-navigation v-if="mobile">
+  <v-bottom-navigation
+      v-if="mobile"
+  >
     <v-btn
         v-for="item in menuItems"
         :key="item.value"
         :value="item.value"
-        @click="navigateTo(item.value)">
+        @click="navigateTo(item.value)"
+    >
       <v-icon
           class="navbar-icon"
       >
@@ -16,14 +19,14 @@
   <v-navigation-drawer
       v-else
       expand-on-hover
-      rail
+      :rail=true
       class="sticky-navbar"
   >
     <v-list
-        nav
+        :nav=true
     >
       <v-list-item
-          prepend-avatar="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
+          prepend-avatar="https://w7.pngwing.com/pngs/889/451/png-transparent-baden-wuerttemberg-cooperative-state-university-mosbach-baden-wurttemberg-cooperative-state-university-baden-wuerttemberg-cooperative-state-university-loerrach-baden-wuerttemberg-cooperative.png"
           title="Digital Blackboard"
           subtitle="Mehr brauchst du nicht!"
       ></v-list-item>
