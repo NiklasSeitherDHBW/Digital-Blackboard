@@ -26,12 +26,11 @@
         <StudyHubBuddyCard
             v-if="item.category === 'buddy'"
             :item="item"
-            :action="item.category === 'group' ? 'Beitreten' : 'Kontaktieren'"
         ></StudyHubBuddyCard>
         <StudyHubGroupCard
             v-if="item.category === 'group'"
             :item="item"
-            :action="item.category === 'group' ? 'Beitreten' : 'Kontaktieren'"
+            @itemChanged="itemChanged"
         ></StudyHubGroupCard>
       </v-col>
     </v-row>
@@ -73,7 +72,7 @@ export default {
         price: "alles nur Abzocke",
         rating: 5,
         category: "buddy",
-        availability: "Wenn die IBM nicht schon wieder rumgepfuscht hat"
+        availability: "Wenn die IBM nicht schon wieder rumgepfuscht hat",
       },
       {
         title: "Niggl",
@@ -95,6 +94,18 @@ export default {
         images: ['https://th.bing.com/th/id/OIP.ZNCLp5fUZ3UDs2Q1KGsuSgHaE7?w=244&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7'],
         category: "group",
         members: 4,
+        joined: true,
+      },
+      {
+        title: "Die wilden Mäuschen 2",
+        date_created: "25.10.2018",
+        description: '"Immer voll bei der Sache"',
+        subject: "Web Programmierung, Statistik",
+        activities: "Trinken bis die Sonne wieder untergeht",
+        images: ['https://th.bing.com/th/id/OIP.ZNCLp5fUZ3UDs2Q1KGsuSgHaE7?w=244&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7'],
+        category: "group",
+        members: 4,
+        joined: false,
       },
       {
         title: "IBM Udo",  images: ["https://cdn.discordapp.com/attachments/685223087133949963/1178105743782727700/PHOTO-2023-06-13-13-47-51.jpg?ex=6574ef79&is=65627a79&hm=f242fbcb8e4b87fba84c3dfa6222177ec3109c39bff02d2620af0ba8750f6df5&"],
@@ -114,6 +125,13 @@ export default {
     },
     closeDialogAddAppartment() {
       this.showDialogAddApartment = false;
+    },
+    itemChanged(oldItem, newItem) {
+      for(let i = 0; i < this.contents.length; i++) {
+        if (this.contents[i] === oldItem) {
+          this.contents[i] = newItem;
+        }
+      }
     }
   },
 };
