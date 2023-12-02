@@ -51,11 +51,11 @@
       </v-icon>
       <v-dialog
           transition="dialog-bottom-transition"
-          v-model="showDialogAddApartment"
+          v-model="showDialogAddEvent"
           activator="parent"
           :style="{ maxWidth: mobile ? '100%' : '60%' }"
       >
-        <AddEventDialog @close-dialog="closeDialogAddAppartment"></AddEventDialog>
+        <AddEventDialog @close-dialog="closeDialogAddEvent"></AddEventDialog>
       </v-dialog>
     </v-btn>
   </v-app>
@@ -74,7 +74,7 @@ const { mobile } = useDisplay()
 export default {
   data() {
     return {
-      showDialogAddApartment: false,
+      showDialogAddEvent: false,
       eventCategories: ["Events", "Feiern", "Seminare"],
       events: [
         {
@@ -134,8 +134,8 @@ export default {
       return this.events.filter(event => event.category === category);
     },
 
-    closeDialogAddAppartment() {
-      this.showDialogAddApartment = false;
+    closeDialogAddEvent() {
+      this.showDialogAddEvent = false;
     },
     setDefaultImages() {
       this.events.forEach(event => {
