@@ -55,23 +55,17 @@ export default {
   },
   computed: {
     basicInfos() {
-      let basicInfos = [];
-      for (const attribute of this.basicInfosKeywords) {
-        let value = this.item[attribute]
-        basicInfos.push({label: this.dictionary[attribute], value: value});
-      }
-
-      return basicInfos;
+      return this.basicInfosKeywords.map((attribute) => ({
+        label: this.dictionary[attribute],
+        value: this.item[attribute],
+      }));
     },
     extraInfos() {
-      let extraInfos = [];
-      for (const attribute of this.extraInfosKeywords) {
-        let value = this.item[attribute]
-        extraInfos.push({label: this.dictionary[attribute], value: value});
-      }
-
-      return extraInfos;
-    }
+      return this.extraInfosKeywords.map((attribute) => ({
+        label: this.dictionary[attribute],
+        value: this.item[attribute],
+      }));
+    },
   },
 };
 </script>
