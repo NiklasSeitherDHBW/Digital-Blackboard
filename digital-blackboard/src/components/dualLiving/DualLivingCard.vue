@@ -13,6 +13,7 @@
       transition="dialog-bottom-transition"
   >
     <ContactCard
+        class="justify center w-75"
         :name="item.name"
         :phone="item.phone"
         :email="item.email"
