@@ -101,46 +101,9 @@
         <v-window-item
             :value="2"
         >
-          <v-container>
-            <v-file-input
-                v-model="selectedImages"
-                label="Choose images"
-                variant="outlined"
-                multiple
-                show-size
-                @change="onFileChange"
-            ></v-file-input>
-
-            <v-row>
-              <v-col
-                  v-for="(image, index) in selectedImages"
-                  :key="index"
-                  cols="12"
-                  sm="6"
-                  md="4"
-              >
-                <v-card>
-                  <v-img
-                      v-if="image.url"
-                      :src="image.url"
-                      :alt="'Image ' + (index + 1)"
-                      height="200px"
-                  ></v-img>
-                  <v-card-actions>
-                    <v-btn
-                        color="red"
-                        class="ml-auto"
-                        @click="deleteImage(index)" icon
-                    >
-                      <v-icon>
-                        mdi-delete
-                      </v-icon>
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-container>
+          <UploadImagesStep
+              ref="uploadImagesForm"
+          ></UploadImagesStep>
         </v-window-item>
 
         <v-window-item :value="3">
