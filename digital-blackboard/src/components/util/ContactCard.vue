@@ -15,11 +15,12 @@
     <v-divider></v-divider>
 
     <v-row no-gutters>
-      <v-col class="pr-4">
+      <v-col>
         <v-avatar size="100">
           <v-img :src="avatarSrc" alt="Avatar" cover></v-img>
         </v-avatar>
       </v-col>
+
       <v-col>
         <v-card-title class="text-h5 font-weight-medium mb-1">{{ name }}</v-card-title>
         <v-card-subtitle class="mb-2">{{ course }}</v-card-subtitle>
@@ -30,14 +31,14 @@
       <v-row align="center" v-if="phone !== undefined && phone !== ''">
         <v-col class="d-flex">
           <v-icon small class="mr-2">mdi-phone</v-icon>
-          {{ phone }}
+          <p>{{ phone }}</p>
         </v-col>
       </v-row>
 
       <v-row align="center" v-if="email !== undefined && email !== ''">
         <v-col class="d-flex">
           <v-icon small class="mr-2">mdi-email</v-icon>
-          {{ email }}
+          <p>{{ email }}</p>
         </v-col>
       </v-row>
     </v-card-text>
