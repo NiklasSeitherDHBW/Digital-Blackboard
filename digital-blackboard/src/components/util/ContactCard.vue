@@ -50,19 +50,15 @@ export default {
   props: {
     name: {
       type: String,
-      default: "John Doe",
     },
     course: {
       type: String,
-      default: "Computer Science",
     },
     phone: {
       type: String,
-      default: "+49 123 456789"
     },
     email: {
       type: String,
-      default: "john.doe@example.com",
     },
     avatarSrc: {
       type: String,
