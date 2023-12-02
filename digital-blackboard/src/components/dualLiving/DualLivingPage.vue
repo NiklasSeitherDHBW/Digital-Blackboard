@@ -23,11 +23,11 @@
         <DualLivingCard
             :item="item"
             class="text-left"
+            :actionFunc="() => openDialogContact()"
         ></DualLivingCard>
       </v-col>
     </v-row>
   </v-container>
-
 
   <v-btn
       style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; right: 20px;"
@@ -57,6 +57,7 @@ export default {
   data: () => ({
     showDialogAddApartment: false,
     showDialogImages: false,
+    showDialogsContact: false,
     selectedItem: null,
     contents: [
       {
@@ -70,7 +71,9 @@ export default {
         price: "650",
         area: "120",
         images: ["https://beyond-real-estate.de/wp-content/uploads/2019/09/wohnung-inselstrasse-duesseldorf-1.jpg",],
-        cat: "Housing",
+        name: "Y",
+        phone: "1",
+        email: "y"
       },
       {
         title: "Suche Tauschpartner/in für eine Wohnung in Mannheim",
@@ -82,6 +85,9 @@ export default {
         contact: "Xenia Frietsch",
         area: "21",
         images: ["https://dualeswohnen.de/storage/apartments/2KvNpOoDYKZkuHnIGnL4PhquPtvU1M8CfMYqUBGXjHxrTt7AdDGIErec1mtHLVCP/QWMy1j0ydvT9A1TYw98sO84bAp0FY615kOdYvtz-2023-04-02-18-25-41.jpeg", "https://cf.bstatic.com/xdata/images/hotel/max1024x768/407682874.jpg?k=76a5b9c92a3f2a41f3d2f7a564722b27cb19fa06e74dc10539daf5f8f575f0dd&o=&hp=1", "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"],
+        name: "Yannick Königstein",
+        phone: "123",
+        email: "ykoenigstein@deloitte.com"
       },
       {
         title: "Campo Novo Frauen-WG-Zimmer (zur Untermiete)",
@@ -91,7 +97,6 @@ export default {
         contact: "Vanessa Zorn",
         images: ["https://dualeswohnen.de/storage/apartments/OzwrZYxt3Nb0ESYNGLM8rFpSIVzI76vzrFpob3VRrDk7AnB6ZPygN2HnPtl71k7V/GLDSfPin7Clm4s6qZR22LCP85MxhUUE79ULGWBq-2023-10-25-14-47-07.jpeg"]
       },
-
       {
         title: "Untermieter aus der B-Phase gesucht",
         price: 540,
@@ -100,7 +105,6 @@ export default {
         contact: "Daniel Rothas",
         images: ["https://dualeswohnen.de/storage/apartments/NxlPJnkOlofVm92pF7lsCQhO4Jfzoss1qp1Nmi6CCn6XldzVUtUQC79qdmzQa0Ii/3c7y9ZpILlIt0yArn0JGukd2m0sX1rwHLYMeGJK-2022-12-06-20-21-44.jpeg"]
       },
-
       {
         title: "Dualer Student DHBW/ Suche Wohnung für erste Theoriephase / Untermiete",
         price: 450,
@@ -109,7 +113,6 @@ export default {
         contact: "Maurice Mundi",
         images: ["https://dualeswohnen.de/storage/apartments/wGqK6uRHtUbnWRXnGlEw4cqyERarvnooYpESq0bJKfAFDfYCFEoOorS8m02r8hoY/mOItDZ36msRkDJKKp1iFGW4XPNivFVwA9x3xpyE3-2023-04-03-09-05-50.jpg"]
       },
-
       {
         title: "!SUCHE! Untermiete Wohnung in Mannheim",
         price: 450,
@@ -118,7 +121,6 @@ export default {
         contact: "Adrien Lucquiaud",
         images: ["https://dualeswohnen.de/storage/apartments/XF81lEYXTmrv9vCULERAnFGDkWX7FpNQgDvc0on7NTiWnzKrNhy6yHQ4jC5yDBf0/rfSCw1LYQyyscrP69aoxsXRSXiy5RxUw7lF4lyXR-2023-05-16-18-14-52.jpg "]
       },
-
       {
         title: "Dachgeschosswohnung im Altbauhaus",
         price: 800,
@@ -128,15 +130,16 @@ export default {
         images: [""],
 
       },
-
       {
-        name: "WG – Wohnung (83m²) für 3 Studierende",
+        title: "WG – Wohnung (83m²) für 3 Studierende",
         costs: 1430,
         availability: "ab 01.03.23",
         description: "4 Zimmer Wohnung für WG Gründung. Nichtraucher! Große Wohnküche mit moderner EBK, voll möblierte Zimmer,… Südlich von Mannheim – Friedrichsfeld in der Alteichwaldsiedlung. Da es sich um eine Neugründung handelt, können sich Leute zusammenfinden, die sich schon kennen und gerne zusammen wohnen würden. Die Wohnung wird komplett möbliert vermietet.",
         contact: "D. Kassbaum, info@polsterwerkstatt.de",
         images: ["https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.bahnhit.de%2Fimages%2Fmh2encwg3rk-%2Fpanorama-von-mannheim-bahnhitde.jpg&tbnid=C_jUn_vLh6-iAM&vet=12ahUKEwiGl4Pf3NyCAxWG4AIHHe-HBGoQMygHegUIARCBAQ..i&imgrefurl=https%3A%2F%2Fwww.bahnhit.de%2Fblog%2F9-dinge-die-sie-in-mannheim-unbedingt-erleben-muessen&docid=MSmuLyNw_IFB9M&w=951&h=824&q=Mannheim%20&client=firefox-b-d&ved=2ahUKEwiGl4Pf3NyCAxWG4AIHHe-HBGoQMygHegUIARCBAQ"],
-
+        name: "Y",
+        phone: "1",
+        email: "y"
       },
     ],
   }),
@@ -147,8 +150,8 @@ export default {
     },
     closeDialogAddAppartment(formData, images, contactData) {
       this.showDialogAddApartment = false;
-      console.log(contactData)
-      this.contents.push({
+
+      let new_item = {
         title: formData.title,
         description: formData.description,
         location: formData.location,
@@ -159,7 +162,15 @@ export default {
         price: formData.price,
         area: formData.area,
         images: images,
-      });
+        name: contactData.name,
+        phone: contactData.phone,
+        email: contactData.email,
+      }
+
+      this.contents.push(new_item);
+    },
+    openDialogContact() {
+      this.showDialogsContact = true;
     }
   },
 };
@@ -167,6 +178,7 @@ export default {
 
 <script setup>
 import AppBar from "@/components/util/CustomAppBar.vue";
+
 import AddApartment from "@/components/dualLiving/AddAppartmentDialog.vue"
 import DualLivingCard from "@/components/dualLiving/DualLivingCard.vue";
 
