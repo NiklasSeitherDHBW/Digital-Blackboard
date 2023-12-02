@@ -1,9 +1,12 @@
 <template>
   <CustomCard
+      ref="customCard"
       :item="item"
       :basicInfos="basicInfos"
       :extraInfos="extraInfos"
-      action="Beitreten"
+      :action="item.joined ? 'Beigetreten' : 'Beitreten'"
+      :actionBackground="item.joined ? 'grey' : 'red'"
+      @action-clicked="joinGroup"
   ></CustomCard>
 </template>
 
@@ -11,7 +14,7 @@
 import CustomCard from "@/components/util/CustomCard.vue";
 
 export default {
-  components: {CustomCard},
+  components: { CustomCard },
   props: {
     item: Object,
     action: String,
@@ -20,52 +23,40 @@ export default {
     return {
       showAll: false,
       showDialogImagesFullscreen: false,
-
-      basicInfosKeywords: [
-        "subject", "members"
-      ],
-      extraInfosKeywords: [
-        "description", "activities"
-      ],
+      basicInfosKeywords: ["subject", "members"],
+      extraInfosKeywords: ["description", "activities"],
       dictionary: {
-        "members": "Mitglieder",
-        "activities": "Aktivitäten",
-        "description": "Beschreibung",
-        "subject": "Studienrichtung",
-      }
+        members: "Mitglieder",
+        activities: "Aktivitäten",
+        description: "Beschreibung",
+        subject: "Studienrichtung",
+      },
     };
   },
   computed: {
     basicInfos() {
-      let basicInfos = [];
-      for (const attribute of this.basicInfosKeywords) {
-        let value = this.item[attribute]
-        basicInfos.push({label: this.dictionary[attribute], value: value});
-      }
-
-      return basicInfos;
+      return this.basicInfosKeywords.map((attribute) => ({
+        label: this.dictionary[attribute],
+        value: this.item[attribute],
+      }));
     },
     extraInfos() {
-      let extraInfos = [];
-      for (const attribute of this.extraInfosKeywords) {
-        let value = this.item[attribute]
-        extraInfos.push({label: this.dictionary[attribute], value: value});
-      }
+      return this.extraInfosKeywords.map((attribute) => ({
+        label: this.dictionary[attribute],
+        value: this.item[attribute],
+      }));
+    },
+  },
+  methods: {
+    joinGroup() {
+      let tmp_item = this.item;
+      tmp_item.joined = !tmp_item.joined;
 
-      return extraInfos;
-    }
-  }
+      this.$emit("itemChanged", this.item, tmp_item);
+    },
+  },
 };
 </script>
 
 <style scoped>
-.button-round {
-  background: white;
-  color: #E0001BFF; /* TODO: Change to color-dhbw-red */
-}
-
-.button-default {
-  background: #E0001BFF;
-  color: white;
-}
 </style>
