@@ -50,7 +50,6 @@
       </v-dialog>
     </v-carousel>
 
-    <!-- Information shown -->
     <v-card-title>
       <h4>
         {{ item.title }}
@@ -65,7 +64,6 @@
       </p>
     </v-card-subtitle>
 
-    <!-- Show basic information -->
     <v-card-text class="ma-1">
       <v-row
           v-for="(field, index) in basicInfos"
@@ -88,7 +86,6 @@
 
     <v-divider></v-divider>
 
-    <!-- Button: Click for more information -->
     <v-container
         style="display: flex; align-items: center; align: bottom"
     >
@@ -108,7 +105,6 @@
 
     <v-divider></v-divider>
 
-    <!-- Information shown when expanded-->
     <v-expand-transition>
 
       <div
@@ -145,7 +141,9 @@
       <v-spacer></v-spacer>
 
       <v-btn
+          ref="btnAction"
           class="button-default mr-1 mb-1"
+          :style="{ 'background': actionBackground}"
           @click="this.$emit('action-clicked')"
       >
         {{ action }}
@@ -161,6 +159,10 @@ export default {
     basicInfos: Object,
     extraInfos: Object,
     action: String,
+    actionBackground: {
+      type: String,
+      default: "red"
+    }
   },
   data() {
     return {
