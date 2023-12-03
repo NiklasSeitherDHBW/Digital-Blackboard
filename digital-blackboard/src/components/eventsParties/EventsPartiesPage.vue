@@ -34,9 +34,17 @@
       <v-container
           :fluid=true
       >
+        <v-text-field
+            v-model="search"
+            hide-details
+            prepend-inner-icon="mdi-magnify"
+            class="search-bar my-5 mx-auto"
+            placeholder="Suche..."
+        ></v-text-field>
+
         <v-row>
           <v-col
-              v-for="(item, index) in getEventsByCategory(this.selectedCategory)"
+              v-for="(item, index) in filteredAdvertisements"
               :key="index"
               cols="12"
               sm="12"
@@ -157,7 +165,7 @@ export default {
       ],
       selectedCategory: null,
 
-      events: [
+      advertisements: [
         {
           title: 'Dualer Master',
           category: 'Informationen',
@@ -206,19 +214,37 @@ export default {
           images: ["https://i.ebayimg.com/images/g/qEsAAOSwJ3Rath0G/s-l1200.webp"],
         },
       ],
+
+      search: "",
     }
   },
-  methods: {
-    getEventsByCategory(category) {
-      return this.events.filter(event => event.category === category);
-    },
+  computed: {
+    filteredAdvertisements() {
+      return this.advertisements.filter(ad => {
+        if (ad.category !== this.selectedCategory) {
+          return false;
+        }
 
+        let keys = Object.keys(ad);
+        let showItem = false;
+
+        for (let key of keys) {
+          if (String(ad[key]).toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
+            showItem = true;
+          }
+        }
+
+        return showItem;
+      });
+    },
+  },
+  methods: {
     closeDialogAddEvent(images, eventData) {
       this.showDialogAddEvent = false;
 
       let new_item = {
         title: eventData.title,
-        date_created: new Date().toLocaleDateString("de-DE", { year: 'numeric', month: '2-digit', day: '2-digit' }), // TODO: needs to be changed: Push date obejct to database and convert it to string when retrieving data
+        date_created: new Date().toLocaleDateString("de-DE", {year: '2-digit', month: '2-digit', day: '2-digit'}), // TODO: needs to be changed: Push date obejct to database and convert it to string when retrieving data
         description: eventData.description,
         price: eventData.price,
         date: eventData.date,
@@ -228,7 +254,8 @@ export default {
         availability: eventData.availability,
         community: eventData.community,
       }
-      this.events.push(new_item);
+
+      this.advertisements.push(new_item);
     },
 
     closeDialogAddInfo(images, infoData) {
@@ -238,13 +265,13 @@ export default {
         title: infoData.title,
         description: infoData.description,
         category: infoData.category,
-        date_created: "29.11.2023",
+        date_created: new Date().toLocaleDateString("de-DE", {year: '2-digit', month: '2-digit', day: '2-digit'}), // TODO: needs to be changed: Push date obejct to database and convert it to string when retrieving data
         images: images,
         location: infoData.location,
         community: infoData.community,
       }
 
-      this.events.push(new_item);
+      this.advertisements.push(new_item);
     },
 
     closeDialogAddSeminar(images, seminarData) {
@@ -255,24 +282,24 @@ export default {
         description: seminarData.description,
         category: seminarData.category,
         date: seminarData.date,
-        date_created: "29.11.2023",
+        date_created: new Date().toLocaleDateString("de-DE", {year: '2-digit', month: '2-digit', day: '2-digit'}), // TODO: needs to be changed: Push date obejct to database and convert it to string when retrieving data
         price: seminarData.price,
         images: images,
         location: seminarData.location,
         community: seminarData.community,
         availability: seminarData.availability,
       }
-      this.events.push(new_item);
+      this.advertisements.push(new_item);
     },
 
     setDefaultImages() {
-      this.events.forEach(event => {
+      this.advertisements.forEach(event => {
         if (event.images.length === 0) {
           if (event.category === "Events") {
             event.images.push("https://th.bing.com/th/id/OIP.4yTkUC3EzS64VKlszOiukQHaBl?rs=1&pid=ImgDetMain");
           } else if (event.category === "Seminare") {
             event.images.push("https://www.frankfurt-school.de/.imaging/mte/fs-theme/stage-content-MQ2/dam/News/2022/Dezember/Graduation/Graduation-Ceremony-2022-Header-1266x321.jpg/jcr:content/Graduation%20Ceremony%202022%20Header%201266x321.jpg");
-          } else if (event.category === "Feiern") {
+          } else if (event.category === "Informationen") {
             event.images.push("https://images.bild.de/5d415fba73cf6900016c8002/e35d695972ab704197e0a736aa3515c8,3a0a2df3?w=992");
           }
         }
@@ -285,5 +312,19 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.search-bar {
+  width: 85%;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.search-bar input {
+  padding: 10px;
+}
+
+.search-bar:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 </style>

@@ -5,15 +5,21 @@
   ></AppBar>
 
   <v-container
-      :fluid="true"
-      style="width: 85%;"
+      :fluid=true
       align="center"
+      style="width: 85%;"
   >
-    <v-row
-        align="stretch"
-    >
+    <v-text-field
+        v-model="search"
+        hide-details
+        prepend-inner-icon="mdi-magnify"
+        class="search-bar my-5 mx-auto"
+        placeholder="Suche..."
+    ></v-text-field>
+
+    <v-row>
       <v-col
-          v-for="(item, index) in contents"
+          v-for="(item, index) in filteredAdvertisements"
           :key="index"
           cols="12"
           sm="12"
@@ -89,8 +95,9 @@ export default {
     showDialogAddStudyHub: false,
     showDialogAddStudyBuddy: false,
     showDialogImages: false,
+
     selectedItem: null,
-    contents: [
+    advertisements: [
       {
         title: "Claudia Schneider",
         images: ["https://media.licdn.com/dms/image/C4D03AQFeRA_eM_cKJg/profile-displayphoto-shrink_800_800/0/1613511035989?e=2147483647&v=beta&t=N8yoITebVYvJzeeFtH8CTXZGy5MmTwj-rnwNh1W3Ivw"],
@@ -175,12 +182,30 @@ export default {
         category: "group"
       },
     ],
+    search: "",
   }),
+  computed : {
+    filteredAdvertisements() {
+      return this.advertisements.filter(ad => {
+        let keys = Object.keys(ad);
+        let showItem = false;
+
+        for (let key of keys) {
+          if (String(ad[key]).toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
+            showItem = true;
+          }
+        }
+
+        return showItem;
+      });
+    },
+  },
   methods: {
     openDialogImagesFullscreen(item) {
       this.selectedItem = item;
       this.showDialogImages = true;
     },
+
     closeDialogAddStudyBuddy(images, buddyData, contactData) {
       this.showDialogAddStudyBuddy = false;
 
@@ -198,9 +223,8 @@ export default {
         email: contactData.email,
       }
 
-      this.contents.push(new_item);
+      this.advertisements.push(new_item);
     },
-
     closeDialogAddStudyHub(images, hubData) {
       this.showDialogAddStudyHub = false;
 
@@ -218,16 +242,16 @@ export default {
 
       }
 
-      this.contents.push(new_item);
+      this.advertisements.push(new_item);
     },
 
     itemChanged(oldItem, newItem) {
-      for(let i = 0; i < this.contents.length; i++) {
-        if (this.contents[i] === oldItem) {
-          this.contents[i] = newItem;
+      for(let i = 0; i < this.advertisements.length; i++) {
+        if (this.advertisements[i] === oldItem) {
+          this.advertisements[i] = newItem;
         }
       }
-    }
+    },
   },
 };
 </script>
@@ -244,3 +268,20 @@ import {useDisplay} from "vuetify";
 const {mobile} = useDisplay()
 
 </script>
+
+<style scoped>
+.search-bar {
+  width: 85%;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.search-bar input {
+  padding: 10px;
+}
+
+.search-bar:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+</style>
