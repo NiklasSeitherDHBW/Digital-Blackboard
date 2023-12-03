@@ -4,8 +4,6 @@ import StudyBuddy from "../views/StudyBuddyView.vue"
 import EventsParties from "../views/EventsPartiesView.vue"
 import LogIn from "../views/LogInView.vue"
 import DualHousing from "../views/DualLivingView.vue"
-import TestPage from "@/views/TestPageView.vue"
-import TestPage2 from "@/views/TestPageView2.vue";
 
 const routes = [
   {
@@ -33,16 +31,6 @@ const routes = [
     name: "login",
     component: LogIn
   },
-  {
-    path: "/test",
-    name: "test",
-    component: TestPage
-  },
-  {
-    path: "/test2",
-    name: "test2",
-    component: TestPage2
-  }
 ]
 
 const router = createRouter({
