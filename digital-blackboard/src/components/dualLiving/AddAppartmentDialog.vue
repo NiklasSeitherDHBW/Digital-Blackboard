@@ -335,6 +335,7 @@ export default {
         community: false,
         selectedGender: '',
         images: [],
+        date_created: '',
       },
 
       contactData: {
