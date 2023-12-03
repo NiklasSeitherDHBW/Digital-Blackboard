@@ -128,7 +128,7 @@
               class="ma-1"
               variant="outlined"
           >
-            <v-card-title>Eventdaten</v-card-title>
+            <v-card-title>Angaben zum Event</v-card-title>
 
             <v-card-text>
               <v-row
@@ -193,7 +193,7 @@
             color="red"
             variant="flat"
             class="float right"
-            @click="'closeDialog'"
+            @click="closeDialog()"
         >
           Schließen
         </v-btn>
@@ -204,7 +204,10 @@
 
 
 <script>
+import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
+
 export default {
+  components: {UploadImagesStep},
   data: () => ({
     step: 1,
     selectedImages: [],
@@ -220,15 +223,16 @@ export default {
       location: '',
       price: '',
       community: '',
+      category: 'Events'
     },
 
     dictionary: {
       "title": "Titel:",
       "description": "Beschreibung:",
-      "date": "Wann?:",
-      "location": "Wo?:",
-      "price": "Preis p.p. in €:",
-      "community": "Wer?:",
+      "date": "Wann:",
+      "location": "Wo:",
+      "price": "Preis in €:",
+      "community": "Zielgruppe:",
     },
 
     titlerules: [
@@ -261,6 +265,9 @@ export default {
         }
       });
     },
+    closeDialog() {
+      this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.eventData)
+    }
   },
   computed: {
     currentTitle () {

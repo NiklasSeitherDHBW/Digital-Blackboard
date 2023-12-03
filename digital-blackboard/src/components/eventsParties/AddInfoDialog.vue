@@ -9,7 +9,7 @@
         class="sticky-stepper-header"
     >
       <v-stepper-item
-          title="Angaben zum Seminar"
+          title="Angaben zur Information"
           :value="1"
       ></v-stepper-item>
 
@@ -46,11 +46,11 @@
         >
           <v-card-text>
             <v-text-field
-                label="Titel des Seminars *"
+                label="Titel der Information *"
                 variant="outlined"
                 class="mt-2"
                 maxlength="50"
-                v-model="seminarData.title"
+                v-model="infoData.title"
                 counter
                 required
             ></v-text-field>
@@ -59,8 +59,21 @@
                 label="Beschreibung"
                 variant="outlined"
                 maxlength="200"
-                v-model="seminarData.description"
+                v-model="infoData.description"
                 counter
+            ></v-text-field>
+
+            <v-text-field
+                label="Ort"
+                placeholder="Coblitzallee 1-9, 68163 Mannheim"
+                variant="outlined"
+                v-model="infoData.location"
+            ></v-text-field>
+
+            <v-text-field
+                label="Zielgruppe *"
+                variant="outlined"
+                v-model="infoData.community"
             ></v-text-field>
 
             <v-text-field
@@ -68,29 +81,9 @@
                 placeholder="TT.MM.JJJJ"
                 variant="outlined"
                 type="date"
-                data-date=""
-                data-date-format="DD MMMM YYYY"
-                v-model="seminarData.date"
+                v-model="infoData.date"
             ></v-text-field>
 
-            <v-text-field
-                label="Ort *"
-                placeholder="Coblitzallee 1-9, 68163 Mannheim"
-                variant="outlined"
-                v-model="seminarData.location"
-            ></v-text-field>
-
-            <v-text-field
-                label="Preis p.p."
-                variant="outlined"
-                prefix="€"
-                v-model="seminarData.price"
-            ></v-text-field>
-
-            <v-text-field
-                label="Maximale Teilnehmeranzahl"
-                variant="outlined"
-            ></v-text-field>
           </v-card-text>
         </v-window-item>
 
@@ -113,7 +106,7 @@
                 src="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
             ></v-img>
             <h3 class="text-h6 font-weight-light mb-2">
-              Ihr Seminar wurde erfolgreich geteilt
+              Ihre Information wurde erfolgreich geteilt
             </h3>
             <span
                 class="text-caption text-grey"
@@ -124,7 +117,7 @@
               class="ma-1"
               variant="outlined"
           >
-            <v-card-title>Angaben zum Seminar</v-card-title>
+            <v-card-title>Angaben zur Information</v-card-title>
 
             <v-card-text>
               <v-row
@@ -181,7 +174,7 @@
             class="float right"
             @click="step++"
         >
-          Seminar teilen
+          Info teilen
         </v-btn>
 
         <v-btn
@@ -209,28 +202,24 @@ export default {
     selectedImages: [],
 
     infosEvent: [
-      "title", "description", "date", "location", "price", "community"
+      "title", "description", "location", "community"
     ],
 
-    seminarData: {
+    infoData: {
       title: '',
       description: '',
-      date: '',
       location: '',
-      price: '',
       community: '',
-      availability: '',
-      category: 'Seminare'
+      date: '',
+      category: 'Informationen'
     },
 
     dictionary: {
       "title": "Titel:",
       "description": "Beschreibung:",
-      "date": "Wann:",
       "location": "Wo:",
-      "price": "Preis in €:",
-      "availability": "Max. Anzahl Teilnehmer:",
       "community": "Zielgruppe:",
+      "date": "Wann:"
     },
 
     titlerules: [
@@ -264,22 +253,22 @@ export default {
       });
     },
     closeDialog() {
-      this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.seminarData)
+      this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.infoData)
     }
   },
   computed: {
     currentTitle () {
       switch (this.step) {
-        case 1: return 'Angaben zum Seminar';
+        case 1: return 'Angaben zur Information';
         case 2: return 'Fotos';
         case 3: return 'Zusammenfassung';
-        default: return 'Seminar erfolgreich geteilt';
+        default: return 'Information erfolgreich geteilt';
       }
     },
     eventInfos() {
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
-        let value = this.seminarData[attribute];
+        let value = this.infoData[attribute];
         eventInfos.push({ label: this.dictionary[attribute], value: value });
       }
       return eventInfos;
