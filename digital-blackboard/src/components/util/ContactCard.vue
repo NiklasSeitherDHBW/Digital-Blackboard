@@ -1,6 +1,8 @@
 <template>
   <v-card>
-    <v-row class="d-flex align-center ma-3">
+    <v-row
+        class="d-flex align-center ma-3"
+    >
       <v-card-title>
         Kontaktdaten
       </v-card-title>
@@ -8,7 +10,7 @@
       <v-btn
           class="button-round ml-auto mr-1"
           icon="mdi-close"
-          @click="this.$emit('close-dialog')"
+          @click="$emit('close-dialog')"
       ></v-btn>
     </v-row>
 
@@ -21,27 +23,50 @@
         </v-avatar>
       </v-col>
 
-      <v-col>
-        <v-card-title class="text-h5 font-weight-medium mb-1">{{ name }}</v-card-title>
-        <v-card-subtitle class="mb-2">{{ course }}</v-card-subtitle>
-      </v-col>
-    </v-row>
+      <v-card-text
+          class="mb-4"
+      >
+        <v-row
+            align="center"
+            v-if="phone !== undefined && phone !== ''"
+        >
+          <v-col
+              class="d-flex"
+          >
+            <v-icon
+                small
+                class="mr-3 ml-4"
+            >
+              mdi-phone
+            </v-icon>
 
-    <v-card-text class="mb-4">
-      <v-row align="center" v-if="phone !== undefined && phone !== ''">
-        <v-col class="d-flex">
-          <v-icon small class="mr-2">mdi-phone</v-icon>
-          <p>{{ phone }}</p>
-        </v-col>
-      </v-row>
+            <p>
+              {{ phone }}
+            </p>
+          </v-col>
+        </v-row>
 
-      <v-row align="center" v-if="email !== undefined && email !== ''">
-        <v-col class="d-flex">
-          <v-icon small class="mr-2">mdi-email</v-icon>
-          <p>{{ email }}</p>
-        </v-col>
-      </v-row>
-    </v-card-text>
+        <v-row
+            v-if="email !== undefined && email !== ''"
+            align="center"
+        >
+          <v-col
+              class="d-flex"
+          >
+            <v-icon
+                small
+                class="mr-3 ml-4"
+            >
+              mdi-email
+            </v-icon>
+
+            <p>
+              {{ email }}
+            </p>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
   </v-card>
 </template>
 

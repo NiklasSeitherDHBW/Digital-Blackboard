@@ -11,9 +11,11 @@
   <v-dialog
       v-model="showDialogContactInfo"
       transition="dialog-bottom-transition"
+      max-width="1200px"
+      class="justify-center"
   >
     <ContactCard
-        class="justify center w-75"
+        :avatarSrc="item.images[0]"
         :name="item.name"
         :phone="item.phone"
         :email="item.email"

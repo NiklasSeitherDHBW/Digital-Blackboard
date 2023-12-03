@@ -11,9 +11,12 @@
   <v-dialog
       v-model="showDialogContactInfo"
       transition="dialog-bottom-transition"
+      max-width="1200px"
+      class="justify-center"
   >
     <ContactCard
         :name="item.title"
+        :course="item.subject"
         :phone="item.phone"
         :email="item.email"
         @close-dialog="showDialogContactInfo=false"
