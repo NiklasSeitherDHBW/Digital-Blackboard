@@ -18,22 +18,39 @@ export default {
   },
   data() {
     return {
-      basicInfosKeywords: [
-        "price", "description"
-      ],
-      extraInfosKeywords: [
-        "community", "availability", "description"
-      ],
       dictionary: {
         "availability": "Maximale Anzahl Teilnehmer",
-        "price" : "Monatliche Miete",
+        "price": "Preis",
         "description": "Beschreibung",
-        "location": "Wo?",
-        "community": "Wer?",
+        "location": "Wo",
+        "community": "Zielgruppe",
+        "date": "Wann"
       }
     };
   },
   computed: {
+    basicInfosKeywords() {
+      if (this.item.category === "Events") {
+        return ["date", "price", "community"]
+      } else if (this.item.category === "Informationen") {
+        return ["date", "community"]
+      } else if (this.item.category === "Seminare") {
+        return ["date", "price", "community"]
+      }
+
+      return []
+    },
+    extraInfosKeywords() {
+      if (this.item.category === "Events") {
+        return ["description", "location", "availability"]
+      } else if (this.item.category === "Informationen") {
+        return ["description", "location"]
+      } else if (this.item.category === "Seminare") {
+        return ["description", "location", "availability"]
+      }
+
+      return []
+    },
     basicInfos() {
       return this.basicInfosKeywords.map((attribute) => ({
         label: this.dictionary[attribute],
