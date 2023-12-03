@@ -60,13 +60,13 @@
               required
           ></v-text-field>
 
-          <v-text-field
+          <v-textarea
               label="Beschreibung"
               variant="outlined"
               v-model="formData.description"
               maxlength="300"
               counter
-          ></v-text-field>
+          ></v-textarea>
 
           <v-text-field
               label="Von"

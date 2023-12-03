@@ -1,6 +1,7 @@
 <template>
   <v-bottom-navigation
       v-if="mobile"
+      :grow=true
   >
     <v-btn
         v-for="item in menuItems"
@@ -66,7 +67,7 @@ export default {
   methods: {
     navigateTo(itemValue) {
       if (itemValue) {
-        this.$router.push({name: itemValue});
+        this.$router.push({path: itemValue});
       }
     },
   },
