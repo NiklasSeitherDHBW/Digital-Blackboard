@@ -36,30 +36,58 @@
     </v-row>
   </v-container>
 
-  <v-btn
-      style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; right: 20px;"
-      :style="{ bottom: mobile ? '75px' : '20px' }"
-      icon="mdi-plus"
-      text="+">
-    <v-icon>
-      mdi-plus
-    </v-icon>
+  <div class="text-center">
+    <v-menu>
+      <template v-slot:activator="{ props: activatorProps }">
+        <v-btn
+            v-bind="activatorProps"
+            style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; right: 20px;"
+            :style="{ bottom: mobile ? '75px' : '20px' }"
+            icon="mdi-plus"
+            text="+"
+        >
+          <v-icon>
+            mdi-plus
+          </v-icon>
+        </v-btn>
+      </template>
+
+      <v-list>
+        <v-list-item @click="showDialogAddStudyBuddy = true">
+          <v-list-item-title>Buddy</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item @click="showDialogAddStudyHub = true">
+          <v-list-item-title>Gruppe</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+
     <v-dialog
         transition="dialog-bottom-transition"
-        v-model="showDialogAddApartment"
-        activator="parent"
+        v-model="showDialogAddStudyBuddy"
         :style="{ maxWidth: mobile ? '100%' : '60%' }"
     >
-      <AddStudyHubDialog @close-dialog="closeDialogAddAppartment"></AddStudyHubDialog>
+      <AddStudyBuddyDialog @close-dialog="closeDialogAddStudyBuddy"></AddStudyBuddyDialog>
     </v-dialog>
-  </v-btn>
+
+    <v-dialog
+        transition="dialog-bottom-transition"
+        v-model="showDialogAddStudyHub"
+        :style="{ maxWidth: mobile ? '100%' : '60%' }"
+    >
+      <AddStudyHubDialog @close-dialog="closeDialogAddStudyHub"></AddStudyHubDialog>
+    </v-dialog>
+
+  </div>
 </template>
 
 
 <script>
 export default {
   data: () => ({
-    showDialogAddApartment: false,
+    showDialogAddStudyHub: false,
+    showDialogAddStudyBuddy: false,
     showDialogImages: false,
     selectedItem: null,
     contents: [
@@ -123,9 +151,46 @@ export default {
       this.selectedItem = item;
       this.showDialogImages = true;
     },
-    closeDialogAddAppartment() {
-      this.showDialogAddApartment = false;
+    closeDialogAddStudyBuddy(images, buddyData, contactData) {
+      this.showDialogAddStudyBuddy = false;
+
+      let new_item = {
+        title: buddyData.title,
+        date_created: new Date().toLocaleDateString("de-DE", { year: 'numeric', month: '2-digit', day: '2-digit' }), // TODO: needs to be changed: Push date obejct to database and convert it to string when retrieving data
+        description: buddyData.description,
+        price: buddyData.price,
+        subject: buddyData.subject,
+        category: buddyData.category,
+        images: images,
+        rating: buddyData.rating,
+        name: contactData.name,
+        phone: contactData.phone,
+        email: contactData.email,
+      }
+
+      this.contents.push(new_item);
     },
+
+    closeDialogAddStudyHub(images, hubData) {
+      this.showDialogAddStudyHub = false;
+
+      let new_item = {
+        title: hubData.title,
+        date_created: new Date().toLocaleDateString("de-DE", { year: 'numeric', month: '2-digit', day: '2-digit' }), // TODO: needs to be changed: Push date obejct to database and convert it to string when retrieving data
+        description: hubData.description,
+        subject: hubData.subject,
+        category: hubData.category,
+        activities: hubData.activities,
+        images: images,
+        availability: hubData.availability,
+        members: hubData.members,
+        joined: hubData.joined,
+
+      }
+
+      this.contents.push(new_item);
+    },
+
     itemChanged(oldItem, newItem) {
       for(let i = 0; i < this.contents.length; i++) {
         if (this.contents[i] === oldItem) {
@@ -140,6 +205,7 @@ export default {
 <script setup>
 import AppBar from "@/components/util/CustomAppBar.vue";
 import AddStudyHubDialog from "@/components/studyHub/AddStudyHubDialog.vue";
+import AddStudyBuddyDialog from "@/components/studyHub/AddStudyBuddyDialog.vue";
 import StudyHubBuddyCard from "@/components/studyHub/StudyHubBuddyCard.vue";
 import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
 
