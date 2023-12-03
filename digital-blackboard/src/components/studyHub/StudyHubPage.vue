@@ -65,7 +65,7 @@ export default {
     contents: [
       {
         title: "IBM Udo",
-        images: ["https://cvws.icloud-content.com/B/ASG0FtYSz5P1i-zXvBDsx2z-xEWvAcNtrvHn98IZMSSsHzYLJBMxxDVU/IMG_8689.JPEG?o=AntLSYFD5EzbSI_KS8SQj8B8Ugbb1Z0Q1vDrw_2kYUiY&v=1&x=3&a=CAogKw2z8pt8Tn3HoHOG3GXwr6jJMaX0DHfhWlut6SJNMqcSbRCJ-ImswTEYidXlrcExIgEAUgT-xEWvWgQxxDVUaia7rzt5-krMiP7QdS3VPxRlxVZb7W3735AleF5FmoOQg0FNfX97THImyq7AqG7MIEDk2QlapHiXMf2HZwEM-8wz8LmUZDg9nvA_mRJAk8I&e=1701171522&fl=&r=2f33463a-1037-4aa4-b22d-62cd19f4d34d-1&k=PoSmDVI1R_5GYT9HFSc1nQ&ckc=com.apple.photos.cloud&ckz=CMM-E23D3B38-BFFC-42D2-83DA-7CC404967CEC&y=1&p=119&s=BNDUO01nUerky_no9VDNiEKm9SQ"],
+        images: [],
         date_created: "25.11.2023",
         subject: "IBM, Windoofs",
         description: "Ich fahr das besde Audo der Welt und damit mein ich net so nen doofen Tesla",
