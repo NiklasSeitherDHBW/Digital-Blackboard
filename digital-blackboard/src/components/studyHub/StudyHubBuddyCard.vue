@@ -46,6 +46,7 @@ export default {
       extraInfosKeywords: [
         "description", "availability"
       ],
+
       dictionary: {
         "availability": "Verfügbarkeit",
         "price": "Preis pro stunde in €",
