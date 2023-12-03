@@ -232,7 +232,7 @@
           </v-card-text>
 
           <v-divider
-              style="width: 85%; margin: auto; margin-top: 10px; margin-bottom: 10px;"
+              style="width: 85%; margin: 10px;"
           ></v-divider>
 
           <v-card-title>Kontakdaten</v-card-title>
@@ -371,7 +371,7 @@ export default {
     },
     closeDialog() {
       this.$emit("close-dialog", this.formData, this.$refs.uploadImagesForm.imagePreviews, this.contactData)
-    }
+    },
   },
   computed: {
     currentTitle() {
