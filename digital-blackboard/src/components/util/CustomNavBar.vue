@@ -60,8 +60,6 @@ export default {
         {icon: 'mdi-calendar-clock', title: 'Events', value: 'events'},
         {icon: 'mdi-school', title: 'Study Hub', value: 'studyhub'},
         {icon: 'mdi-login-variant', title: 'Login', value: 'login'},
-        {icon: "mdi-wrench", title: "Test", value: "test"},
-        {icon: "mdi-wrench", title: "Test2", value: "test2"},
       ],
     };
   },
