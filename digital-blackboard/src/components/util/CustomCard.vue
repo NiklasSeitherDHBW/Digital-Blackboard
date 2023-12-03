@@ -6,7 +6,6 @@
         :height="item.images.length < 1 ? '0px' : '300px'"
         :show-arrows="item.images.length > 1 ? 'hover' : false"
         hide-delimiters
-        progress="primary"
     >
       <v-carousel-item
           v-for="(image, index) in item.images"
@@ -51,17 +50,11 @@
     </v-carousel>
 
     <v-card-title>
-      <h4>
         {{ item.title }}
-      </h4>
     </v-card-title>
-    <v-card-subtitle
-        margin-top="5px"
-        margin.left="15px"
-    >
-      <p>
+
+    <v-card-subtitle>
         Einstellungsdatum: {{ item.date_created }}
-      </p>
     </v-card-subtitle>
 
     <v-card-text class="ma-1">
@@ -87,7 +80,7 @@
     <v-divider></v-divider>
 
     <v-container
-        style="display: flex; align-items: center; align: bottom"
+        style="display: flex; align-items: center;"
     >
       <v-btn
           class="button-round"
@@ -133,13 +126,10 @@
 
     </v-expand-transition>
 
-    <v-spacer></v-spacer>
     <v-card-actions
         v-if="showAll"
         style="position: absolute; bottom: 0; right:0;"
     >
-      <v-spacer></v-spacer>
-
       <v-btn
           ref="btnAction"
           class="button-default mr-1 mb-1"
@@ -173,7 +163,6 @@ export default {
 };
 
 </script>
-
 
 <style scoped>
 .button-round {
