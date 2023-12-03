@@ -9,7 +9,7 @@
         class="sticky-stepper-header"
     >
       <v-stepper-item
-          title="Angaben zur Gruppe"
+          title="Angaben zur Information"
           :value="1"
       ></v-stepper-item>
 
@@ -46,11 +46,11 @@
         >
           <v-card-text>
             <v-text-field
-                label="Titel der Gruppe *"
+                label="Titel der Information *"
                 variant="outlined"
                 class="mt-2"
                 maxlength="50"
-                v-model="hubData.title"
+                v-model="infoData.title"
                 counter
                 required
             ></v-text-field>
@@ -59,20 +59,29 @@
                 label="Beschreibung"
                 variant="outlined"
                 maxlength="200"
-                v-model="hubData.description"
+                v-model="infoData.description"
                 counter
             ></v-text-field>
 
             <v-text-field
-                label="Thema"
+                label="Ort"
+                placeholder="Coblitzallee 1-9, 68163 Mannheim"
                 variant="outlined"
-                v-model="hubData.subject"
+                v-model="infoData.location"
             ></v-text-field>
 
             <v-text-field
-                label="Aktivitäten"
+                label="Zielgruppe *"
                 variant="outlined"
-                v-model="hubData.activities"
+                v-model="infoData.community"
+            ></v-text-field>
+
+            <v-text-field
+                label="Datum *"
+                placeholder="TT.MM.JJJJ"
+                variant="outlined"
+                type="date"
+                v-model="infoData.date"
             ></v-text-field>
 
           </v-card-text>
@@ -97,7 +106,7 @@
                 src="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
             ></v-img>
             <h3 class="text-h6 font-weight-light mb-2">
-              Ihre Gruppe wurde erfolgreich geteilt
+              Ihre Information wurde erfolgreich geteilt
             </h3>
             <span
                 class="text-caption text-grey"
@@ -108,7 +117,7 @@
               class="ma-1"
               variant="outlined"
           >
-            <v-card-title>Angaben zur Gruppe</v-card-title>
+            <v-card-title>Angaben zur Information</v-card-title>
 
             <v-card-text>
               <v-row
@@ -165,7 +174,7 @@
             class="float right"
             @click="step++"
         >
-          Gruppe teilen
+          Info teilen
         </v-btn>
 
         <v-btn
@@ -193,24 +202,24 @@ export default {
     selectedImages: [],
 
     infosEvent: [
-      "title", "description", "subject", "activities"
+      "title", "description", "location", "community"
     ],
 
-    hubData: {
+    infoData: {
       title: '',
       description: '',
-      subject: '',
-      activities: '',
-      category: 'group',
-      members: 1,
-      joined: false,
+      location: '',
+      community: '',
+      date: '',
+      category: 'Informationen'
     },
 
     dictionary: {
       "title": "Titel:",
       "description": "Beschreibung:",
-      "activities": "Aktivitäten:",
-      "subject": "Thema:",
+      "location": "Wo:",
+      "community": "Zielgruppe:",
+      "date": "Wann:"
     },
 
     titlerules: [
@@ -244,22 +253,22 @@ export default {
       });
     },
     closeDialog() {
-      this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.hubData)
+      this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.infoData)
     }
   },
   computed: {
     currentTitle () {
       switch (this.step) {
-        case 1: return 'Angaben zur Gruppe';
+        case 1: return 'Angaben zur Information';
         case 2: return 'Fotos';
         case 3: return 'Zusammenfassung';
-        default: return 'Gruppe erfolgreich erstellt';
+        default: return 'Information erfolgreich geteilt';
       }
     },
     eventInfos() {
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
-        let value = this.hubData[attribute];
+        let value = this.infoData[attribute];
         eventInfos.push({ label: this.dictionary[attribute], value: value });
       }
       return eventInfos;

@@ -9,7 +9,7 @@
         class="sticky-stepper-header"
     >
       <v-stepper-item
-          title="Angaben zur Gruppe"
+          title="Angaben zum Seminar"
           :value="1"
       ></v-stepper-item>
 
@@ -46,11 +46,11 @@
         >
           <v-card-text>
             <v-text-field
-                label="Titel der Gruppe *"
+                label="Titel des Seminars *"
                 variant="outlined"
                 class="mt-2"
                 maxlength="50"
-                v-model="hubData.title"
+                v-model="seminarData.title"
                 counter
                 required
             ></v-text-field>
@@ -59,22 +59,38 @@
                 label="Beschreibung"
                 variant="outlined"
                 maxlength="200"
-                v-model="hubData.description"
+                v-model="seminarData.description"
                 counter
             ></v-text-field>
 
             <v-text-field
-                label="Thema"
+                label="Datum *"
+                placeholder="TT.MM.JJJJ"
                 variant="outlined"
-                v-model="hubData.subject"
+                type="date"
+                data-date=""
+                data-date-format="DD MMMM YYYY"
+                v-model="seminarData.date"
             ></v-text-field>
 
             <v-text-field
-                label="Aktivitäten"
+                label="Ort *"
+                placeholder="Coblitzallee 1-9, 68163 Mannheim"
                 variant="outlined"
-                v-model="hubData.activities"
+                v-model="seminarData.location"
             ></v-text-field>
 
+            <v-text-field
+                label="Preis p.p."
+                variant="outlined"
+                prefix="€"
+                v-model="seminarData.price"
+            ></v-text-field>
+
+            <v-text-field
+                label="Maximale Teilnehmeranzahl"
+                variant="outlined"
+            ></v-text-field>
           </v-card-text>
         </v-window-item>
 
@@ -97,7 +113,7 @@
                 src="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
             ></v-img>
             <h3 class="text-h6 font-weight-light mb-2">
-              Ihre Gruppe wurde erfolgreich geteilt
+              Ihr Seminar wurde erfolgreich geteilt
             </h3>
             <span
                 class="text-caption text-grey"
@@ -108,7 +124,7 @@
               class="ma-1"
               variant="outlined"
           >
-            <v-card-title>Angaben zur Gruppe</v-card-title>
+            <v-card-title>Angaben zum Seminar</v-card-title>
 
             <v-card-text>
               <v-row
@@ -165,7 +181,7 @@
             class="float right"
             @click="step++"
         >
-          Gruppe teilen
+          Seminar teilen
         </v-btn>
 
         <v-btn
@@ -193,24 +209,28 @@ export default {
     selectedImages: [],
 
     infosEvent: [
-      "title", "description", "subject", "activities"
+      "title", "description", "date", "location", "price", "community"
     ],
 
-    hubData: {
+    seminarData: {
       title: '',
       description: '',
-      subject: '',
-      activities: '',
-      category: 'group',
-      members: 1,
-      joined: false,
+      date: '',
+      location: '',
+      price: '',
+      community: '',
+      availability: '',
+      category: 'Seminare'
     },
 
     dictionary: {
       "title": "Titel:",
       "description": "Beschreibung:",
-      "activities": "Aktivitäten:",
-      "subject": "Thema:",
+      "date": "Wann:",
+      "location": "Wo:",
+      "price": "Preis in €:",
+      "availability": "Max. Anzahl Teilnehmer:",
+      "community": "Zielgruppe:",
     },
 
     titlerules: [
@@ -244,22 +264,22 @@ export default {
       });
     },
     closeDialog() {
-      this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.hubData)
+      this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.seminarData)
     }
   },
   computed: {
     currentTitle () {
       switch (this.step) {
-        case 1: return 'Angaben zur Gruppe';
+        case 1: return 'Angaben zum Seminar';
         case 2: return 'Fotos';
         case 3: return 'Zusammenfassung';
-        default: return 'Gruppe erfolgreich erstellt';
+        default: return 'Seminar erfolgreich geteilt';
       }
     },
     eventInfos() {
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
-        let value = this.hubData[attribute];
+        let value = this.seminarData[attribute];
         eventInfos.push({ label: this.dictionary[attribute], value: value });
       }
       return eventInfos;

@@ -20,6 +20,13 @@
           title="Fotos"
           :value="2"
       ></v-stepper-item>
+
+      <v-divider></v-divider>
+
+      <v-stepper-item
+          title="Zusammenfassung"
+          :value="3"
+      ></v-stepper-item>
     </v-stepper-header>
 
     <v-stepper-window>
@@ -41,40 +48,51 @@
             <v-text-field
                 label="Name des Events *"
                 variant="outlined"
+                class="mt-2"
+                maxlength="50"
+                v-model="eventData.title"
+                counter
+                required
             ></v-text-field>
 
             <v-text-field
                 label="Beschreibung"
                 variant="outlined"
+                maxlength="200"
+                v-model="eventData.description"
+                counter
             ></v-text-field>
 
             <v-text-field
                 label="Datum *"
                 placeholder="TT.MM.JJJJ"
                 variant="outlined"
+                type="date"
+                v-model="eventData.date"
             ></v-text-field>
 
             <v-text-field
                 label="Ort *"
                 placeholder="Coblitzallee 1-9, 68163 Mannheim"
                 variant="outlined"
+                v-model="eventData.location"
             ></v-text-field>
 
             <v-text-field
-                label="Zielgruppe *"
-                placeholder="Wirtschaftsinformatik Studenten"
+                label="Zielgruppe"
                 variant="outlined"
+                v-model="eventData.community"
             ></v-text-field>
 
             <v-text-field
-                label="Preis p.p. in €"
-                placeholder="Optional"
+                label="Preis p.p."
                 variant="outlined"
+                prefix="€"
+                v-model="eventData.price"
             ></v-text-field>
 
             <v-text-field
                 label="Maximale Teilnehmeranzahl"
-                placeholder="Optional"
                 variant="outlined"
             ></v-text-field>
           </v-card-text>
@@ -83,46 +101,9 @@
         <v-window-item
             :value="2"
         >
-          <v-container>
-            <v-file-input
-                v-model="selectedImages"
-                label="Choose images"
-                variant="outlined"
-                multiple
-                show-size
-                @change="onFileChange"
-            ></v-file-input>
-
-            <v-row>
-              <v-col
-                  v-for="(image, index) in selectedImages"
-                  :key="index"
-                  cols="12"
-                  sm="6"
-                  md="4"
-              >
-                <v-card>
-                  <v-img
-                      v-if="image.url"
-                      :src="image.url"
-                      :alt="'Image ' + (index + 1)"
-                      height="200px"
-                  ></v-img>
-                  <v-card-actions>
-                    <v-btn
-                        color="red"
-                        class="ml-auto"
-                        @click="deleteImage(index)" icon
-                    >
-                      <v-icon>
-                        mdi-delete
-                      </v-icon>
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-container>
+          <UploadImagesStep
+              ref="uploadImagesForm"
+          ></UploadImagesStep>
         </v-window-item>
 
         <v-window-item :value="3">
@@ -140,10 +121,37 @@
             </h3>
             <span
                 class="text-caption text-grey"
-            >
-              Danke, dass du das Digital Blackboard nutzt!
-            </span>
+            >Danke das sie das Digital Blackboard nutzen!</span>
           </div>
+
+          <v-card
+              class="ma-1"
+              variant="outlined"
+          >
+            <v-card-title>Angaben zum Event</v-card-title>
+
+            <v-card-text>
+              <v-row
+                  v-for="item in eventInfos"
+                  :key="item.label"
+                  no-gutters
+                  class="mt-1"
+              >
+                <v-col>
+                  <p>
+                    {{ item.label }}
+                  </p>
+                </v-col>
+
+                <v-col>
+                  <p>
+                    {{ item.value }}
+                  </p>
+
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
         </v-window-item>
       </v-window>
 
@@ -151,7 +159,7 @@
 
       <v-card-actions>
         <v-btn
-            v-if="step > 1 && step < 3"
+            v-if="step > 1"
             variant="text"
             @click="step--"
         >
@@ -185,7 +193,7 @@
             color="red"
             variant="flat"
             class="float right"
-            @click="closeDialog"
+            @click="closeDialog()"
         >
           Schließen
         </v-btn>
@@ -196,15 +204,51 @@
 
 
 <script>
+import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
+
 export default {
+  components: {UploadImagesStep},
   data: () => ({
     step: 1,
     selectedImages: [],
-  }),
-  methods: {
-    closeDialog() {
-      this.$emit('close-dialog');
+
+    infosEvent: [
+      "title", "description", "date", "location", "price", "community"
+    ],
+
+    eventData: {
+      title: '',
+      description: '',
+      date: '',
+      location: '',
+      price: '',
+      community: '',
+      category: 'Events'
     },
+
+    dictionary: {
+      "title": "Titel:",
+      "description": "Beschreibung:",
+      "date": "Wann:",
+      "location": "Wo:",
+      "price": "Preis in €:",
+      "community": "Zielgruppe:",
+    },
+
+    titlerules: [
+      value => {
+        if (value) return true
+        return 'Es muss ein Titel für das Inserat erstellt werden'
+      },],
+    descriptionrules: [
+        value => {
+      if (value) return true
+          return 'Es muss eine Beschreibung für das Inserat erstellt werden'
+        }
+    ]
+  }),
+
+  methods: {
     onFileChange() {
       this.selectedImages = this.selectedImages.map((file) => ({
         file,
@@ -221,14 +265,26 @@ export default {
         }
       });
     },
+    closeDialog() {
+      this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.eventData)
+    }
   },
   computed: {
     currentTitle () {
       switch (this.step) {
-        case 1: return 'Angaben zum Event'
-        case 2: return 'Fotos'
-        default: return 'Event erfolgreich geteilt'
+        case 1: return 'Angaben zum Event';
+        case 2: return 'Fotos';
+        case 3: return 'Zusammenfassung';
+        default: return 'Event erfolgreich geteilt';
       }
+    },
+    eventInfos() {
+      let eventInfos = [];
+      for (const attribute of this.infosEvent) {
+        let value = this.eventData[attribute];
+        eventInfos.push({ label: this.dictionary[attribute], value: value });
+      }
+      return eventInfos;
     },
   },
 };

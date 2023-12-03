@@ -18,40 +18,51 @@ export default {
   },
   data() {
     return {
-      basicInfosKeywords: [
-        "price", "location"
-      ],
-      extraInfosKeywords: [
-        "community", "availability", "description"
-      ],
       dictionary: {
         "availability": "Maximale Anzahl Teilnehmer",
-        "price" : "Preis p.p. in €",
+        "price": "Preis",
         "description": "Beschreibung",
-        "location": "Wo?",
-        "community": "Wer?",
+        "location": "Wo",
+        "community": "Zielgruppe",
+        "date": "Wann"
       }
     };
   },
   computed: {
-    basicInfos() {
-      let basicInfos = [];
-      for (const attribute of this.basicInfosKeywords) {
-        let value = this.item[attribute]
-        basicInfos.push({label: this.dictionary[attribute], value: value});
+    basicInfosKeywords() {
+      if (this.item.category === "Events") {
+        return ["date", "price", "community"]
+      } else if (this.item.category === "Informationen") {
+        return ["date", "community"]
+      } else if (this.item.category === "Seminare") {
+        return ["date", "price", "community"]
       }
 
-      return basicInfos;
+      return []
+    },
+    extraInfosKeywords() {
+      if (this.item.category === "Events") {
+        return ["description", "location", "availability"]
+      } else if (this.item.category === "Informationen") {
+        return ["description", "location"]
+      } else if (this.item.category === "Seminare") {
+        return ["description", "location", "availability"]
+      }
+
+      return []
+    },
+    basicInfos() {
+      return this.basicInfosKeywords.map((attribute) => ({
+        label: this.dictionary[attribute],
+        value: this.item[attribute],
+      }));
     },
     extraInfos() {
-      let extraInfos = [];
-      for (const attribute of this.extraInfosKeywords) {
-        let value = this.item[attribute]
-        extraInfos.push({label: this.dictionary[attribute], value: value});
-      }
-
-      return extraInfos;
-    }
+      return this.extraInfosKeywords.map((attribute) => ({
+        label: this.dictionary[attribute],
+        value: this.item[attribute],
+      }));
+    },
   }
 };
 </script>

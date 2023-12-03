@@ -1,5 +1,8 @@
 <template>
-  <v-stepper editable alt-labels v-model="step">
+  <v-stepper
+      v-model="step"
+      alt-labels
+  >
     <v-stepper-header>
       <v-stepper-item
           title="Angaben zur Wohnung"
@@ -9,8 +12,8 @@
       <v-divider></v-divider>
 
       <v-stepper-item
-          subtitle="Optional"
           title="Fotos des Objektes"
+          subtitle="Optional"
           :value="2"
       ></v-stepper-item>
 
@@ -20,199 +23,393 @@
           title="Deine Kontaktdaten"
           :value="3"
       ></v-stepper-item>
+
+      <v-divider></v-divider>
+
+      <v-stepper-item
+          title="Zusammenfassung"
+          :value="4"
+      ></v-stepper-item>
     </v-stepper-header>
 
-    <v-stepper-window>
+    <v-stepper-window
+        v-model="step"
+    >
       <v-card-title
-          class="text-h6 font-weight-regular justify-space-between pa-2"
+          class="text-h6"
       >
         <span>
           {{ currentTitle }}
         </span>
       </v-card-title>
 
-      <v-window
-          v-model="step"
+      <v-window-item
+          :value="1"
       >
-        <v-window-item
-            :value="1"
+        <v-form
+            ref="form"
+            @submit="submitForm"
         >
           <v-text-field
-              variant="outlined"
-              label="Titel des Inserats *"
               class="mt-2"
+              label="Titel des Inserats"
+              variant="outlined"
+              v-model="formData.title"
+              maxlength="60"
+              counter
+              required
           ></v-text-field>
 
           <v-text-field
               label="Beschreibung"
-              textarea
-              auto-grow
-              rows="5"
+              variant="outlined"
+              v-model="formData.description"
+              maxlength="300"
+              counter
+          ></v-text-field>
+
+          <v-text-field
+              label="Von"
+              placeholder="TT.MM.JJJJ"
+              type="date"
+              v-model="formData.availabelFrom"
+              :max="formData.availabelTill"
               variant="outlined"
           ></v-text-field>
 
           <v-text-field
-              label="Zeitraum *"
-              placeholder="TT.MM.JJJJ - TT.MM.JJJJ"
+              label="Bis"
+              placeholder="TT.MM.JJJJ"
+              type="date"
+              :min="formData.availabelFrom"
+              v-model="formData.availabelTill"
               variant="outlined"
           ></v-text-field>
 
           <v-text-field
-              label="Ort *"
+              label="Ort"
               placeholder="Mannheim Neuostheim"
               variant="outlined"
+              v-model="formData.location"
           ></v-text-field>
 
           <v-text-field
-              label="Monatliche Miete in € *"
-              placeholder="450"
+              label="Monatliche Miete"
               variant="outlined"
+              prefix="€"
+              v-model="formData.price"
           ></v-text-field>
 
           <v-text-field
-              label="Wohnfläche in m² *"
-              placeholder="17"
+              label="Wohnfläche"
               variant="outlined"
+              prefix="m²"
+              v-model="formData.area"
           ></v-text-field>
-
 
           <v-checkbox
+              v-model="formData.furniture"
               label="Möbliert"
-              variant="outlined"
           ></v-checkbox>
 
-          <v-checkbox-btn
-              v-model="enabled"
+          <v-checkbox
+              v-model="formData.community"
               label="WG"
-              class="pe-2"
-              variant="outlined"
-          ></v-checkbox-btn>
+          ></v-checkbox>
 
-          <v-combobox
-              :disabled="!enabled"
+          <v-select
+              v-if="formData.community"
+              v-model="formData.selectedGender"
+              variant="outlined"
               :items="['Jungs', 'Mädchen', 'Gemischt']"
-              variant="outlined"
-          ></v-combobox>
-        </v-window-item>
+              label="Welches Geschlecht"
+          ></v-select>
+        </v-form>
+      </v-window-item>
 
-        <v-window-item :value="2">
-          <UploadImagesStep></UploadImagesStep>
-        </v-window-item>
+      <v-window-item
+          :value="2"
+      >
+        <UploadImagesStep
+          ref="uploadImagesForm"
+        ></UploadImagesStep>
+      </v-window-item>
 
-        <v-window-item :value="3">
+      <v-window-item
+          :value="3"
+      >
+        <v-form
+            ref="form"
+        >
           <v-text-field
               label="Vor- & Nachname *"
               placeholder="Maxime Musterfrau"
               variant="outlined"
+              class="mt-2"
+              v-model="contactData.name"
           ></v-text-field>
 
           <v-text-field
-              label="Mobil"
+              label="Phone"
               placeholder="+49123456789"
               variant="outlined"
+              type="tel"
+              v-model="contactData.phone"
           ></v-text-field>
 
           <v-text-field
-              label="Email *"
+              label="E-Mail *"
               placeholder="john@google.com"
               variant="outlined"
+              type="email"
+              v-model="contactData.email"
           ></v-text-field>
+        </v-form>
+        <span
+            class="text-caption text-grey-darken-1"
+        >
+              Das ist die Email, welche den Interesenten zur Kontaktaufnahme zur Verfügung gestellt wird!
+        </span>
 
-          <span class="text-caption text-grey-darken-1">
-              Das ist die Email, welche zur Kontaktaufnahme den Interesenten zur Verfügung gestellt wird!
+      </v-window-item>
+
+      <v-window-item
+          :value="4"
+      >
+        <v-container
+            class="pa-4 text-center"
+        >
+          <v-img
+              class="mb-4"
+              contain
+              height="128"
+              src="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
+          ></v-img>
+          <h3 class="text-h6 font-weight-light mb-2">
+            Ihr Inserat wurde erfolgreich erstellt
+          </h3>
+          <span
+              class="text-caption text-grey"
+          >
+            Danke das sie das Digital Blackboard nutzen!
           </span>
+        </v-container>
 
-        </v-window-item>
+        <v-card
+            class="ma-1"
+            variant="outlined"
+        >
+          <v-card-title>Wohnungsdaten</v-card-title>
 
-        <v-window-item :value="4">
-          <div class="pa-4 text-center">
-            <v-img
-                class="mb-4"
-                contain
-                height="128"
-                src="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
-            ></v-img>
-            <h3 class="text-h6 font-weight-light mb-2">
-              Ihr Inserat wurde erfolgreich erstellt
-            </h3>
-            <span class="text-caption text-grey">Danke das sie das Digital Blackboard nutzen!</span>
-          </div>
-        </v-window-item>
-      </v-window>
+          <v-card-text>
+            <v-row
+                v-for="item in basicInfos"
+                :key="item.label"
+                no-gutters
+                class="mt-1"
+            >
+              <v-col>
+                <p>
+                  {{ item.label }}
+                </p>
+              </v-col>
 
-      <v-divider></v-divider>
+              <v-col>
+                <p
+                    v-if="item && typeof item.value === 'boolean'"
+                >
+                  <v-icon>{{ item.value ? 'mdi-check' : 'mdi-close' }}</v-icon>
+                </p>
 
-      <v-card-actions>
-        <v-btn
-            v-if="step > 1 && step < 4"
-            variant="text"
-            @click="step--"
-        >
-          Zurück
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn
-            v-if="step < 3"
-            color="red"
-            variant="flat"
-            class="float right"
-            @click="step++"
-        >
-          Nächste
-        </v-btn>
-        <v-btn
-            v-if="step === 3"
-            color="red"
-            variant="flat"
-            class="float right"
-            @click="step++"
-        >
-          Inserat fertigstellen
-        </v-btn>
-        <v-btn
-            v-if="step === 4"
-            color="red"
-            variant="flat"
-            class="float right"
-            @click="closeDialog"
-        >
-          Schließen
-        </v-btn>
-      </v-card-actions>
+                <p
+                    v-else
+                >
+                  {{ item.value }}
+                </p>
+
+              </v-col>
+            </v-row>
+          </v-card-text>
+
+          <v-divider
+              style="width: 85%; margin: 10px;"
+          ></v-divider>
+
+          <v-card-title>Kontakdaten</v-card-title>
+
+          <v-card-text>
+            <v-row
+                v-for="item in extraInfos"
+                :key="item.label"
+                no-gutters
+                class="mt-1"
+            >
+              <v-col>
+                <p>
+                  {{ item.label }}
+                </p>
+              </v-col>
+
+              <v-col>
+                <p>
+                  {{ item.value }}
+                </p>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-window-item>
     </v-stepper-window>
+
+    <v-card-actions>
+      <v-btn
+          v-if="step > 1 && step < 5"
+          variant="text"
+          @click="step--"
+      >
+        Zurück
+      </v-btn>
+
+      <v-spacer></v-spacer>
+
+      <v-btn
+          v-if="step < 3"
+          color="red"
+          class="float right"
+          type="submit"
+          @click="moveToNextStep"
+      >
+        Nächste
+      </v-btn>
+      <v-btn
+          v-if="step === 3"
+          color="red"
+          class="float right"
+          type="submit"
+          @click="submitForm"
+      >
+        Inserat fertigstellen
+      </v-btn>
+      <v-btn
+          v-if="step === 4"
+          color="red"
+          class="float right"
+          @click="closeDialog()"
+      >
+        Schließen
+      </v-btn>
+    </v-card-actions>
   </v-stepper>
 </template>
-
 
 <script>
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
 
 export default {
-  components: {UploadImagesStep},
-  data: () => ({
-    step: 1,
-    enabled: false,
-  }),
+  components: {
+    UploadImagesStep
+  },
+  data() {
+    return {
+      step: 1,
+      selectedGender: null,
+      isCommunityLiving: false,
+      selectedDate: null,
+
+      infosAppartment: [
+        "title", "description", "availabelFrom", "availabelTill", "location", "price", "area", "furniture", "community", "selectedGender",
+      ],
+      infosContact: [
+        "name", "phone", "email"
+      ],
+
+      formData: {
+        title: '',
+        description: '',
+        availabelFrom: '',
+        availabelTill: '',
+        location: '',
+        price: '',
+        area: '',
+        furniture: false,
+        community: false,
+        selectedGender: '',
+        images: [],
+        date_created: '',
+      },
+
+      contactData: {
+        name: '',
+        phone: '',
+        email: '',
+      },
+
+      dictionary: {
+        "title": "Titel:",
+        "availabelFrom": "Von:",
+        "availabelTill": "Bis:",
+        "area": "Wohnfläche in m²:",
+        "price": "Warmmiete in €:",
+        "description": "Beschreibung:",
+        "location": "Ort / Stadtteil:",
+        "furniture": "Möbiliert:",
+        "community": "WG Zimmer:",
+        "selectedGender": "WG-Typ:",
+
+        "name": "Vor- & Nachname:",
+        "phone": "Handynummer:",
+        "email": "E-Mail:",
+      },
+    };
+  },
   methods: {
+    submitForm() {
+      this.step++
+    },
+    moveToNextStep() {
+      this.step++
+    },
     closeDialog() {
-      this.$emit('close-dialog');
-    }
+      this.$emit("close-dialog", this.formData, this.$refs.uploadImagesForm.imagePreviews, this.contactData)
+    },
   },
   computed: {
-    currentTitle () {
+    currentTitle() {
       switch (this.step) {
-        case 1: return 'Angaben zur Wohnung'
-        case 2: return 'Fotos des Objektes'
-        case 3: return 'Deine Kontaktdaten'
-        default: return 'Inserat erfolgreich erstellt'
+        case 1:
+          return "Angaben zur Wohnung";
+        case 2:
+          return "Fotos des Objektes";
+        case 3:
+          return "Deine Kontaktdaten";
+        default:
+          return "Inserat erstellt";
+      }
+    },
+    basicInfos() {
+      let basicInfos = [];
+      for (const attribute of this.infosAppartment) {
+        let value = this.formData[attribute];
+        basicInfos.push({label: this.dictionary[attribute], value: value});
+      }
+      return basicInfos;
+    },
+    extraInfos() {
+      let extraInfos = [];
+      for (const attribute of this.infosContact) {
+        let value = this.contactData[attribute];
+        extraInfos.push({label: this.dictionary[attribute], value: value});
+      }
+      return extraInfos;
+    },
+  },
+  watch: {
+    isCommunityLiving(value) {
+      // Clear the selection if the community living checkbox is unchecked
+      if (!value) {
+        this.formData.selectedGender = "";
       }
     },
   },
 };
 </script>
-
-
-
-<style>
-
-</style>

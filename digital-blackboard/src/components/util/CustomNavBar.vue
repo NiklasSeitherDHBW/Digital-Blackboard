@@ -2,24 +2,18 @@
   <v-bottom-navigation
       v-if="mobile"
   >
-    <v-list
-        :nav="true"
-        class="d-flex"
-        style="overflow: hidden"
+    <v-btn
+        v-for="item in menuItems"
+        :key="item.value"
+        :value="item.value"
+        @click="navigateTo(item.value)"
     >
-      <v-list-item
-          v-for="item in menuItems"
-          :key="item.value"
-          :to="item.value"
-          class="dynamic-spacing"
+      <v-icon
+          class="navbar-icon"
       >
-        <v-icon
-            size="20"
-        >
-          {{ item.icon }}
-        </v-icon>
-      </v-list-item>
-    </v-list>
+        {{ item.icon }}
+      </v-icon>
+    </v-btn>
   </v-bottom-navigation>
 
   <v-navigation-drawer
@@ -32,7 +26,7 @@
         :nav=true
     >
       <v-list-item
-          prepend-avatar="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
+          prepend-avatar="https://w7.pngwing.com/pngs/889/451/png-transparent-baden-wuerttemberg-cooperative-state-university-mosbach-baden-wurttemberg-cooperative-state-university-baden-wuerttemberg-cooperative-state-university-loerrach-baden-wuerttemberg-cooperative.png"
           title="Digital Blackboard"
           subtitle="Mehr brauchst du nicht!"
       ></v-list-item>
@@ -51,9 +45,9 @@
 </template>
 
 <script setup>
-import { useDisplay } from "vuetify";
+import {useDisplay} from "vuetify";
 
-const { mobile } = useDisplay()
+const {mobile} = useDisplay()
 </script>
 
 <script>
@@ -61,27 +55,26 @@ export default {
   data() {
     return {
       menuItems: [
-        { icon: 'mdi-bulletin-board', title: 'Blackboard', value: '/' },
-        { icon: 'mdi-domain', title: 'Dual Living', value: 'dualliving' },
-        { icon: 'mdi-calendar-clock', title: 'Events', value: 'events' },
-        { icon: 'mdi-school', title: 'Study Hub', value: 'studyhub' },
-        { icon: 'mdi-login-variant', title: 'Login', value: 'login' },
-        { icon: "mdi-wrench", title: "Test", value: "test"},
+        {icon: 'mdi-bulletin-board', title: 'Blackboard', value: '/'},
+        {icon: 'mdi-domain', title: 'Dual Living', value: 'dualliving'},
+        {icon: 'mdi-calendar-clock', title: 'Events', value: 'events'},
+        {icon: 'mdi-school', title: 'Study Hub', value: 'studyhub'},
+        {icon: 'mdi-login-variant', title: 'Login', value: 'login'},
+        {icon: "mdi-wrench", title: "Test", value: "test"},
+        {icon: "mdi-wrench", title: "Test2", value: "test2"},
       ],
     };
   },
   methods: {
     navigateTo(itemValue) {
       if (itemValue) {
-        this.$router.push({ name: itemValue });
+        this.$router.push({name: itemValue});
       }
     },
   },
 };
 </script>
 
-<style scoped>
-.dynamic-spacing {
-  margin-right: 1em;
-}
+<style>
+
 </style>

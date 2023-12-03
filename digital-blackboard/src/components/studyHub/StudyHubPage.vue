@@ -3,57 +3,91 @@
       titleGrey="Study"
       titleRed="Hub"
   ></AppBar>
+
   <v-container
-      :fluid=true
-      style="width: 85%; display: flex; flex-wrap: wrap;"
+      :fluid="true"
+      style="width: 85%;"
+      align="center"
   >
-    <v-row class="w-100">
+    <v-row
+        align="stretch"
+    >
       <v-col
           v-for="(item, index) in contents"
           :key="index"
-          sm="6"
-          class="d-flex"
+          cols="12"
+          sm="12"
+          md="6"
+          lg="6"
+          xl="4"
+          xxl="3"
+          align="left"
       >
-        <div class="w-100">
-          <StudyHubBuddyCard
-              v-if="item.category === 'buddy'"
-              :item="item"
-              :action="item.category === 'group' ? 'Beitreten' : 'Kontaktieren'"
-          ></StudyHubBuddyCard>
-          <StudyHubGroupCard
-              v-if="item.category === 'group'"
-              :item="item"
-              :action="item.category === 'group' ? 'Beitreten' : 'Kontaktieren'"
-          ></StudyHubGroupCard>
-        </div>
+        <StudyHubBuddyCard
+            v-if="item.category === 'buddy'"
+            :item="item"
+        ></StudyHubBuddyCard>
+        <StudyHubGroupCard
+            v-if="item.category === 'group'"
+            :item="item"
+            @itemChanged="itemChanged"
+        ></StudyHubGroupCard>
       </v-col>
     </v-row>
   </v-container>
 
-  <v-btn
-      style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; right: 20px;"
-      :style="{ bottom: mobile ? '75px' : '20px' }"
-      icon="mdi-plus"
-      text="+">
-    <v-icon>
-      mdi-plus
-    </v-icon>
+  <div class="text-center">
+    <v-menu>
+      <template v-slot:activator="{ props: activatorProps }">
+        <v-btn
+            v-bind="activatorProps"
+            style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; right: 20px;"
+            :style="{ bottom: mobile ? '75px' : '20px' }"
+            icon="mdi-plus"
+            text="+"
+        >
+          <v-icon>
+            mdi-plus
+          </v-icon>
+        </v-btn>
+      </template>
+
+      <v-list>
+        <v-list-item @click="showDialogAddStudyBuddy = true">
+          <v-list-item-title>Buddy</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item @click="showDialogAddStudyHub = true">
+          <v-list-item-title>Gruppe</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+
     <v-dialog
         transition="dialog-bottom-transition"
-        v-model="showDialogAddApartment"
-        activator="parent"
+        v-model="showDialogAddStudyBuddy"
         :style="{ maxWidth: mobile ? '100%' : '60%' }"
     >
-      <AddStudyHubDialog @close-dialog="closeDialogAddAppartment"></AddStudyHubDialog>
+      <AddStudyBuddyDialog @close-dialog="closeDialogAddStudyBuddy"></AddStudyBuddyDialog>
     </v-dialog>
-  </v-btn>
+
+    <v-dialog
+        transition="dialog-bottom-transition"
+        v-model="showDialogAddStudyHub"
+        :style="{ maxWidth: mobile ? '100%' : '60%' }"
+    >
+      <AddStudyHubDialog @close-dialog="closeDialogAddStudyHub"></AddStudyHubDialog>
+    </v-dialog>
+
+  </div>
 </template>
 
 
 <script>
 export default {
   data: () => ({
-    showDialogAddApartment: false,
+    showDialogAddStudyHub: false,
+    showDialogAddStudyBuddy: false,
     showDialogImages: false,
     selectedItem: null,
     contents: [
@@ -86,14 +120,27 @@ export default {
         subject: "Lerne neue Leute kennen und tausche dich in entspannter Atmosphäre aus!",
         date_created: "27.11.2024",
         category: "group",
+        members: 10,
+        joined: true,
         images: ['https://www.peoplegrove.com/wp-content/uploads/2022/07/networking-hero.png'],
+      },
+      {
+        title: "Die wilden Mäuschen 2",
+        date_created: "25.10.2018",
+        description: '"Immer voll bei der Sache"',
+        subject: "Web Programmierung, Statistik",
+        activities: "Trinken bis die Sonne wieder untergeht",
+        images: ['https://th.bing.com/th/id/OIP.ZNCLp5fUZ3UDs2Q1KGsuSgHaE7?w=244&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7'],
+        category: "group",
+        members: 4,
+        joined: false,
       },
       {
         title: "Die Campus-Code-Genies",
         images: ["https://prompti.ai/wp-content/uploads/2023/07/pcboi2.png"],
         date_created: "29.11.2023",
         subject: "Programmiert gemeinsam und tauscht euch über eure Fähigkeiten aus - teilt eure Tipps und Tricks!",
-        category: "group"
+        category: "group",
       },
       {
         title: "Die Campus-Runners",
@@ -134,8 +181,52 @@ export default {
       this.selectedItem = item;
       this.showDialogImages = true;
     },
-    closeDialogAddAppartment() {
-      this.showDialogAddApartment = false;
+    closeDialogAddStudyBuddy(images, buddyData, contactData) {
+      this.showDialogAddStudyBuddy = false;
+
+      let new_item = {
+        title: buddyData.title,
+        date_created: new Date().toLocaleDateString("de-DE", { year: 'numeric', month: '2-digit', day: '2-digit' }), // TODO: needs to be changed: Push date obejct to database and convert it to string when retrieving data
+        description: buddyData.description,
+        price: buddyData.price,
+        subject: buddyData.subject,
+        category: buddyData.category,
+        images: images,
+        rating: buddyData.rating,
+        name: contactData.name,
+        phone: contactData.phone,
+        email: contactData.email,
+      }
+
+      this.contents.push(new_item);
+    },
+
+    closeDialogAddStudyHub(images, hubData) {
+      this.showDialogAddStudyHub = false;
+
+      let new_item = {
+        title: hubData.title,
+        date_created: new Date().toLocaleDateString("de-DE", { year: 'numeric', month: '2-digit', day: '2-digit' }), // TODO: needs to be changed: Push date obejct to database and convert it to string when retrieving data
+        description: hubData.description,
+        subject: hubData.subject,
+        category: hubData.category,
+        activities: hubData.activities,
+        images: images,
+        availability: hubData.availability,
+        members: hubData.members,
+        joined: hubData.joined,
+
+      }
+
+      this.contents.push(new_item);
+    },
+
+    itemChanged(oldItem, newItem) {
+      for(let i = 0; i < this.contents.length; i++) {
+        if (this.contents[i] === oldItem) {
+          this.contents[i] = newItem;
+        }
+      }
     }
   },
 };
@@ -144,11 +235,12 @@ export default {
 <script setup>
 import AppBar from "@/components/util/CustomAppBar.vue";
 import AddStudyHubDialog from "@/components/studyHub/AddStudyHubDialog.vue";
+import AddStudyBuddyDialog from "@/components/studyHub/AddStudyBuddyDialog.vue";
 import StudyHubBuddyCard from "@/components/studyHub/StudyHubBuddyCard.vue";
 import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
 
-import { useDisplay } from "vuetify";
+import {useDisplay} from "vuetify";
 
-const { mobile } = useDisplay()
+const {mobile} = useDisplay()
 
 </script>

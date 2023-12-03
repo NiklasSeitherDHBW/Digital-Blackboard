@@ -1,15 +1,40 @@
 <template>
-  <v-app-bar color="white" height="100">
-    <v-app-bar-title class="d-flex align-center">
+  <v-app-bar
+      color="white"
+      height="100"
+  >
+    <v-app-bar-title
+        class="d-flex align-center"
+    >
       <div>
-        <h2 class="title-grey">{{ titleGrey }}</h2>
-        <h2 class="title-red">{{ titleRed }}</h2>
-        <h2 class="title-red" v-if="subtitle !== '' && subtitle !== undefined">:</h2>
-        <h5 class="subtitle">{{ subtitle }}</h5>
+        <h2
+            class="title-grey"
+        >
+          {{ titleGrey }}
+        </h2>
+
+        <h2
+            class="title-red"
+        >
+          {{ titleRed }}
+        </h2>
+
+        <h5
+            class="subtitle">
+          {{ subtitle }}
+        </h5>
       </div>
     </v-app-bar-title>
-    <v-btn icon @click="toggleDarkMode" style="display: inline-block" class="ml-auto">
-      <v-icon>mdi-weather-night</v-icon>
+
+    <v-btn
+        icon
+        class="ml-auto"
+        style="display: inline-block"
+        @click="toggleDarkMode"
+    >
+      <v-icon>
+        mdi-weather-night
+      </v-icon>
     </v-btn>
   </v-app-bar>
 </template>
@@ -36,11 +61,6 @@ export default {
     titleRed: String,
     subtitle: String
   },
-  methods: {
-    toggleDarkMode() {
-      this.theme.global.name.value = this.theme.global.current.value.dark ? 'light' : 'dark'
-    }
-  }
 };
 </script>
 

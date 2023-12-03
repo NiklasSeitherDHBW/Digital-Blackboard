@@ -1,19 +1,19 @@
 <template>
-  <v-card>
-    <!-- Images -->
+  <v-card
+      :style="{ 'min-width': '125px', 'height': showAll ? '100%' : 'auto', 'padding-bottom': showAll ? '50px' : '0px'}"
+  >
     <v-carousel
-      :height="item.images.length < 1 ? '0px' : '300px'"
-      :show-arrows="item.images.length > 1 ? 'hover' : false"
-      hide-delimiters
-      progress="primary"
+        :height="item.images.length < 1 ? '0px' : '300px'"
+        :show-arrows="item.images.length > 1 ? 'hover' : false"
+        hide-delimiters
     >
       <v-carousel-item
-        v-for="(image, index) in item.images"
-        :key="index"
-        :src="image"
-        cover
-        class="align-end"
-        @click="showDialogImagesFullscreen=true"
+          v-for="(image, index) in item.images"
+          :key="index"
+          :src="image"
+          :cover=true
+          class="align-end"
+          @click="showDialogImagesFullscreen=true"
       ></v-carousel-item>
 
       <v-dialog
@@ -36,7 +36,7 @@
           <v-divider></v-divider>
 
           <v-carousel
-              show-arrows="hover"
+              :show-arrows="item.images.length > 1 ? 'hover' : false"
               progress="primary"
           >
             <v-carousel-item
@@ -49,27 +49,20 @@
       </v-dialog>
     </v-carousel>
 
-    <!-- Information shown -->
-    <v-card-title class="align-center">
-      <h4>
+    <v-card-title>
         {{ item.title }}
-      </h4>
     </v-card-title>
-    <v-card-subtitle
-        margin-top="5px"
-        margin.left="15px"
-    >
-      <p>
+
+    <v-card-subtitle>
         Einstellungsdatum: {{ item.date_created }}
-      </p>
     </v-card-subtitle>
 
-    <!-- Show basic information -->
     <v-card-text class="ma-1">
       <v-row
           v-for="(field, index) in basicInfos"
           :key="index"
           no-gutters
+          class="mt-1"
       >
         <v-col>
           <h4>
@@ -86,9 +79,8 @@
 
     <v-divider></v-divider>
 
-    <!-- Button: Click for more information -->
-    <span
-        style="display: flex; align-items: center; margin: 10px;"
+    <v-container
+        style="display: flex; align-items: center;"
     >
       <v-btn
           class="button-round"
@@ -102,18 +94,21 @@
       >
         Mehr Informationen
       </p>
-    </span>
+    </v-container>
 
     <v-divider></v-divider>
 
-    <!-- Information shown when expanded-->
     <v-expand-transition>
-      <div v-if="showAll">
-        <v-card-text class="">
+
+      <div
+          v-if="showAll"
+      >
+        <v-card-text class="ma-1">
           <v-row
               v-for="(field, index) in extraInfos"
               :key="index"
               no-gutters
+              class="mt-1"
           >
             <v-col>
               <h4>
@@ -127,14 +122,23 @@
             </v-col>
           </v-row>
         </v-card-text>
-
-        <v-btn
-          class="button-default float-right ma-5 font-weight-medium"
-        >
-          Kontaktieren
-        </v-btn>
       </div>
+
     </v-expand-transition>
+
+    <v-card-actions
+        v-if="showAll"
+        style="position: absolute; bottom: 0; right:0;"
+    >
+      <v-btn
+          ref="btnAction"
+          class="button-default mr-1 mb-1"
+          :style="{ 'background': actionBackground}"
+          @click="this.$emit('action-clicked')"
+      >
+        {{ action }}
+      </v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
@@ -145,6 +149,10 @@ export default {
     basicInfos: Object,
     extraInfos: Object,
     action: String,
+    actionBackground: {
+      type: String,
+      default: "red"
+    }
   },
   data() {
     return {
@@ -153,8 +161,8 @@ export default {
     };
   },
 };
-</script>
 
+</script>
 
 <style scoped>
 .button-round {

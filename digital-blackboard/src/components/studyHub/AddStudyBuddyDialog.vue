@@ -9,7 +9,7 @@
         class="sticky-stepper-header"
     >
       <v-stepper-item
-          title="Angaben zur Gruppe"
+          title="Angaben zum Buddy"
           :value="1"
       ></v-stepper-item>
 
@@ -24,8 +24,15 @@
       <v-divider></v-divider>
 
       <v-stepper-item
-          title="Zusammenfassung"
+          title="Kontaktdaten"
           :value="3"
+      ></v-stepper-item>
+
+      <v-divider></v-divider>
+
+      <v-stepper-item
+          title="Zusammenfassung"
+          :value="4"
       ></v-stepper-item>
     </v-stepper-header>
 
@@ -46,11 +53,11 @@
         >
           <v-card-text>
             <v-text-field
-                label="Titel der Gruppe *"
+                label="Titel des Buddy's *"
                 variant="outlined"
                 class="mt-2"
                 maxlength="50"
-                v-model="hubData.title"
+                v-model="buddyData.title"
                 counter
                 required
             ></v-text-field>
@@ -59,21 +66,29 @@
                 label="Beschreibung"
                 variant="outlined"
                 maxlength="200"
-                v-model="hubData.description"
+                v-model="buddyData.description"
                 counter
             ></v-text-field>
 
             <v-text-field
-                label="Thema"
+                label="Preis pro Stunde"
+                prefix="€"
                 variant="outlined"
-                v-model="hubData.subject"
+                v-model="buddyData.price"
             ></v-text-field>
 
             <v-text-field
-                label="Aktivitäten"
+                label="Fächer"
                 variant="outlined"
-                v-model="hubData.activities"
+                v-model="buddyData.subject"
             ></v-text-field>
+
+            <v-text-field
+              label="Verfügbarkeit"
+              placeholder="Nach Absprache"
+              variant="outlined"
+              v-model="buddyData.availability"
+          ></v-text-field>
 
           </v-card-text>
         </v-window-item>
@@ -86,7 +101,35 @@
           ></UploadImagesStep>
         </v-window-item>
 
-        <v-window-item :value="3">
+        <v-window-item
+            :value="3"
+        >
+          <v-text-field
+              label="Vor- & Nachname *"
+              placeholder="Maxime Musterfrau"
+              variant="outlined"
+              class="mt-2"
+              v-model="contactData.name"
+          ></v-text-field>
+
+          <v-text-field
+              label="Mobil"
+              placeholder="+49123456789"
+              variant="outlined"
+              type="tel"
+              v-model="contactData.phone"
+          ></v-text-field>
+
+          <v-text-field
+              label="E-Mail *"
+              placeholder="john@google.com"
+              variant="outlined"
+              type="email"
+              v-model="contactData.email"
+          ></v-text-field>
+        </v-window-item>
+
+        <v-window-item :value="4">
           <div
               class="pa-4 text-center"
           >
@@ -97,7 +140,7 @@
                 src="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
             ></v-img>
             <h3 class="text-h6 font-weight-light mb-2">
-              Ihre Gruppe wurde erfolgreich geteilt
+              Ihr Inserat wurde erfolgreich geteilt
             </h3>
             <span
                 class="text-caption text-grey"
@@ -108,7 +151,7 @@
               class="ma-1"
               variant="outlined"
           >
-            <v-card-title>Angaben zur Gruppe</v-card-title>
+            <v-card-title>Angaben zum Buddy</v-card-title>
 
             <v-card-text>
               <v-row
@@ -131,6 +174,33 @@
                 </v-col>
               </v-row>
             </v-card-text>
+
+            <v-divider
+                style="width: 85%; margin: 10px;"
+            ></v-divider>
+
+            <v-card-title>Kontakdaten</v-card-title>
+
+            <v-card-text>
+              <v-row
+                  v-for="item in extraInfos"
+                  :key="item.label"
+                  no-gutters
+                  class="mt-1"
+              >
+                <v-col>
+                  <p>
+                    {{ item.label }}
+                  </p>
+                </v-col>
+
+                <v-col>
+                  <p>
+                    {{ item.value }}
+                  </p>
+                </v-col>
+              </v-row>
+            </v-card-text>
           </v-card>
         </v-window-item>
       </v-window>
@@ -149,7 +219,7 @@
         <v-spacer></v-spacer>
 
         <v-btn
-            v-if="step < 2"
+            v-if="step < 3"
             color="red"
             variant="flat"
             class="float right"
@@ -159,17 +229,17 @@
         </v-btn>
 
         <v-btn
-            v-if="step === 2"
+            v-if="step === 3"
             color="red"
             variant="flat"
             class="float right"
             @click="step++"
         >
-          Gruppe teilen
+          Inserat teilen
         </v-btn>
 
         <v-btn
-            v-if="step === 3"
+            v-if="step === 4"
             color="red"
             variant="flat"
             class="float right"
@@ -193,24 +263,38 @@ export default {
     selectedImages: [],
 
     infosEvent: [
-      "title", "description", "subject", "activities"
+      "title", "description", "price", "subject", "availability"
     ],
 
-    hubData: {
+    infosContact: [
+        "name", "mobil", "email"
+    ],
+
+    buddyData: {
       title: '',
       description: '',
+      price: '',
       subject: '',
-      activities: '',
-      category: 'group',
-      members: 1,
-      joined: false,
+      availability: '',
+      category: 'buddy',
+      rating: '',
+    },
+
+    contactData: {
+      name: '',
+      mobil: '',
+      email: '',
     },
 
     dictionary: {
       "title": "Titel:",
       "description": "Beschreibung:",
-      "activities": "Aktivitäten:",
-      "subject": "Thema:",
+      "price": "Preis pro Stunde in €:",
+      "subject": "Fächer:",
+      "availability": "Verfügbarkeit:",
+      "name": "Vor- & Nachname",
+      "mobil": "Mobil:",
+      "email": "E-Mail",
     },
 
     titlerules: [
@@ -244,25 +328,34 @@ export default {
       });
     },
     closeDialog() {
-      this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.hubData)
+      this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.buddyData, this.contactData)
     }
   },
   computed: {
     currentTitle () {
       switch (this.step) {
-        case 1: return 'Angaben zur Gruppe';
+        case 1: return 'Angaben zur Information';
         case 2: return 'Fotos';
-        case 3: return 'Zusammenfassung';
-        default: return 'Gruppe erfolgreich erstellt';
+        case 3: return 'Kontaktdaten';
+        case 4: return 'Zusammenfassung';
+        default: return 'Information erfolgreich geteilt';
       }
     },
     eventInfos() {
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
-        let value = this.hubData[attribute];
+        let value = this.buddyData[attribute];
         eventInfos.push({ label: this.dictionary[attribute], value: value });
       }
       return eventInfos;
+    },
+    extraInfos() {
+      let extraInfos = [];
+      for (const attribute of this.infosContact) {
+        let value = this.contactData[attribute];
+        extraInfos.push({label: this.dictionary[attribute], value: value});
+      }
+      return extraInfos;
     },
   },
 };
