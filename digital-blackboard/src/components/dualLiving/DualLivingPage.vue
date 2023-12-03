@@ -4,6 +4,12 @@
       titleRed="Living"
   ></AppBar>
 
+  <v-text-field
+      v-model="search"
+      hide-details
+      prepend-icon="mdi-magnify"
+  ></v-text-field>
+
   <v-container
       :fluid="true"
       style="width: 85%;"
@@ -153,6 +159,8 @@ export default {
         email: "y"
       },
     ],
+
+    search: "",
   }),
   computed: {
     filteredAdvertisements() {
