@@ -9,9 +9,10 @@
       style="width: 85%;"
       align="center"
   >
+
     <v-row>
       <v-col
-          v-for="(item, index) in contents"
+          v-for="(item, index) in filteredAdvertisements"
           :key="index"
           cols="12"
           sm="12"
@@ -50,6 +51,18 @@
   </v-btn>
 </template>
 
+<script setup>
+import AppBar from "@/components/util/CustomAppBar.vue";
+
+import AddApartment from "@/components/dualLiving/AddAppartmentDialog.vue";
+import DualLivingCard from "@/components/dualLiving/DualLivingCard.vue";
+
+import {useDisplay} from "vuetify";
+
+const {mobile} = useDisplay()
+
+</script>
+
 <script>
 export default {
   data: () => ({
@@ -83,7 +96,7 @@ export default {
         contact: "Xenia Frietsch",
         area: "21",
         images: ["https://dualeswohnen.de/storage/apartments/2KvNpOoDYKZkuHnIGnL4PhquPtvU1M8CfMYqUBGXjHxrTt7AdDGIErec1mtHLVCP/QWMy1j0ydvT9A1TYw98sO84bAp0FY615kOdYvtz-2023-04-02-18-25-41.jpeg", "https://cf.bstatic.com/xdata/images/hotel/max1024x768/407682874.jpg?k=76a5b9c92a3f2a41f3d2f7a564722b27cb19fa06e74dc10539daf5f8f575f0dd&o=&hp=1", "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"],
-        name: "Yannick Königstein",
+        name: "Yannick Elsiabeth Zoe Königstein",
         phone: "123",
         email: "ykoenigstein@deloitte.com"
       },
@@ -141,6 +154,22 @@ export default {
       },
     ],
   }),
+  computed: {
+    filteredAdvertisements() {
+      return this.contents.filter(p => {
+        let keys = Object.keys(p);
+        let showItem = false;
+
+        for (let key of keys) {
+          if (String(p[key]).toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
+            showItem = true;
+          }
+        }
+
+        return showItem;
+      });
+    }
+  },
   methods: {
     openDialogImagesFullscreen(item) {
       this.selectedItem = item;
@@ -153,7 +182,7 @@ export default {
         title: formData.title,
         description: formData.description,
         location: formData.location,
-        date_created: "29.11.2023",
+        date_created: new Date().toLocaleDateString("de-DE", {year: 'numeric', month: '2-digit', day: '2-digit'}), // TODO: needs to be changed: Push date obejct to database and convert it to string when retrieving data
         availability: `${formData.availabelFrom} - ${formData.availabelTill}`,
         furniture: formData.furniture ? "Ja" : "Nein",
         community: `${formData.community ? 'Ja -' : 'Nein'} ${formData.selectedGender}`,
@@ -171,14 +200,3 @@ export default {
 };
 </script>
 
-<script setup>
-import AppBar from "@/components/util/CustomAppBar.vue";
-
-import AddApartment from "@/components/dualLiving/AddAppartmentDialog.vue"
-import DualLivingCard from "@/components/dualLiving/DualLivingCard.vue";
-
-import {useDisplay} from "vuetify";
-
-const {mobile} = useDisplay()
-
-</script>
