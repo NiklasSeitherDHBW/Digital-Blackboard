@@ -168,13 +168,14 @@ export default {
         "price", "subject"
       ],
       extraInfosKeywords: [
-        "description", "availability"
+        "description", "availability", "contact"
       ],
       dictionary: {
         "availability": "Verfügbarkeit",
         "price" : "Preis pro stunde in €",
         "description": "Beschreibung",
         "subject": "Fächer",
+        "contact": "Kontakt",
       }
     };
   },
