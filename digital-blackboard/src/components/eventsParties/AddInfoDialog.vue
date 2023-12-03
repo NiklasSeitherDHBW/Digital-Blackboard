@@ -9,14 +9,14 @@
         class="sticky-stepper-header"
     >
       <v-stepper-item
-          title="Angaben zur Information"
+          title="Informationsangaben"
           :value="1"
       ></v-stepper-item>
 
       <v-divider></v-divider>
 
       <v-stepper-item
-          subtitle="Optional"
+          subtitle="optional"
           title="Fotos"
           :value="2"
       ></v-stepper-item>
@@ -110,14 +110,14 @@
             </h3>
             <span
                 class="text-caption text-grey"
-            >Danke das sie das Digital Blackboard nutzen!</span>
+            >Danke, dass Sie das "Digital Blackboard" nutzen!</span>
           </div>
 
           <v-card
               class="ma-1"
               variant="outlined"
           >
-            <v-card-title>Angaben zur Information</v-card-title>
+            <v-card-title>Informationsangaben</v-card-title>
 
             <v-card-text>
               <v-row
@@ -174,7 +174,7 @@
             class="float right"
             @click="step++"
         >
-          Info teilen
+          Information teilen
         </v-btn>
 
         <v-btn
@@ -225,12 +225,12 @@ export default {
     titlerules: [
       value => {
         if (value) return true
-        return 'Es muss ein Titel für das Inserat erstellt werden'
+        return 'Bitte erstellen Sie einen Titel für Ihr Inserat.'
       },],
     descriptionrules: [
       value => {
         if (value) return true
-        return 'Es muss eine Beschreibung für das Inserat erstellt werden'
+        return 'Bitte erstellen Sie eine Beschreibung für Ihr Inserat.'
       }
     ]
   }),
@@ -262,7 +262,7 @@ export default {
         case 1: return 'Angaben zur Information';
         case 2: return 'Fotos';
         case 3: return 'Zusammenfassung';
-        default: return 'Information erfolgreich geteilt';
+        default: return 'Information wurde erfolgreich geteilt!';
       }
     },
     eventInfos() {

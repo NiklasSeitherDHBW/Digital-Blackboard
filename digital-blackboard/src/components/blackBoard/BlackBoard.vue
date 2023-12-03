@@ -2,7 +2,7 @@
   <CustomAppBar
       titleGrey="Digital"
       titleRed="Blackboard"
-      subtitle="Was geht ab?"
+      subtitle="Letzte Ereignisse"
   ></CustomAppBar>
 
   <v-data-iterator
@@ -125,7 +125,7 @@ export default {
 
     contents: [
       {
-        name: 'Sophies Rechner hebt ab!',
+        name: 'Sophie`s Rechner hebt ab!',
         description: 'Hauptsache er sah schön aus!!!.',
         icon: 'mdi-ice-cream',
         color: '#6EC1E4',

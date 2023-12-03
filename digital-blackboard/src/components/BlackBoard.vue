@@ -3,7 +3,7 @@
     <v-app-bar-title>
       <h2 style="color: #7C868DFF; display: inline-block; margin-right: 5px;">Black</h2>
       <h2 style="color: #E0001BFF; display: inline-block;">Board</h2>
-      <h5 style="margin-left: auto; color: rgba(92,97,101,0.65)">Was geht ab!</h5>
+      <h5 style="margin-left: auto; color: rgba(92,97,101,0.65)">Letzte Ereignisse</h5>
     </v-app-bar-title>
   </v-app-bar>
   <v-container
