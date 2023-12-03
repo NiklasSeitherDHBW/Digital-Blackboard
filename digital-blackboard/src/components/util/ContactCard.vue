@@ -16,12 +16,22 @@
 
     <v-divider></v-divider>
 
-    <v-row no-gutters>
-      <v-col>
-        <v-avatar size="100">
-          <v-img :src="avatarSrc" alt="Avatar" cover></v-img>
+    <v-card
+        :title="name"
+        :subtitle="course"
+        variant="flat"
+    >
+      <template v-slot:prepend>
+        <v-avatar
+            size="120"
+        >
+          <v-img
+              :src="avatarSrc"
+              alt="Avatar"
+              cover
+          ></v-img>
         </v-avatar>
-      </v-col>
+      </template>
 
       <v-card-text
           class="mb-4"
@@ -73,25 +83,22 @@
 <script>
 export default {
   props: {
-    name: {
-      type: String,
-    },
-    course: {
-      type: String,
-    },
-    phone: {
-      type: String,
-    },
-    email: {
-      type: String,
-    },
+    name: String,
+    course: String,
+    phone: String,
+    email: String,
     avatarSrc: {
       type: String,
-      default: "https://img.freepik.com/premium-vector/account-icon-user-icon-vector-graphics_292645-552.jpg?w=740", // Default avatar URL
+      default:
+          "https://img.freepik.com/premium-vector/account-icon-user-icon-vector-graphics_292645-552.jpg?w=740", // Default avatar URL
     },
   },
 };
 </script>
 
 <style scoped>
+.button-round {
+  background: white;
+  color: #e0001bff; /* TODO: Change to color-dhbw-red */
+}
 </style>
