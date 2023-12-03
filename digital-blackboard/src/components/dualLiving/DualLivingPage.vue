@@ -75,6 +75,7 @@ export default {
     showDialogAddApartment: false,
     showDialogImages: false,
     showDialogsContact: false,
+
     selectedItem: null,
     contents: [
       {
