@@ -4,17 +4,19 @@
       titleRed="Living"
   ></AppBar>
 
-  <v-text-field
-      v-model="search"
-      hide-details
-      prepend-icon="mdi-magnify"
-  ></v-text-field>
-
   <v-container
       :fluid="true"
       style="width: 85%;"
       align="center"
   >
+
+    <v-text-field
+        v-model="search"
+        hide-details
+        prepend-inner-icon="mdi-magnify"
+        class="search-bar my-5 mx-auto"
+        placeholder="Suche..."
+    ></v-text-field>
 
     <v-row>
       <v-col
@@ -77,7 +79,7 @@ export default {
     showDialogsContact: false,
 
     selectedItem: null,
-    contents: [
+    advertisements: [
       {
         title: 'Sophies Rechner hebt ab!',
         description: 'Hauptsache er sah schön aus!!!.',
@@ -165,7 +167,7 @@ export default {
   }),
   computed: {
     filteredAdvertisements() {
-      return this.contents.filter(p => {
+      return this.advertisements.filter(p => {
         let keys = Object.keys(p);
         let showItem = false;
 
@@ -203,9 +205,26 @@ export default {
         email: contactData.email,
       }
 
-      this.contents.push(new_item);
+      this.advertisements.push(new_item);
     },
   },
 };
 </script>
 
+<style scoped>
+.search-bar {
+  width: 85%;
+  margin: 10px auto;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.search-bar input {
+  padding: 10px;
+}
+
+.search-bar:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+</style>
