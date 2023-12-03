@@ -23,8 +23,15 @@ export default {
     return {
       showAll: false,
       showDialogImagesFullscreen: false,
-      basicInfosKeywords: ["subject", "members"],
-      extraInfosKeywords: ["description", "activities"],
+
+      basicInfosKeywords: [
+          "subject", "members"
+      ],
+
+      extraInfosKeywords: [
+          "description", "activities"
+      ],
+
       dictionary: {
         members: "Mitglieder",
         activities: "Aktivitäten",
@@ -33,6 +40,7 @@ export default {
       },
     };
   },
+
   computed: {
     basicInfos() {
       return this.basicInfosKeywords.map((attribute) => ({
@@ -40,6 +48,7 @@ export default {
         value: this.item[attribute],
       }));
     },
+
     extraInfos() {
       return this.extraInfosKeywords.map((attribute) => ({
         label: this.dictionary[attribute],
@@ -47,6 +56,7 @@ export default {
       }));
     },
   },
+
   methods: {
     joinGroup() {
       let tmp_item = this.item;
