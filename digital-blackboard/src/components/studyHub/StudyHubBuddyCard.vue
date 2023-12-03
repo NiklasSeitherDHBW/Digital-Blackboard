@@ -49,7 +49,7 @@ export default {
 
       dictionary: {
         "availability": "Verfügbarkeit",
-        "price": "Preis pro stunde in €",
+        "price": "Preis pro Stunde in €",
         "description": "Beschreibung",
         "subject": "Fächer",
         "contact": "Kontakt",

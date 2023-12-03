@@ -16,7 +16,7 @@
       <v-divider></v-divider>
 
       <v-stepper-item
-          subtitle="Optional"
+          subtitle="optional"
           title="Fotos"
           :value="2"
       ></v-stepper-item>
@@ -88,7 +88,7 @@
             ></v-text-field>
 
             <v-text-field
-                label="Maximale Teilnehmeranzahl"
+                label="maximale Teilnehmeranzahl"
                 variant="outlined"
             ></v-text-field>
           </v-card-text>
@@ -113,11 +113,11 @@
                 src="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
             ></v-img>
             <h3 class="text-h6 font-weight-light mb-2">
-              Ihr Seminar wurde erfolgreich geteilt
+              Ihr Seminar wurde erfolgreich geteilt!
             </h3>
             <span
                 class="text-caption text-grey"
-            >Danke das sie das Digital Blackboard nutzen!</span>
+            >Danke, dass Sie das "Digital Blackboard" nutzen!</span>
           </div>
 
           <v-card
@@ -229,19 +229,19 @@ export default {
       "date": "Wann:",
       "location": "Wo:",
       "price": "Preis in €:",
-      "availability": "Max. Anzahl Teilnehmer:",
+      "availability": "max. Anzahl Teilnehmer:",
       "community": "Zielgruppe:",
     },
 
     titlerules: [
       value => {
         if (value) return true
-        return 'Es muss ein Titel für das Inserat erstellt werden'
+        return 'Bitte erstellen Sie einen Titel für Ihr Inserat.'
       },],
     descriptionrules: [
       value => {
         if (value) return true
-        return 'Es muss eine Beschreibung für das Inserat erstellt werden'
+        return 'Bitte erstellen Sie eine Beschreibung für Ihr Inserat.'
       }
     ]
   }),
@@ -273,7 +273,7 @@ export default {
         case 1: return 'Angaben zum Seminar';
         case 2: return 'Fotos';
         case 3: return 'Zusammenfassung';
-        default: return 'Seminar erfolgreich geteilt';
+        default: return 'Seminar wurde erfolgreich geteilt!';
       }
     },
     eventInfos() {

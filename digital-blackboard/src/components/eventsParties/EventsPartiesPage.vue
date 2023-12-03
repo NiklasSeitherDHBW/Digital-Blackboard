@@ -1,7 +1,7 @@
 <template>
   <CustomAppBar
       titleGrey="Events &amp;"
-      title-red="Feiern"
+      title-red="Veranstaltungen"
   ></CustomAppBar>
 
   <v-app>
@@ -171,7 +171,7 @@ export default {
           category: 'Informationen',
           date: '2023-01-15',
           date_created: "08.01.2023",
-          description: 'Wie kannst du einen Dualen Master überleben.',
+          description: 'Wie kannst du einen Dualen Master überleben?',
           availability: "51 / 72",
           location: "Raum 069C",
           community: "Free for all",

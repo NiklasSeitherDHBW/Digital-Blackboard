@@ -16,7 +16,7 @@
       <v-divider></v-divider>
 
       <v-stepper-item
-          subtitle="Optional"
+          subtitle="optional"
           title="Fotos"
           :value="2"
       ></v-stepper-item>
@@ -53,7 +53,7 @@
         >
           <v-card-text>
             <v-text-field
-                label="Titel des Buddy's *"
+                label="Titel des Buddys *"
                 variant="outlined"
                 class="mt-2"
                 maxlength="50"
@@ -105,7 +105,7 @@
             :value="3"
         >
           <v-text-field
-              label="Vor- & Nachname *"
+              label="Vor-/Nachname *"
               placeholder="Maxime Musterfrau"
               variant="outlined"
               class="mt-2"
@@ -113,7 +113,7 @@
           ></v-text-field>
 
           <v-text-field
-              label="Mobil"
+              label="Telefon"
               placeholder="+49123456789"
               variant="outlined"
               type="tel"
@@ -140,11 +140,11 @@
                 src="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
             ></v-img>
             <h3 class="text-h6 font-weight-light mb-2">
-              Ihr Inserat wurde erfolgreich geteilt
+              Ihr Inserat wurde erfolgreich geteilt!
             </h3>
             <span
                 class="text-caption text-grey"
-            >Danke das sie das Digital Blackboard nutzen!</span>
+            >Danke, dass Sie das "Digital Blackboard" nutzen!</span>
           </div>
 
           <v-card
@@ -179,7 +179,7 @@
                 style="width: 85%; margin: 10px;"
             ></v-divider>
 
-            <v-card-title>Kontakdaten</v-card-title>
+            <v-card-title>Kontaktdaten</v-card-title>
 
             <v-card-text>
               <v-row
@@ -292,20 +292,20 @@ export default {
       "price": "Preis pro Stunde in €:",
       "subject": "Fächer:",
       "availability": "Verfügbarkeit:",
-      "name": "Vor- & Nachname",
-      "mobil": "Mobil:",
+      "name": "Vor-/Nachname",
+      "mobil": "Telefon:",
       "email": "E-Mail",
     },
 
     titlerules: [
       value => {
         if (value) return true
-        return 'Es muss ein Titel für das Inserat erstellt werden'
+        return 'Bitte erstellen Sie einen Titel für Ihr Inserat.'
       },],
     descriptionrules: [
       value => {
         if (value) return true
-        return 'Es muss eine Beschreibung für das Inserat erstellt werden'
+        return 'Bitte erstellen Sie eine Beschreibung für Ihr Inserat.'
       }
     ]
   }),
@@ -334,11 +334,11 @@ export default {
   computed: {
     currentTitle () {
       switch (this.step) {
-        case 1: return 'Angaben zur Information';
+        case 1: return 'Informationsangaben';
         case 2: return 'Fotos';
         case 3: return 'Kontaktdaten';
         case 4: return 'Zusammenfassung';
-        default: return 'Information erfolgreich geteilt';
+        default: return 'Information wurde erfolgreich geteilt!';
       }
     },
     eventInfos() {

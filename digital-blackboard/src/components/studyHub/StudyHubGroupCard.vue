@@ -36,7 +36,7 @@ export default {
         members: "Mitglieder",
         activities: "Aktivitäten",
         description: "Beschreibung",
-        subject: "Studienrichtung",
+        subject: "Was erwartet dich?",
       },
     };
   },

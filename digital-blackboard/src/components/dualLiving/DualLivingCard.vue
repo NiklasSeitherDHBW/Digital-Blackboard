@@ -47,11 +47,11 @@ export default {
       dictionary: {
         "availability": "Zeitraum",
         "area": "Wohnfläche in m²",
-        "price" : "Monatliche Miete in €",
+        "price" : "monatliche Miete in €",
         "description": "Beschreibung",
         "location": "Ort / Stadtteil",
-        "furniture": "Möbiliert",
-        "community": "WG Zimmer",
+        "furniture": "möbiliert",
+        "community": "WG-Zimmer",
       },
     };
   },

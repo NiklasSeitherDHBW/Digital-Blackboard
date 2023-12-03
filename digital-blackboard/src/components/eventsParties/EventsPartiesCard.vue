@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       dictionary: {
-        "availability": "Maximale Anzahl Teilnehmer",
+        "availability": "max. Anzahl Teilnehmer",
         "price": "Preis",
         "description": "Beschreibung",
         "location": "Wo",

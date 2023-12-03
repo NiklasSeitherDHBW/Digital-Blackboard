@@ -54,7 +54,7 @@
     </v-card-title>
 
     <v-card-subtitle>
-        Einstellungsdatum: {{ item.date_created }}
+        Erstelldatum: {{ item.date_created }}
     </v-card-subtitle>
 
     <v-card-text class="ma-1">

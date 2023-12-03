@@ -5,7 +5,7 @@
   >
     <v-stepper-header>
       <v-stepper-item
-          title="Angaben zur Wohnung"
+          title="Angaben zu der Wohnung"
           :value="1"
       ></v-stepper-item>
 
@@ -13,7 +13,7 @@
 
       <v-stepper-item
           title="Fotos des Objektes"
-          subtitle="Optional"
+          subtitle="optional"
           :value="2"
       ></v-stepper-item>
 
@@ -94,7 +94,7 @@
           ></v-text-field>
 
           <v-text-field
-              label="Monatliche Miete"
+              label="monatliche Miete"
               variant="outlined"
               prefix="€"
               v-model="formData.price"
@@ -109,7 +109,7 @@
 
           <v-checkbox
               v-model="formData.furniture"
-              label="Möbliert"
+              label="möbliert"
           ></v-checkbox>
 
           <v-checkbox
@@ -122,7 +122,7 @@
               v-model="formData.selectedGender"
               variant="outlined"
               :items="['Jungs', 'Mädchen', 'Gemischt']"
-              label="Welches Geschlecht"
+              label="bevorzugtes Geschlecht"
           ></v-select>
         </v-form>
       </v-window-item>
@@ -142,7 +142,7 @@
             ref="form"
         >
           <v-text-field
-              label="Vor- & Nachname *"
+              label="Vor-/Nachname *"
               placeholder="Maxime Musterfrau"
               variant="outlined"
               class="mt-2"
@@ -150,7 +150,7 @@
           ></v-text-field>
 
           <v-text-field
-              label="Phone"
+              label="Telefon"
               placeholder="+49123456789"
               variant="outlined"
               type="tel"
@@ -168,7 +168,7 @@
         <span
             class="text-caption text-grey-darken-1"
         >
-              Das ist die Email, welche den Interesenten zur Kontaktaufnahme zur Verfügung gestellt wird!
+              Diese E-Mail steht Interessenten zur Verfügung, um Kontakt aufzunehmen.
         </span>
 
       </v-window-item>
@@ -186,12 +186,12 @@
               src="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
           ></v-img>
           <h3 class="text-h6 font-weight-light mb-2">
-            Ihr Inserat wurde erfolgreich erstellt
+            Ihr Inserat wurde erfolgreich erstellt!
           </h3>
           <span
               class="text-caption text-grey"
           >
-            Danke das sie das Digital Blackboard nutzen!
+            Danke, dass Sie das "Digital Blackboard" nutzen!
           </span>
         </v-container>
 
@@ -199,7 +199,7 @@
             class="ma-1"
             variant="outlined"
         >
-          <v-card-title>Wohnungsdaten</v-card-title>
+          <v-card-title>Immobilienangaben</v-card-title>
 
           <v-card-text>
             <v-row
@@ -235,7 +235,7 @@
               style="width: 85%; margin: 10px;"
           ></v-divider>
 
-          <v-card-title>Kontakdaten</v-card-title>
+          <v-card-title>Kontaktdaten</v-card-title>
 
           <v-card-text>
             <v-row
@@ -317,7 +317,7 @@ export default {
       selectedDate: null,
 
       infosAppartment: [
-        "title", "description", "availabelFrom", "availabelTill", "location", "price", "area", "furniture", "community", "selectedGender",
+        "title", "description", "availableFrom", "availableTill", "location", "price", "area", "furniture", "community", "selectedGender",
       ],
       infosContact: [
         "name", "phone", "email"
@@ -326,8 +326,8 @@ export default {
       formData: {
         title: '',
         description: '',
-        availabelFrom: '',
-        availabelTill: '',
+        availableFrom: '',
+        availableTill: '',
         location: '',
         price: '',
         area: '',
@@ -346,17 +346,17 @@ export default {
 
       dictionary: {
         "title": "Titel:",
-        "availabelFrom": "Von:",
-        "availabelTill": "Bis:",
+        "availableFrom": "Von:",
+        "availableTill": "Bis:",
         "area": "Wohnfläche in m²:",
         "price": "Warmmiete in €:",
         "description": "Beschreibung:",
         "location": "Ort / Stadtteil:",
-        "furniture": "Möbiliert:",
-        "community": "WG Zimmer:",
+        "furniture": "möbiliert:",
+        "community": "WG-Zimmer:",
         "selectedGender": "WG-Typ:",
 
-        "name": "Vor- & Nachname:",
+        "name": "Vor-/Nachname:",
         "phone": "Handynummer:",
         "email": "E-Mail:",
       },
@@ -377,7 +377,7 @@ export default {
     currentTitle() {
       switch (this.step) {
         case 1:
-          return "Angaben zur Wohnung";
+          return "Angaben zu der Wohnung";
         case 2:
           return "Fotos des Objektes";
         case 3:

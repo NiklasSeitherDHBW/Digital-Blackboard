@@ -16,7 +16,7 @@
       <v-divider></v-divider>
 
       <v-stepper-item
-          subtitle="Optional"
+          subtitle="optional"
           title="Fotos"
           :value="2"
       ></v-stepper-item>
@@ -97,11 +97,11 @@
                 src="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
             ></v-img>
             <h3 class="text-h6 font-weight-light mb-2">
-              Ihre Gruppe wurde erfolgreich geteilt
+              Ihre Gruppe wurde erfolgreich geteilt!
             </h3>
             <span
                 class="text-caption text-grey"
-            >Danke das sie das Digital Blackboard nutzen!</span>
+            >Danke, dass Sie das "Digital Blackboard" nutzen!</span>
           </div>
 
           <v-card
@@ -216,12 +216,12 @@ export default {
     titlerules: [
       value => {
         if (value) return true
-        return 'Es muss ein Titel für das Inserat erstellt werden'
+        return 'Bitte erstellen Sie einen Titel für Ihr Inserat.'
       },],
     descriptionrules: [
       value => {
         if (value) return true
-        return 'Es muss eine Beschreibung für das Inserat erstellt werden'
+        return 'Bitte erstellen Sie eine Beschreibung für Ihr Inserat.'
       }
     ]
   }),
@@ -253,7 +253,7 @@ export default {
         case 1: return 'Angaben zur Gruppe';
         case 2: return 'Fotos';
         case 3: return 'Zusammenfassung';
-        default: return 'Gruppe erfolgreich erstellt';
+        default: return 'Gruppe wurde erfolgreich erstellt!';
       }
     },
     eventInfos() {
