@@ -10,14 +10,6 @@
       align="center"
   >
 
-    <v-text-field
-        v-model="search"
-        hide-details
-        prepend-inner-icon="mdi-magnify"
-        class="search-bar my-5 mx-auto"
-        placeholder="Suche..."
-    ></v-text-field>
-
     <v-row>
       <v-col
           v-for="(item, index) in filteredAdvertisements"
@@ -36,8 +28,35 @@
     </v-row>
   </v-container>
 
+  <v-menu
+      transition="slide-x-transition-reverse"
+      location="start"
+      :close-on-content-click="false"
+  >
+    <template v-slot:activator="{ props }">
+      <v-btn
+          style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; right: 1rem; top: 7rem;"
+          v-bind="props"
+          :style="{ bottom: mobile ? '75px' : '20px' }"
+          text="Suche"
+          icon="mdi-magnify"
+      >
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+    </template>
+    <v-card min-width="300" >
+      <v-text-field
+          v-model="search"
+          hide-details
+          prepend-inner-icon="mdi-magnify"
+          class="search-bar my-5 mx-auto"
+          placeholder="Suche..."
+      ></v-text-field>
+    </v-card>
+  </v-menu>
+
   <v-btn
-      style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; right: 20px;"
+      style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; right:1rem;"
       :style="{ bottom: mobile ? '75px' : '20px' }"
       icon="mdi-plus"
       text="+"
@@ -77,6 +96,7 @@ export default {
     showDialogAddApartment: false,
     showDialogImages: false,
     showDialogsContact: false,
+    direction: 'left',
 
     selectedItem: null,
     advertisements: [
