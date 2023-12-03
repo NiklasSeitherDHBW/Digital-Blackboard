@@ -1,18 +1,29 @@
 <template>
-  <CustomAppBar titleGrey="Events &amp;" title-red="Feiern"/>
+  <CustomAppBar
+      titleGrey="Events &amp;"
+      title-red="Feiern"
+  ></CustomAppBar>
+
   <v-app>
     <v-container
-        style="width: 85%;">
+        style="width: 85%;"
+    >
       <v-row>
-        <v-col v-for="(category, index) in this.eventCategories"
-               :key="index"
-               cols="12"
-               md="4"
+        <v-col
+            v-for="(category, index) in this.eventCategories"
+            :key="index"
+            cols="12"
+            md="4"
         >
-          <v-card @click="this.selectedCategory = category;" :color="category === this.selectedCategory ? '#E0001BFF' : '#FFFFFF'"
-                  :style="{ width: category === this.selectedCategory ? '100%' : 'auto', 'font-size': category === this.selectedCategory ? '20px' : '16px' }"
+          <v-card
+              :color="category === this.selectedCategory ? '#E0001BFF' : '#FFFFFF'"
+              :style="{ width: category === this.selectedCategory ? '100%' : 'auto', 'font-size': category === this.selectedCategory ? '20px' : '16px' }"
+              @click="this.selectedCategory = category;"
           >
-            <v-card-title class="text-center transition-swing" :style="{ fontSize: category === this.selectedCategory ? '22px' : '16px' }">
+            <v-card-title
+                class="text-center transition-swing"
+                :style="{ fontSize: category === this.selectedCategory ? '22px' : '16px' }"
+            >
               {{ category }}
             </v-card-title>
           </v-card>
@@ -21,21 +32,21 @@
 
       <!-- Display Events -->
       <v-container
-        :fluid=true
+          :fluid=true
       >
         <v-row>
           <v-col
-            v-for="(item, index) in getEventsByCategory(this.selectedCategory)"
-            :key="index"
-            cols="12"
-            sm="12"
-            md="6"
-            lg="6"
-            xl="4"
-            xxl="3"
+              v-for="(item, index) in getEventsByCategory(this.selectedCategory)"
+              :key="index"
+              cols="12"
+              sm="12"
+              md="6"
+              lg="6"
+              xl="4"
+              xxl="3"
           >
             <EventsPartiesCard
-              :item="item"
+                :item="item"
             ></EventsPartiesCard>
           </v-col>
         </v-row>
@@ -52,7 +63,6 @@
       <v-dialog
           transition="dialog-bottom-transition"
           v-model="showDialogAddEvent"
-          activator="parent"
           :style="{ maxWidth: mobile ? '100%' : '60%' }"
       >
         <AddEventDialog @close-dialog="closeDialogAddEvent"></AddEventDialog>
@@ -67,7 +77,7 @@ import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue"
 import AddEventDialog from "@/components/eventsParties/AddEventDialog.vue";
 import {useDisplay} from "vuetify";
 
-const { mobile } = useDisplay()
+const {mobile} = useDisplay()
 </script>
 
 <script>
@@ -126,7 +136,6 @@ export default {
           images: ["https://i.ebayimg.com/images/g/qEsAAOSwJ3Rath0G/s-l1200.webp"],
         },
       ],
-      selectedCategory: null
     }
   },
   methods: {
@@ -142,11 +151,9 @@ export default {
         if (event.images.length === 0) {
           if (event.category === "Events") {
             event.images.push("https://th.bing.com/th/id/OIP.4yTkUC3EzS64VKlszOiukQHaBl?rs=1&pid=ImgDetMain");
-          }
-          else if (event.category === "Seminare") {
+          } else if (event.category === "Seminare") {
             event.images.push("https://www.frankfurt-school.de/.imaging/mte/fs-theme/stage-content-MQ2/dam/News/2022/Dezember/Graduation/Graduation-Ceremony-2022-Header-1266x321.jpg/jcr:content/Graduation%20Ceremony%202022%20Header%201266x321.jpg");
-          }
-          else if (event.category === "Feiern") {
+          } else if (event.category === "Feiern") {
             event.images.push("https://images.bild.de/5d415fba73cf6900016c8002/e35d695972ab704197e0a736aa3515c8,3a0a2df3?w=992");
           }
         }
