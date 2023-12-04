@@ -3,33 +3,35 @@
   <v-app>
     <v-container
         style="width: 85%;">
-      <v-row>
-        <v-col v-for="(category, index) in this.eventCategories"
-               :key="index"
-               cols="12"
-               md="4"
+
+
+        <v-tabs
+            v-model="this.selectedCategory"
+            bg-color="transparent"
+            color="#E0001BFF"
+            grow
         >
-          <v-card @click="this.selectedCategory = category;" :color="category === this.selectedCategory ? '#E0001BFF' : '#FFFFFF'"
-                  :style="{ width: category === this.selectedCategory ? '100%' : 'auto', 'font-size': category === this.selectedCategory ? '20px' : '16px' }"
+          <v-tab
+              v-for="category in eventCategories"
+              :key="category"
+              :value="category"
           >
-            <v-card-title class="text-center transition-swing" :style="{ fontSize: category === this.selectedCategory ? '22px' : '16px' }">
-              {{ category }}
-            </v-card-title>
-          </v-card>
-        </v-col>
-      </v-row>
+            {{ category }}
+          </v-tab>
+        </v-tabs>
+
 
       <!-- Display Events -->
       <v-container
-        :fluid=true
+          :fluid=true
       >
         <v-row>
           <v-col
-            v-for="(item, index) in getEventsByCategory(this.selectedCategory)"
-            :key="index"
+              v-for="(item, index) in getEventsByCategory(this.selectedCategory)"
+              :key="index"
           >
             <EventsPartiesCard
-              :item="item"
+                :item="item"
             ></EventsPartiesCard>
           </v-col>
         </v-row>
@@ -55,6 +57,9 @@
   </v-app>
 </template>
 
+
+
+
 <script setup>
 import CustomAppBar from "@/components/util/CustomAppBar.vue";
 import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue";
@@ -68,12 +73,13 @@ const { mobile } = useDisplay()
 export default {
   data() {
     return {
+      tab: "Events",
       showDialogAddApartment: false,
-      eventCategories: ["Events", "Feiern", "Seminare"],
+      eventCategories: ["Events", "Information", "Seminare"],
       events: [
         {
           title: 'Dualer Master',
-          category: 'Events',
+          category: 'Information',
           date: '2023-01-15',
           date_created: "08.01.2023",
           description: 'Wie kannst du einen Dualen Master überleben.',
@@ -93,11 +99,11 @@ export default {
           availability: "51 / 72",
           location: "Raum 069C",
           community: "Free for all",
-          images: []
+          images: ["https://media.geeksforgeeks.org/wp-content/uploads/20230911173805/What-is-Artiificial-Intelligence(AI).webp"]
         },
         {
           title: 'Erstsemester Party',
-          category: 'Feiern',
+          category: 'Events',
           date: '2023-03-10',
           date_created: "10.11.2023",
           description: 'Dance until the Sun comes up.',
@@ -105,11 +111,11 @@ export default {
           availability: "51 / 72",
           location: "Raum 069C",
           community: "Partymäuse",
-          images: []
+          images: ["https://majers-weinscheuer.de/wp-content/uploads/2021/01/Mathaisemarkt-at-home-majers-weinscheuer-schriesheim.jpg"]
         },
         {
           title: "Unser letzter Wille, immer mehr Promille!",
-          category: "Feiern",
+          category: "Events",
           date: "Jeden Freitag und Samstag, manchmal auch Dienstag :)",
           date_created: "01.01.2023",
           description: "Name ist Programm",
@@ -118,6 +124,82 @@ export default {
           location: "Überall",
           community: "Jeder ist willkommen",
           images: ["https://i.ebayimg.com/images/g/qEsAAOSwJ3Rath0G/s-l1200.webp"],
+        },
+        {
+          title: "DHBW Kneipentour",
+          category: "Events",
+          date: "2023-11-8",
+          date_created: "01.01.2023",
+          description: "Euch erwartet ein feuchtfröhlicher Abend, in dessen Verlauf Ihr, begleitet von unseren charmanten Guides, mehrere Mannheimer (Szene-)Kneipen von innen kennenlernen und " +
+              "deren reichhaltiges Getränkeangebot testen werdet. Ihr habt auf der Tour natürlich die Möglichkeit, über Euren Kurs hinaus Kontakte zu anderen Studierenden zu knüpfen. Vor diesem Hintergrund möchten wir Euch auch schon einmal darauf hinweisen, dass wir die Gruppen bei der Einteilung etwas bunter durcheinander mischen. " +
+              "Spätestens zur großen After-Kneipentour-Party im Chaplin Club werdet Ihr die Euch bekannten Gesichter auch wieder finden und gemeinsam bis zur Vorlesung am nächsten Morgen durchfeiern!",
+          price: "12,00",
+          availability: "Komm in die Gruppe",
+          location: "Jungbusch",
+          community: "Alle dualen StudentInnen der DHBW Mannheim",
+          images: ["https://stuv-mannheim.de/wp-content/uploads/2022/11/pexels-clam-lo-3355400-scaled.jpg"],
+        },
+        {
+          title: "Auslandstudium und -Praxis",
+          category: "Information",
+          date: "2023-11-27",
+          date_created: "01.01.2023",
+          description: "Studierende, die 2024 im Ausland studieren wollen, aufgepasst: Hier bekommen Sie alle wichtigen Infos rund um das Thema Beratung zu Gebührenprogrammen an der VIU, Kanada, oder dem ICMS, Australien.",
+          price: "ab 999",
+          availability: "Anmeldung via E-Mail",
+          location: "023B",
+          community: "An alle Entdecker",
+          images: ["https://www.medienmaster.de/wp-content/uploads/2019/10/Weltkugel_efks_Fotolia_65482539_S.jpg"],
+        },
+        {
+          title: "Literaturverwaltung mit Zotero",
+          category: "Information",
+          date: "2023-11-29",
+          date_created: "01.01.2023",
+          description: "Lernen Sie in diesem Online- Vortrag, wie Sie das Literaturverwaltungsprogramm Zotero effektiv nutzen können und profitieren Sie somit von Tipps & Tricks für Ihre Studienzeit ..",
+          price: "Kostenlos",
+          availability: "Anmeldung via E-Mail",
+          location: "Online",
+          community: "An alle StudentInnen der DHBW Mannheim ",
+          images: ["https://www.uni-bamberg.de/fileadmin/_processed_/6/5/csm_Hand_Buecherhaufen_COLOURBOX31689433_b33c18717c.webp"],
+        },
+
+        {
+          title: "Mein Weg in den deutschen Arbeitsmarkt",
+          category: "Seminare",
+          date: "2023-12-05",
+          date_created: "01.01.2023",
+          description: "Die Teilnehmenden lernen, den deutschen Arbeitsmarkt sowie seine Besonderheiten und Vormalitäten besser kennen. Weiterhin sollen sie befähigt werden, eine persönliche Vorgehensweise bezüglich der Jobsuche zu entwickeln, um eine ihren Fähigkeiten entsprechende Arbeitsstelle zu finden. Die Dozentin Frauke Fischmann hat mehrjährige Erfahrung in der Arbeit und Beratung von Akademiker:innen mit Fluchterfahrung mit dem Ziel der Arbeitsmarktintegration sowie umfassende Kenntnisse des deutschen Bildungssystems und Arbeitsmarktes sowie der deutschen Hochschullandschaft. ",
+          price: "Kostenlos",
+          availability: "Anmeldung via E-Mail",
+          location: "Online",
+          community: "An alle StudentInnen der DHBW Mannheim ",
+          images: ["https://i.ebayimg.com/images/g/qEsAAOSwJ3Rath0G/s-l1200.webp"],
+        },
+        {
+          title: 'Präsentationstraining',
+          category: 'Seminare',
+          date: '2024-05-23',
+          date_created: "10.11.2023",
+          description: "Die Teilnehmenden erhalten einen Einblick in verschiedene Präsentationstechniken, bekommen praktische Tipps zur Gestaltung von PowerPoint-Präsentationen und erarbeiten konkrete Ansatzpunkte für die nächste Präsentation. Dabei werden Techniken zur effektiven Vorbereitung vermittelt, ebenso wie der Umgang mit Nervosität. Das Ziel ist es zu lernen, wie man Präsentationen gestaltet, die den Inhalt verständlich und überzeugend vermitteln. Die Dozentin Dr. Johanna Fernández Castro ist interkulturelle Trainerin und freiberufliche Lehrbeauftragte an verschiedenen Universitäten",
+          price: "20,99",
+          availability: "Anmeldung ",
+          location: "Raum 012C",
+          community: "Alle",
+          images: ["https://www.ime-seminare.de/wp-content/uploads/praesentationstraining_1275x750.jpg"]
+        },
+        {
+          title: 'Netzwerken – Vitamin B für deine Bewerbung',
+          category: 'Seminare',
+          date: '2024-02-07',
+          date_created: "10.11.2023",
+          description: 'Netzwerken ist das A und O, vor allem in der Berufswelt. Im Seminar Netzwerken\n' +
+              '– Vitamin B für ihre Bewerbung erlernen die Teilnehmenden, wie man erfolgreich persönlich und digital Kontakte knüpft. An vier Tagen erfahren sie Grundlagen, machen Übungen für eine selbstbewusste Kontaktaufnahme und widmen sich der digitalen Vernetzung. Am letzten Tag entwickeln sie eine konkrete Strategie, wie sie das Gelernte umsetzen und somit ein breites Netzwerk aufbauen und damit leichter einen Job finden können. ',
+          price: "29,99",
+          availability: "Anmeldung über bahdja.fix@dhbw-mannheim.de",
+          location: "DHBW Mannheim Raum offen",
+          community: "Whole community",
+          images: ["https://www.wirtschaftsforum.de/fileadmin/_processed_/0/1/csm_Netzwerken_2_1_16ef9efc24.jpg"]
         },
       ],
       selectedCategory: null
@@ -140,7 +222,7 @@ export default {
           else if (event.category === "Seminare") {
             event.images.push("https://www.frankfurt-school.de/.imaging/mte/fs-theme/stage-content-MQ2/dam/News/2022/Dezember/Graduation/Graduation-Ceremony-2022-Header-1266x321.jpg/jcr:content/Graduation%20Ceremony%202022%20Header%201266x321.jpg");
           }
-          else if (event.category === "Feiern") {
+          else if (event.category === "Information") {
             event.images.push("https://images.bild.de/5d415fba73cf6900016c8002/e35d695972ab704197e0a736aa3515c8,3a0a2df3?w=992");
           }
         }
