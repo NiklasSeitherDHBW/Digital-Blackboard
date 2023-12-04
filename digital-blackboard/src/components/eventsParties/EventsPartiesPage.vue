@@ -1,7 +1,7 @@
 <template>
   <CustomAppBar
-      titleGrey="Events &amp;"
-      title-red="Veranstaltungen"
+      titleRed="Events &amp;"
+      titleGrey="Veranstaltungen"
   ></CustomAppBar>
 
   <v-app>
