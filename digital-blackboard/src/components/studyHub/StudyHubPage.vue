@@ -40,7 +40,7 @@
       <template v-slot:activator="{ props: activatorProps }">
         <v-btn
             v-bind="activatorProps"
-            style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; right: 20px;"
+            style="border-radius: 5px; color:#E0001BFF; background-color: white; position: fixed; right:1rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #000000"
             :style="{ bottom: mobile ? '75px' : '20px' }"
             icon="mdi-plus"
             text="+"
@@ -86,7 +86,7 @@
   >
     <template v-slot:activator="{ props }">
       <v-btn
-          style="border-radius: 5px; background-color:#E0001BFF; color: white; position: fixed; right: 1rem; top: 7rem;"
+          style="border-radius: 5px; background-color: white; color: #E0001BFF; position: fixed; right: 1rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #000000"
           v-bind="props"
           :style="{ bottom: mobile ? '75px' : '20px' }"
           text="Suche"
