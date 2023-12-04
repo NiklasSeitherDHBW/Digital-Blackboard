@@ -13,7 +13,6 @@
           :src="image"
           :cover=true
           class="align-end"
-          @click="showDialogImagesFullscreen=true"
       ></v-carousel-item>
 
       <v-dialog
@@ -29,7 +28,6 @@
             <v-btn
                 class="button-round ml-auto mr-1"
                 icon="mdi-close"
-                @click="showDialogImagesFullscreen=false"
             ></v-btn>
           </v-row>
 
@@ -50,7 +48,7 @@
     </v-carousel>
 
     <v-card-title>
-        {{ item.title }}
+      {{ item.title }}
     </v-card-title>
 
     <v-card-subtitle>
@@ -132,8 +130,17 @@
     >
       <v-btn
           ref="btnAction"
-          class="button-default mr-1 mb-1"
-          :style="{ 'background': actionBackground}"
+          icon="mdi-share-variant-outline"
+          class="mr-1 mb-1"
+          color="#eb1b2a"
+          @click="shareLink"
+      >
+      </v-btn>
+      <v-btn
+          ref="btnAction"
+          class="mr-2 mb-1"
+          color="#eb1b2a"
+          variant="outlined"
           @click="this.$emit('action-clicked')"
       >
         {{ action }}
@@ -160,6 +167,14 @@ export default {
       showDialogImagesFullscreen: false,
     };
   },
+  methods: {
+    shareLink() {
+      const link = window.location.origin + this.$route.path + '?card=' + this.item.id
+      navigator.clipboard.writeText(link);
+
+      alert(`Der Link zum Inserat wurde in deine Zwischenablage kopiert`);
+    },
+  }
 };
 
 </script>
@@ -168,10 +183,5 @@ export default {
 .button-round {
   background: white;
   color: #eb1b2a;
-}
-
-.button-default {
-  background: #eb1b2a;
-  color: white;
 }
 </style>
