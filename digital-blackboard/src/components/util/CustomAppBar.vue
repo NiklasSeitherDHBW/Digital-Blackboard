@@ -8,15 +8,15 @@
     >
       <div>
         <h2
-            class="title-grey"
-        >
-          {{ titleGrey }}
-        </h2>
-
-        <h2
             class="title-red"
         >
           {{ titleRed }}
+        </h2>
+
+        <h2
+            class="title-grey"
+        >
+          {{ titleGrey }}
         </h2>
 
         <h5
@@ -57,8 +57,8 @@ root.style.setProperty("--color-dhbw-red", colorDhbwRed)
 
 export default {
   props: {
-    titleGrey: String,
     titleRed: String,
+    titleGrey: String,
     subtitle: String
   },
 };
@@ -72,12 +72,13 @@ export default {
 
 .title-grey {
   color: var(--color-dhbw-grey);
-  margin-right: 5px;
+
   display: inline-block;
 }
 
 .title-red {
   color: var(--color-dhbw-red);
+  margin-right: 5px;
   display: inline-block;
 }
 

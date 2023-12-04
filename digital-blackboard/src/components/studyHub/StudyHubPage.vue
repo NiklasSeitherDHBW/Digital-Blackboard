@@ -1,7 +1,7 @@
 <template>
   <AppBar
-      titleGrey="Study"
-      titleRed="Hub"
+      titleRed="Study"
+      titleGrey="Hub"
   ></AppBar>
 
   <v-container

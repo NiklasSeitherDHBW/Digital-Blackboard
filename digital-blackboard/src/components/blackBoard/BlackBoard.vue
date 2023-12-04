@@ -1,7 +1,7 @@
 <template>
   <CustomAppBar
-      titleGrey="Digital"
-      titleRed="Blackboard"
+      titleRed="Digital"
+      titleGrey="Blackboard"
       subtitle="Letzte Ereignisse"
   ></CustomAppBar>
 
