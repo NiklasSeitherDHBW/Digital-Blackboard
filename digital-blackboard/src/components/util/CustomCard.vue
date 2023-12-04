@@ -1,6 +1,6 @@
 <template>
   <v-card
-      :style="{ 'min-width': '125px', 'height': showAll ? '100%' : 'auto', 'padding-bottom': showAll ? '50px' : '0px'}"
+      :style="{ 'min-width': '125px', 'height': showAll ? '100%' : 'auto', 'padding-bottom': showAll ? '50px' : '0px', 'box-shadow': '10px 10px 10px rgba(0, 0, 0, 0.3)'}"
   >
     <v-carousel
         :height="item.images.length < 1 ? '0px' : '300px'"
@@ -128,7 +128,7 @@
 
     <v-card-actions
         v-if="showAll"
-        style="position: absolute; bottom: 0; right:0;"
+        style="position: absolute; bottom: 0; right:0; "
     >
       <v-btn
           ref="btnAction"
@@ -167,11 +167,11 @@ export default {
 <style scoped>
 .button-round {
   background: white;
-  color: #E0001BFF; /* TODO: Change to color-dhbw-red */
+  color: #eb1b2a;
 }
 
 .button-default {
-  background: #E0001BFF;
+  background: #eb1b2a;
   color: white;
 }
 </style>

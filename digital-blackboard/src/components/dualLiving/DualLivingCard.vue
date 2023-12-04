@@ -50,7 +50,7 @@ export default {
         "price" : "monatliche Miete in €",
         "description": "Beschreibung",
         "location": "Ort / Stadtteil",
-        "furniture": "möbiliert",
+        "furniture": "möbliert",
         "community": "WG-Zimmer",
       },
     };
