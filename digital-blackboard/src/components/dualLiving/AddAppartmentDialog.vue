@@ -107,6 +107,12 @@
               v-model="formData.area"
           ></v-text-field>
 
+          <v-text-field
+              label="Anzahl Zimmer"
+              variant="outlined"
+              v-model="formData.rooms"
+          ></v-text-field>
+
           <v-checkbox
               v-model="formData.furniture"
               label="möbliert"
@@ -331,6 +337,7 @@ export default {
         location: '',
         price: '',
         area: '',
+        rooms: '',
         furniture: false,
         community: false,
         selectedGender: '',
@@ -349,6 +356,7 @@ export default {
         "availableFrom": "Von:",
         "availableTill": "Bis:",
         "area": "Wohnfläche in m²:",
+        "rooms": "Zimmer:",
         "price": "Warmmiete in €:",
         "description": "Beschreibung:",
         "location": "Ort / Stadtteil:",
