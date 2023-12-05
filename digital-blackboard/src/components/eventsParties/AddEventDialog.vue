@@ -6,7 +6,7 @@
       class="sticky-stepper"
   >
     <v-stepper-header
-      class="sticky-stepper-header"
+        class="sticky-stepper-header"
     >
       <v-stepper-item
           title="Angaben zum Event"
@@ -258,10 +258,10 @@ export default {
         return 'Bitte erstellen Sie einen Titel für Ihr Inserat.'
       },],
     descriptionrules: [
-        value => {
-      if (value) return true
-          return 'Bitte erstellen Sie eine Beschreibung für Ihr Inserat.'
-        }
+      value => {
+        if (value) return true
+        return 'Bitte erstellen Sie eine Beschreibung für Ihr Inserat.'
+      }
     ]
   }),
 
