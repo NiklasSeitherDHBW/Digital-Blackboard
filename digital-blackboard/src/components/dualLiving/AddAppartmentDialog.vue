@@ -77,8 +77,8 @@
               label="Von *"
               placeholder="TT.MM.JJJJ"
               type="date"
-              v-model="formData.availabelFrom"
-              :max="formData.availabelTill"
+              :max="formData.availableTill"
+              v-model="formData.availableFrom"
               variant="outlined"
               required
           ></v-text-field>
@@ -87,8 +87,8 @@
               label="Bis"
               placeholder="TT.MM.JJJJ"
               type="date"
-              :min="formData.availabelFrom"
-              v-model="formData.availabelTill"
+              :min="formData.availableFrom"
+              v-model="formData.availableTill"
               variant="outlined"
           ></v-text-field>
 
@@ -209,7 +209,7 @@
               class="mb-4"
               contain
               height="128"
-              src="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
+              src="https://firebasestorage.googleapis.com/v0/b/digital-blackboard-dhbw.appspot.com/o/dhbw-logo-small.jpg?alt=media"
           ></v-img>
           <h3 class="text-h6 font-weight-light mb-2">
             Noch ein letzter Check das alles passt!
@@ -462,10 +462,10 @@ export default {
       const isValid = this.validateFields(validation_list);
 
       if (isValid) {
+        // Zu nächster Seite gehen wenn alle Felder valide sind
         return this.step++
       }
     },
-
     validateContactForm() {
       const isValid = this.validateFields([
         { value: this.contactData.name, rules: this.nameRules },
