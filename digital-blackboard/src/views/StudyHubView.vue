@@ -40,7 +40,7 @@
       <template v-slot:activator="{ props: activatorProps }">
         <v-btn
             v-bind="activatorProps"
-            style="border-radius: 5px; color:#E0001BFF; background-color: white; position: fixed; right:1rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #000000"
+            style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 1rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
             :style="{ bottom: mobile ? '75px' : '20px' }"
             icon="mdi-plus"
             text="+"
@@ -77,8 +77,8 @@
     >
       <AddStudyHubDialog @close-dialog="closeDialogAddStudyHub"></AddStudyHubDialog>
     </v-dialog>
-
   </div>
+
   <v-menu
       transition="slide-x-transition-reverse"
       location="start"
@@ -86,7 +86,7 @@
   >
     <template v-slot:activator="{ props }">
       <v-btn
-          style="border-radius: 5px; background-color: white; color: #E0001BFF; position: fixed; right: 1rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #000000"
+          style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 1rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
           v-bind="props"
           :style="{ bottom: mobile ? '75px' : '20px' }"
           text="Suche"
@@ -95,6 +95,7 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
     </template>
+
     <v-card min-width="300" >
       <v-text-field
           v-model="search"
@@ -109,8 +110,8 @@
 
 
 <script>
-import {collection, addDoc, getDocs, Timestamp} from 'firebase/firestore'
-import db from '@/db'
+import {collection, addDoc, Timestamp} from 'firebase/firestore'
+import {db, fetchAdsStudyHub} from '@/db'
 
 export default {
   data: () => ({
@@ -256,7 +257,7 @@ export default {
 
       await addDoc(collection(db, "study-hub"), new_item);
 
-      this.fetchData();
+      this.advertisements = await fetchAdsStudyHub();
 
     },
     async closeDialogAddStudyHub(images, hubData) {
@@ -280,7 +281,7 @@ export default {
 
       await addDoc(collection(db, "study-hub"), new_item);
 
-      this.fetchData();
+      this.advertisements = await fetchAdsStudyHub();
     },
 
     itemChanged(oldItem, newItem) {
@@ -289,36 +290,10 @@ export default {
           this.advertisements[i] = newItem;
         }
       }
-    },
-
-    async fetchData() {
-      const querySnapshot = await getDocs(collection(db, "study-hub"));
-
-      // Convert the QueryDocumentSnapshots into an array of dictionaries
-      const transformedData = querySnapshot.docs.map((doc) => {
-        let tmp = doc.data();
-
-        // Prepare data for displaying in card
-        // assign document id as unique identifier for reading a specific advertisement
-        tmp["id"] = doc.id;
-
-        // Display dates in format TT.MM.YYYY
-        tmp["date_created"] = new Date(tmp["date_created"].seconds * 1000).toLocaleDateString("de-DE", {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        });
-
-        return tmp;
-      });
-
-      console.log(transformedData);
-
-      this.advertisements = transformedData;
-    },
+    }
   },
-  mounted() {
-    this.fetchData();
+  async mounted() {
+    this.advertisements = await fetchAdsStudyHub();
   }
 };
 </script>
@@ -333,7 +308,6 @@ import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
 import {useDisplay} from "vuetify";
 
 const {mobile} = useDisplay()
-
 </script>
 
 <style scoped>
