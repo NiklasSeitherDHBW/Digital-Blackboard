@@ -266,7 +266,7 @@ export default {
         images: images,
 
         title: hubData.title,
-        date_created: Timestamp.fromDate(new Date()),
+        date_created: new Date().toLocaleDateString("de-DE", { year: 'numeric', month: '2-digit', day: '2-digit' }), // TODO: needs to be changed: Push date obejct to database and convert it to string when retrieving data
 
         subject: hubData.subject,
         members: hubData.members,
