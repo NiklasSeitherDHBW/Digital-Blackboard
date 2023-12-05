@@ -6,7 +6,7 @@
       class="sticky-stepper"
   >
     <v-stepper-header
-      class="sticky-stepper-header"
+        class="sticky-stepper-header"
     >
       <v-stepper-item
           title="Angaben zum Event"
@@ -94,6 +94,7 @@
             <v-text-field
                 label="maximale Teilnehmeranzahl"
                 variant="outlined"
+                v-model="eventData.maxParticipantsLimit"
             ></v-text-field>
           </v-card-text>
         </v-window-item>
@@ -213,7 +214,7 @@ export default {
     selectedImages: [],
 
     infosEvent: [
-      "title", "description", "date", "location", "price", "community"
+      "title", "description", "date", "location", "price", "community", "maxParticipantsLimit"
     ],
 
     eventData: {
@@ -223,7 +224,8 @@ export default {
       location: '',
       price: '',
       community: '',
-      category: 'Events'
+      maxParticipantsLimit: 1,
+      category: 'Events',
     },
 
     dictionary: {
@@ -233,6 +235,7 @@ export default {
       "location": "Wo:",
       "price": "Preis in €:",
       "community": "Zielgruppe:",
+      "maxParticipantsLimit": "max. Anzahl Teilnehmer"
     },
 
     titlerules: [
@@ -241,10 +244,10 @@ export default {
         return 'Bitte erstellen Sie einen Titel für Ihr Inserat.'
       },],
     descriptionrules: [
-        value => {
-      if (value) return true
-          return 'Bitte erstellen Sie eine Beschreibung für Ihr Inserat.'
-        }
+      value => {
+        if (value) return true
+        return 'Bitte erstellen Sie eine Beschreibung für Ihr Inserat.'
+      }
     ]
   }),
 
