@@ -58,7 +58,7 @@
             <v-text-field
                 label="Beschreibung"
                 variant="outlined"
-                maxlength="200"
+                maxlength="300"
                 v-model="hubData.description"
                 counter
             ></v-text-field>
