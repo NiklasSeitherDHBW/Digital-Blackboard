@@ -229,7 +229,7 @@ export default {
         phone: "0137 09509274",
         email: "info@polsterwerkstatt.de"
       },
-    ], // TODO: Add to firebase database and delete here
+    ],
 
     search: "",
   }),
