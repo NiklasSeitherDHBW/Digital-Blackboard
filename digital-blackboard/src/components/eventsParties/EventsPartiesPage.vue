@@ -171,9 +171,6 @@ const {mobile} = useDisplay()
 </script>
 
 <script>
-import {addDoc, collection, getDocs, Timestamp} from "firebase/firestore";
-import db from "@/db";
-
 export default {
   data() {
     return {
@@ -273,6 +270,8 @@ export default {
         community: "An alle StudentInnen der DHBW Mannheim ",
         images: ["https://www.uni-bamberg.de/fileadmin/_processed_/6/5/csm_Hand_Buecherhaufen_COLOURBOX31689433_b33c18717c.webp"],
       },
+
+
       {
         title: "Mein Weg in den deutschen Arbeitsmarkt",
         category: "Seminare",
@@ -336,33 +335,23 @@ export default {
     },
   },
   methods: {
-    async closeDialogAddEvent(images, eventData) {
+    closeDialogAddEvent(images, eventData) {
       this.showDialogAddEvent = false;
 
-      // Split date by every component to create a date object for firebase
-      let dateParts = eventData.date.split("-")
-
       let new_item = {
-        images: images,
-
         title: eventData.title,
-        date_created: Timestamp.fromDate(new Date()),
-
-        date: Timestamp.fromDate(new Date(dateParts[0], dateParts[1] - 1, dateParts[2])), // parts[1] - 1 because JavaScript counts months from 0 (January - 1, Februaray - 2, etc.)
-        price: eventData.price,
-        community: eventData.community,
-
+        date_created: new Date().toLocaleDateString("de-DE", {year: '2-digit', month: '2-digit', day: '2-digit'}), // TODO: needs to be changed: Push date obejct to database and convert it to string when retrieving data
         description: eventData.description,
-        location: eventData.location,
-        members: 0,
-        max_participants_limit: eventData.maxParticipantsLimit,
-
+        price: eventData.price,
+        date: eventData.date,
         category: eventData.category,
+        images: images,
+        location: eventData.location,
+        availability: eventData.availability,
+        community: eventData.community,
       }
 
-      await addDoc(collection(db, "events-parties"), new_item);
-
-      this.fetchData();
+      this.advertisements.push(new_item);
     },
 
     closeDialogAddInfo(images, infoData) {
@@ -412,42 +401,8 @@ export default {
         }
       })
     },
-    async fetchData() {
-      const querySnapshot = await getDocs(collection(db, "events-parties"));
-
-      // Convert the QueryDocumentSnapshots into an array of dictionaries
-      const transformedData = querySnapshot.docs.map((doc) => {
-        let tmp = doc.data();
-
-        // Prepare data for displaying in card
-        // assign document id as unique identifier for reading a specific advertisement
-        tmp["id"] = doc.id;
-
-        // Display dates in format TT.MM.YYYY
-        tmp["date_created"] = new Date(tmp["date_created"].seconds * 1000).toLocaleDateString("de-DE", {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        });
-
-        tmp["date"] = new Date(tmp["date"].seconds * 1000).toLocaleDateString("de-DE", {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        });
-
-        tmp["availability"] = tmp["members"] + " / " + tmp["max_participants_limit"];
-
-        return tmp;
-      });
-
-      console.log(transformedData);
-
-      this.advertisements = transformedData;
-    }
   },
   mounted() {
-    this.fetchData();
     this.setDefaultImages();
   }
 }

@@ -94,7 +94,6 @@
             <v-text-field
                 label="maximale Teilnehmeranzahl"
                 variant="outlined"
-                v-model="eventData.maxParticipantsLimit"
             ></v-text-field>
           </v-card-text>
         </v-window-item>
@@ -214,7 +213,7 @@ export default {
     selectedImages: [],
 
     infosEvent: [
-      "title", "description", "date", "location", "price", "community", "maxParticipantsLimit"
+      "title", "description", "date", "location", "price", "community"
     ],
 
     eventData: {
@@ -224,8 +223,7 @@ export default {
       location: '',
       price: '',
       community: '',
-      maxParticipantsLimit: 1,
-      category: 'Events',
+      category: 'Events'
     },
 
     dictionary: {
@@ -235,7 +233,6 @@ export default {
       "location": "Wo:",
       "price": "Preis in €:",
       "community": "Zielgruppe:",
-      "maxParticipantsLimit": "max. Anzahl Teilnehmer"
     },
 
     titlerules: [

@@ -19,12 +19,12 @@ export default {
   data() {
     return {
       dictionary: {
-        "availability": "Anzahl Teilnehmer",
+        "availability": "max. Anzahl Teilnehmer",
         "price": "Preis",
         "description": "Beschreibung",
         "location": "Wo",
         "community": "Zielgruppe",
-        "date": "Wann",
+        "date": "Wann"
       }
     };
   },
