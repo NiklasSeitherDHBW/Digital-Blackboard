@@ -139,8 +139,8 @@
       <v-btn
           ref="btnAction"
           class="mr-2 mb-1"
-          color="#eb1b2a"
           variant="outlined"
+          :color="actionBackground"
           @click="this.$emit('action-clicked')"
       >
         {{ action }}

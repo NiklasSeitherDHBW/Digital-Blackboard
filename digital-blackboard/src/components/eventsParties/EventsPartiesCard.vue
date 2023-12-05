@@ -3,7 +3,9 @@
       :item="item"
       :basicInfos="basicInfos"
       :extraInfos="extraInfos"
-      action="Mitmachen"
+      :action="item.joined ? 'Angefragt' : 'Mitmachen'"
+      :actionBackground="item.joined ? '#7C868DFF' : '#eb1b2a'"
+      @action-clicked="joinEvent"
   ></CustomCard>
 </template>
 
@@ -27,6 +29,14 @@ export default {
         "date": "Wann",
       }
     };
+  },
+  methods: {
+    joinEvent() {
+      let tmp_item = this.item;
+      tmp_item.joined = !tmp_item.joined;
+
+      this.$emit("itemChanged", this.item, tmp_item);
+    },
   },
   computed: {
     basicInfosKeywords() {
