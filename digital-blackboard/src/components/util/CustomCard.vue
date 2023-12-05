@@ -133,7 +133,7 @@
           icon="mdi-share-variant-outline"
           class="mr-1 mb-1"
           color="#eb1b2a"
-          @click="shareLink"
+          @click="handleClick"
       >
       </v-btn>
       <v-btn
@@ -155,11 +155,14 @@ export default {
     item: Object,
     basicInfos: Object,
     extraInfos: Object,
+
     action: String,
     actionBackground: {
       type: String,
-      default: "red"
-    }
+      default: "red" // TODO: Replace by DHBW red
+    },
+
+    customClick: Function,
   },
   data() {
     return {
@@ -168,13 +171,19 @@ export default {
     };
   },
   methods: {
-    shareLink() {
-      const link = window.location.origin + this.$route.path + '?card=' + this.item.id
-      navigator.clipboard.writeText(link);
-
-      alert(`Der Link zum Inserat wurde in deine Zwischenablage kopiert`);
+    handleClick() {
+      // Check if a custom click function is provided by the parent
+      if (this.customClick && typeof this.customClick === 'function') {
+        // If yes, execute the custom click function provided via props
+        this.customClick();
+      }
+      else {
+        const link = window.location.origin + this.$route.path + '?card=' + this.item.id
+        navigator.clipboard.writeText(link);
+        alert(`Der Link zum Inserat wurde in deine Zwischenablage kopiert`);
+      }
     },
-  }
+  },
 };
 
 </script>
