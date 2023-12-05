@@ -47,14 +47,14 @@
           :value="1"
       >
         <v-form
-            ref="form"
-            @submit="submitForm"
+            @submit.prevent
         >
           <v-text-field
               class="mt-2"
-              label="Titel des Inserats"
+              label="Titel des Inserats *"
               variant="outlined"
               v-model="formData.title"
+              :rules="titleRules"
               maxlength="60"
               counter
               required
@@ -69,42 +69,57 @@
           ></v-textarea>
 
           <v-text-field
-              label="Von"
+              label="Von *"
               placeholder="TT.MM.JJJJ"
               type="date"
-              v-model="formData.availableFrom"
-              :max="formData.availableTill"
+              v-model="formData.availabelFrom"
+              :max="formData.availabelTill"
               variant="outlined"
+              required
           ></v-text-field>
 
           <v-text-field
               label="Bis"
               placeholder="TT.MM.JJJJ"
               type="date"
-              :min="formData.availableFrom"
-              v-model="formData.availableTill"
+              :min="formData.availabelFrom"
+              v-model="formData.availabelTill"
               variant="outlined"
           ></v-text-field>
 
           <v-text-field
-              label="Ort"
+              label="Ort *"
               placeholder="Mannheim Neuostheim"
               variant="outlined"
               v-model="formData.location"
+              :rules="generalRules"
+              required
           ></v-text-field>
 
           <v-text-field
-              label="monatliche Miete"
+              label="monatliche Miete *"
               variant="outlined"
               prefix="€"
               v-model="formData.price"
+              :rules="numRules"
+              required
           ></v-text-field>
 
           <v-text-field
-              label="Wohnfläche"
+              label="Wohnfläche *"
               variant="outlined"
               prefix="m²"
               v-model="formData.area"
+              :rules="numRules"
+              required
+          ></v-text-field>
+
+          <v-text-field
+              label="Anzahl Zimmer *"
+              variant="outlined"
+              v-model="formData.rooms"
+              :rules="numRules"
+              required
           ></v-text-field>
 
           <v-checkbox
@@ -146,14 +161,16 @@
               placeholder="Maxime Musterfrau"
               variant="outlined"
               class="mt-2"
+              :rules="nameRules"
               v-model="contactData.name"
           ></v-text-field>
 
           <v-text-field
-              label="Telefon"
+              label="Telefon *"
               placeholder="+49123456789"
               variant="outlined"
               type="tel"
+              :rules="phoneRules"
               v-model="contactData.phone"
           ></v-text-field>
 
@@ -162,6 +179,7 @@
               placeholder="john@google.com"
               variant="outlined"
               type="email"
+              :rules="emailRules"
               v-model="contactData.email"
           ></v-text-field>
         </v-form>
@@ -273,23 +291,35 @@
       <v-spacer></v-spacer>
 
       <v-btn
-          v-if="step < 3"
+          v-if="step === 1"
           color="red"
           class="float right"
           type="submit"
-          @click="moveToNextStep"
+          @click="validateDataForm"
       >
         Nächste
       </v-btn>
+      <!--Nur sichtbar solange man sich in den ersten 2 Seiten befindet -->
+      <v-btn
+          v-if="step === 2"
+          color="red"
+          class="float right"
+          type="submit"
+          @click="step++"
+      >
+        Nächste
+      </v-btn>
+      <!--Nur sichtbar solange man sich auf der 3. Seite befindet -->
       <v-btn
           v-if="step === 3"
           color="red"
           class="float right"
           type="submit"
-          @click="submitForm"
+          @click="validateContactForm"
       >
         Inserat fertigstellen
       </v-btn>
+      <!--Nur sichtbar solange man sich auf der letzten Seite befindet -->
       <v-btn
           v-if="step === 4"
           color="red"
@@ -321,6 +351,35 @@ export default {
       ],
       infosContact: [
         "name", "phone", "email"
+      ],
+
+      titleRules: [
+        (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
+        (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
+      ],
+      generalRules: [
+        (value) => value ? true : 'Bitte gebe weitere Informationen an!'
+      ],
+      dateRules: [
+        (value) => value ? true : 'Bitte wähle ein Datum aus!'
+      ],
+      numRules: [
+        (value) => value ? true : 'Bitte gebe weitere Informationen an!',
+        (value) => /\d+$/.test(value) ? true : 'Die angegebene Information darf nur Zahlen (0-9) beinhalten!',
+      ],
+
+      nameRules : [
+        (value) => value ? true : 'Bitte gebe einen Vor- und Nachnamen an!',
+        (value) => value.length >= 5 ? true : 'Der Name muss mindestens 5 Zeichen lang sein!',
+      ],
+      phoneRules : [
+        (value) => value ? true : 'Bitte gebe eine Telefonnummer an!',
+        (value) => /^\+?\d+$/.test(value) ? true : 'Die Telefonnummer darf nur Zahlen und das Pluszeichen enthalten!',
+        (value) => value.length >= 5 ? true : 'Die Telefonnummer muss mindestens 5 Zeichen lang sein!',
+      ],
+      emailRules : [
+        (value) => value ? true : 'Bitte gebe eine E-Mail-Adresse an!',
+        (value) => /\S+@\S+\.\S+/.test(value) ? true : 'Die E-Mail-Adresse ist ungültig!',
       ],
 
       formData: {
@@ -363,12 +422,44 @@ export default {
     };
   },
   methods: {
-    submitForm() {
-      this.step++
+    validateDataForm() {
+      const isValid = this.validateFields([
+        { value: this.formData.title, rules: this.titleRules },
+        { value: this.formData.location, rules: this.generalRules },
+        { value: this.formData.price, rules: this.numRules },
+        { value: this.formData.area, rules: this.numRules },
+        { value: this.formData.rooms, rules: this.numRules },
+      ]);  console.log(isValid)
+      if (isValid) {
+        return this.step++
+      }
     },
-    moveToNextStep() {
-      this.step++
+
+    validateContactForm() {
+      const isValid = this.validateFields([
+        { value: this.contactData.name, rules: this.nameRules },
+        { value: this.contactData.phone, rules: this.phoneRules },
+        { value: this.contactData.email, rules: this.emailRules },
+      ]);
+      if (isValid) {
+        return this.step++
+      }
     },
+    validateFields(fields) {
+      // Überprüfe jede Regel für jedes Feld
+      for (const field of fields) {
+        for (const rule of field.rules) {
+          const isValid = rule(field.value);
+          if (isValid !== true) {
+            // Wenn die Regel nicht erfüllt ist, zeige die Fehlermeldung an
+            console.error(isValid);
+            return false;
+          }
+        }
+      }
+      return true; // Alle Regeln wurden erfüllt => nächste Seite
+    },
+
     closeDialog() {
       this.$emit("close-dialog", this.formData, this.$refs.uploadImagesForm.imagePreviews, this.contactData)
     },
