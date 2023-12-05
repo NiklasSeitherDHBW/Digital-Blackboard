@@ -287,6 +287,7 @@ export default {
   },
   //scrollToCard soll beim aufrufen der Seite sofort ausgeführt werden
   mounted() {
+    this.fetchData();
     this.scrollToCard()
   },
 
@@ -394,9 +395,6 @@ export default {
       this.advertisements = transformedData;
     },
   },
-  mounted() {
-    this.fetchData();
-  }
 };
 </script>
 
