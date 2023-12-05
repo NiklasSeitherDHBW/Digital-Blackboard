@@ -16,7 +16,7 @@
             md="4"
         >
           <v-card
-              :color="category === this.selectedCategory ? '#E0001BFF' : '#FFFFFF'"
+              :color="category === this.selectedCategory ? '#eb1b2a' : '#FFFFFF'"
               :style="{ width: category === this.selectedCategory ? '100%' : 'auto', 'font-size': category === this.selectedCategory ? '20px' : '16px' }"
               @click="this.selectedCategory = category;"
           >
