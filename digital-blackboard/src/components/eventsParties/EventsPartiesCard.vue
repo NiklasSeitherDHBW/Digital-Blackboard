@@ -4,6 +4,7 @@
       :basicInfos="basicInfos"
       :extraInfos="extraInfos"
       action="Mitmachen"
+      :customClick="createShareLink"
   ></CustomCard>
 </template>
 
@@ -63,7 +64,15 @@ export default {
         value: this.item[attribute],
       }));
     },
-  }
+  },
+  methods: {
+    createShareLink() {
+      const link = window.location.origin + this.$route.path + '?card=' + this.item.id + "&selectedCategory=" + this.item.category;
+      navigator.clipboard.writeText(link);
+
+      alert(`Der Link zum Inserat wurde in deine Zwischenablage kopiert`);
+    }
+  },
 };
 </script>
 

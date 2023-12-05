@@ -21,9 +21,15 @@
           xl="4"
           xxl="3"
       >
-        <DualLivingCard
-            :item="item"
-        ></DualLivingCard>
+        <div
+            :id="item.id"
+            class="rounded"
+            style="height: 100%;"
+        >
+          <DualLivingCard
+              :item="item"
+          ></DualLivingCard>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -44,6 +50,7 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
     </template>
+
     <v-card min-width="300">
       <v-text-field
           v-model="search"
@@ -235,12 +242,12 @@ export default {
   }),
   computed: {
     filteredAdvertisements() {
-      return this.advertisements.filter(p => {
-        let keys = Object.keys(p);
+      return this.advertisements.filter(ad => {
+        let keys = Object.keys(ad);
         let showItem = false;
 
         for (let key of keys) {
-          if (String(p[key]).toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
+          if (String(ad[key]).toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
             showItem = true;
           }
         }
@@ -250,6 +257,30 @@ export default {
     }
   },
   methods: {
+    scrollToCard() {
+      const cardId = this.$route.query.card
+
+      if (cardId) {
+        // ausgewählte Karte finden
+        const element = document.getElementById(cardId)
+
+        if (element) {
+          // zu Karte scrollen
+          element.scrollIntoView({behavior: 'smooth'})
+
+          // Roten Rahmen um Karte setzen, um zu signalisieren, welche gemeint ist
+          element.style.border = '5px solid red';
+
+          // Kurze Zeit warten, dann Hervorhebung zu entfernen
+          setTimeout(() => {
+            element.style.transition = 'border-width 0.5s ease, opacity 0.5s ease'; // Verzögerter Übergang in Originalzustand für Fade Effekt
+            element.style.border = '5px solid red';
+            element.style.borderWidth = '0';
+          }, 6000);
+        }
+      }
+    },
+
     openDialogImagesFullscreen(item) {
       this.selectedItem = item;
       this.showDialogImages = true;
@@ -328,8 +359,9 @@ export default {
       this.advertisements = transformedData;
     },
   },
-  mounted() {
-    this.fetchData();
+  async mounted() {
+    await this.fetchData();
+    this.scrollToCard();
   }
 };
 </script>

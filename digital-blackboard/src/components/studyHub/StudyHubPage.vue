@@ -22,15 +22,22 @@
           xxl="3"
           align="left"
       >
-        <StudyHubBuddyCard
-            v-if="item.category === 'buddy'"
-            :item="item"
-        ></StudyHubBuddyCard>
-        <StudyHubGroupCard
-            v-if="item.category === 'group'"
-            :item="item"
-            @itemChanged="itemChanged"
-        ></StudyHubGroupCard>
+        <div
+            :id="item.id"
+            class="rounded"
+            style="height: 100%;"
+        >
+          <StudyHubBuddyCard
+              v-if="item.category === 'buddy'"
+              :item="item"
+          ></StudyHubBuddyCard>
+
+          <StudyHubGroupCard
+              v-if="item.category === 'group'"
+              :item="item"
+              @itemChanged="itemChanged"
+          ></StudyHubGroupCard>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -95,7 +102,7 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
     </template>
-    <v-card min-width="300" >
+    <v-card min-width="300">
       <v-text-field
           v-model="search"
           hide-details
@@ -210,7 +217,7 @@ export default {
     ], // TODO: Remove
     search: "",
   }),
-  computed : {
+  computed: {
     filteredAdvertisements() {
       return this.advertisements.filter(ad => {
         let keys = Object.keys(ad);
@@ -227,6 +234,30 @@ export default {
     },
   },
   methods: {
+    scrollToCard() {
+      const cardId = this.$route.query.card
+
+      if (cardId) {
+        // ausgewählte Karte finden
+        const element = document.getElementById(cardId)
+
+        if (element) {
+          // zu Karte scrollen
+          element.scrollIntoView({behavior: 'smooth'})
+
+          // Roten Rahmen um Karte setzen, um zu signalisieren, welche gemeint ist
+          element.style.border = '5px solid red';
+
+          // Kurze Zeit warten, dann Hervorhebung zu entfernen
+          setTimeout(() => {
+            element.style.transition = 'border-width 0.5s ease, opacity 0.5s ease'; // Verzögerter Übergang in Originalzustand für Fade Effekt
+            element.style.border = '5px solid red';
+            element.style.borderWidth = '0';
+          }, 6000);
+        }
+      }
+    },
+
     openDialogImagesFullscreen(item) {
       this.selectedItem = item;
       this.showDialogImages = true;
@@ -284,7 +315,7 @@ export default {
     },
 
     itemChanged(oldItem, newItem) {
-      for(let i = 0; i < this.advertisements.length; i++) {
+      for (let i = 0; i < this.advertisements.length; i++) {
         if (this.advertisements[i] === oldItem) {
           this.advertisements[i] = newItem;
         }
@@ -312,13 +343,12 @@ export default {
         return tmp;
       });
 
-      console.log(transformedData);
-
       this.advertisements = transformedData;
     },
   },
-  mounted() {
-    this.fetchData();
+  async mounted() {
+    await this.fetchData();
+    this.scrollToCard();
   }
 };
 </script>

@@ -40,9 +40,15 @@
               xl="4"
               xxl="3"
           >
-            <EventsPartiesCard
-                :item="item"
-            ></EventsPartiesCard>
+            <div
+                :id="item.id"
+                class="rounded"
+                style="height: 100%;"
+            >
+              <EventsPartiesCard
+                  :item="item"
+              ></EventsPartiesCard>
+            </div>
           </v-col>
         </v-row>
       </v-container>
@@ -333,6 +339,34 @@ export default {
     },
   },
   methods: {
+    scrollToCard() {
+      const cardCategory = this.$route.query.selectedCategory
+      const cardId = this.$route.query.card
+
+      if (cardId && cardCategory) {
+        this.selectedCategory = cardCategory
+
+        // Warten bis die DOM alle Elemente fertig geladen hat
+        this.$nextTick(() => {
+          const element = document.getElementById(cardId)
+
+          if (element) {
+            // zu ausgewählter Karte scrollen
+            element.scrollIntoView({behavior: 'smooth'})
+
+            // den Style zum hervorheben auswählen
+            element.style.border = '5px solid red';
+
+            // Timeout um das HErvorheben umzukehren
+            setTimeout(() => {
+              element.style.transition = 'border-width 0.5s ease, opacity 0.5s ease'; // Verzögerter Übergang in Originalzustand für Fade Effekt
+              element.style.border = '5px solid red';
+              element.style.borderWidth = '0';
+            }, 6000);
+          }
+        });
+      }
+    },
     async closeDialogAddEvent(images, eventData) {
       this.showDialogAddEvent = false;
 
@@ -461,9 +495,10 @@ export default {
       this.advertisements = transformedData;
     }
   },
-  mounted() {
-    this.fetchData();
+  async mounted() {
+    await this.fetchData();
     this.setDefaultImages();
+    this.scrollToCard();
   }
 }
 </script>
