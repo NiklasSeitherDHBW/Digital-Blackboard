@@ -33,7 +33,7 @@ export default {
   props: {
     item: Object,
     action: String,
-  },
+    },
   data() {
     return {
       showAll: false,

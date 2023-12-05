@@ -87,11 +87,11 @@
             ></v-text-field>
 
             <v-text-field
-                label="Verfügbarkeit"
-                placeholder="Nach Absprache"
-                variant="outlined"
-                v-model="buddyData.availability"
-            ></v-text-field>
+              label="Verfügbarkeit"
+              placeholder="Nach Absprache"
+              variant="outlined"
+              v-model="buddyData.availability"
+          ></v-text-field>
 
           </v-card-text>
         </v-window-item>
@@ -309,7 +309,7 @@ export default {
     ],
 
     infosContact: [
-      "name", "phone", "email"
+        "name", "mobil", "email"
     ],
 
     buddyData: {
@@ -324,7 +324,7 @@ export default {
 
     contactData: {
       name: '',
-      phone: '',
+      mobil: '',
       email: '',
     },
 
@@ -335,7 +335,7 @@ export default {
       "subject": "Fächer:",
       "availability": "Verfügbarkeit:",
       "name": "Vor-/Nachname",
-      "phone": "Telefon:",
+      "mobil": "Telefon:",
       "email": "E-Mail",
     },
 
