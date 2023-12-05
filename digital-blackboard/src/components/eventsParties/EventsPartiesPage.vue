@@ -24,10 +24,6 @@
         </v-tab>
       </v-tabs>
 
-
-
-
-
       <!-- Display Events -->
       <v-container
           :fluid=true
@@ -146,7 +142,7 @@
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
       </template>
-      <v-card min-width="300" >
+      <v-card min-width="300">
         <v-text-field
             v-model="search"
             hide-details
@@ -186,7 +182,8 @@ export default {
       ],
       selectedCategory: null,
 
-      advertisements: [
+      advertisements: [],
+      advertisements_old: [
         {
           title: 'Dualer Master',
           category: 'Informationen',
@@ -365,38 +362,58 @@ export default {
       this.fetchData();
     },
 
-    closeDialogAddInfo(images, infoData) {
+    async closeDialogAddInfo(images, infoData) {
       this.showDialogAddInfo = false;
 
+      let dateParts = infoData.date.split("-")
+
       let new_item = {
-        title: infoData.title,
-        description: infoData.description,
-        category: infoData.category,
-        date_created: new Date().toLocaleDateString("de-DE", {year: '2-digit', month: '2-digit', day: '2-digit'}), // TODO: needs to be changed: Push date obejct to database and convert it to string when retrieving data
         images: images,
-        location: infoData.location,
+
+        title: infoData.title,
+        date_created: Timestamp.fromDate(new Date()),
+
+        date: Timestamp.fromDate(new Date(dateParts[0], dateParts[1] - 1, dateParts[2])), // parts[1] - 1 because JavaScript counts months from 0 (January - 1, Februaray - 2, etc.)
         community: infoData.community,
+
+        description: infoData.description,
+        location: infoData.location,
+
+        category: infoData.category,
       }
 
-      this.advertisements.push(new_item);
+      await addDoc(collection(db, "events-parties"), new_item);
+
+      this.fetchData();
     },
 
-    closeDialogAddSeminar(images, seminarData) {
+    async closeDialogAddSeminar(images, seminarData) {
       this.showDialogAddSeminar = false;
 
+      let dateParts = seminarData.date.split("-")
+
       let new_item = {
-        title: seminarData.title,
-        description: seminarData.description,
-        category: seminarData.category,
-        date: seminarData.date,
-        date_created: new Date().toLocaleDateString("de-DE", {year: '2-digit', month: '2-digit', day: '2-digit'}), // TODO: needs to be changed: Push date obejct to database and convert it to string when retrieving data
-        price: seminarData.price,
         images: images,
-        location: seminarData.location,
+
+        title: seminarData.title,
+        date_created: Timestamp.fromDate(new Date()),
+
+        date: Timestamp.fromDate(new Date(dateParts[0], dateParts[1] - 1, dateParts[2])), // parts[1] - 1 because JavaScript counts months from 0 (January - 1, Februaray - 2, etc.)
+        price: seminarData.price,
         community: seminarData.community,
-        availability: seminarData.availability,
+
+        description: seminarData.description,
+        location: seminarData.location,
+
+        members: 0,
+        max_participants_limit: seminarData.maxParticipantsLimit,
+
+        category: seminarData.category,
       }
-      this.advertisements.push(new_item);
+
+      await addDoc(collection(db, "events-parties"), new_item);
+
+      this.fetchData();
     },
 
     setDefaultImages() {
@@ -440,8 +457,6 @@ export default {
 
         return tmp;
       });
-
-      console.log(transformedData);
 
       this.advertisements = transformedData;
     }
