@@ -1,30 +1,29 @@
 <template>
   <v-stepper
       v-model="step"
-      :editable=true
       alt-labels
-      class="sticky-stepper"
   >
-    <v-stepper-header
-        class="sticky-stepper-header"
-    >
+    <v-stepper-header>
       <v-stepper-item
-          title="Angaben zur Gruppe"
+          :title="mobile ? '' : 'Angaben zur Gruppe'"
+          :icon="mobile ? 'mdi-text-box-outline' : ''"
           :value="1"
       ></v-stepper-item>
 
       <v-divider></v-divider>
 
       <v-stepper-item
-          subtitle="optional"
-          title="Fotos"
+          :title="mobile ? '' : 'Fotos'"
+          :subtitle="mobile ? '' : 'Optional'"
+          :icon="mobile ? 'mdi-image-outline' : ''"
           :value="2"
       ></v-stepper-item>
 
       <v-divider></v-divider>
 
       <v-stepper-item
-          title="Zusammenfassung"
+          :title="mobile ? '' : 'Zusammenfassung'"
+          :icon="mobile ? 'mdi-checkbox-marked-circle-outline' : ''"
           :value="3"
       ></v-stepper-item>
     </v-stepper-header>
@@ -142,7 +141,7 @@
       <v-card-actions>
         <v-btn
             v-if="step > 1"
-            variant="text"
+            variant="outlined"
             @click="step--"
         >
           Zurück
@@ -153,8 +152,9 @@
         <v-btn
             v-if="step === 1"
             color="red"
-            variant="flat"
             class="float right"
+            type="submit"
+            variant="outlined"
             @click="validateDataForm"
         >
           Nächste
@@ -163,8 +163,9 @@
         <v-btn
             v-if="step === 2"
             color="red"
-            variant="flat"
             class="float right"
+            type="submit"
+            variant="outlined"
             @click="step++"
         >
           Gruppe teilen
@@ -173,8 +174,9 @@
         <v-btn
             v-if="step === 3"
             color="red"
-            variant="flat"
             class="float right"
+            type="submit"
+            variant="outlined"
             @click="closeDialog()"
         >
           Schließen
@@ -184,6 +186,11 @@
   </v-stepper>
 </template>
 
+<script setup>
+import {useDisplay} from "vuetify";
+
+const {mobile} = useDisplay()
+</script>
 
 <script>
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
@@ -197,7 +204,7 @@ export default {
     infosEvent: [
       "title", "description", "subject", "activities"
     ],
-
+    // regeln zum validieren des Inputs
     titleRules: [
       (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
       (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
@@ -229,22 +236,11 @@ export default {
       "activities": "Aktivitäten:",
       "subject": "Thema:",
     },
-
-    titlerules: [
-      value => {
-        if (value) return true
-        return 'Bitte erstellen Sie einen Titel für Ihr Inserat.'
-      },],
-    descriptionrules: [
-      value => {
-        if (value) return true
-        return 'Bitte erstellen Sie eine Beschreibung für Ihr Inserat.'
-      }
-    ]
   }),
 
   methods: {
     validateDataForm() {
+      // kritische Daten werden durch rules validiert, wenn alle felder richtig ausgefüllt werden kann die nächste seite erreich werden
       const isValid = this.validateFields([
         { value: this.hubData.title, rules: this.titleRules },
         { value: this.hubData.subject, rules: this.generalRules },
@@ -285,6 +281,7 @@ export default {
       });
     },
     closeDialog() {
+      // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
       this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.hubData)
     }
   },
@@ -298,6 +295,7 @@ export default {
       }
     },
     eventInfos() {
+      // iteriert über alle formData Attribute und deren Titel aus dictionary um diese als Preview anzuzeigen
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
         let value = this.hubData[attribute];
@@ -308,16 +306,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.sticky-stepper {
-  position: sticky;
-  overflow: visible;
-}
-
-.sticky-stepper-header {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-</style>
