@@ -39,7 +39,7 @@ export default {
       showDialogContactInfo: false,
 
       basicInfosKeywords: [
-        "availability", "area", "price"
+        "availability", "area", "rooms", "price"
       ],
       extraInfosKeywords: [
         "description", "location", "furniture", "community"
@@ -47,6 +47,7 @@ export default {
       dictionary: {
         "availability": "Zeitraum",
         "area": "Wohnfläche in m²",
+        "rooms": "Zimmer",
         "price" : "monatliche Miete in €",
         "description": "Beschreibung",
         "location": "Ort / Stadtteil",
