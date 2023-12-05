@@ -33,7 +33,7 @@ export default {
   props: {
     item: Object,
     action: String,
-    },
+  },
   data() {
     return {
       showAll: false,
@@ -44,7 +44,7 @@ export default {
         "price", "subject"
       ],
       extraInfosKeywords: [
-        "description", "availability", "contact"
+        "description", "availability",
       ],
 
       dictionary: {
@@ -52,8 +52,7 @@ export default {
         "price": "Preis pro Stunde in €",
         "description": "Beschreibung",
         "subject": "Fächer",
-        "contact": "Kontakt",
-      }
+      },
     };
   },
   computed: {
