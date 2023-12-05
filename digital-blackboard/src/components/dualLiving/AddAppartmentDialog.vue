@@ -72,8 +72,8 @@
               label="Von"
               placeholder="TT.MM.JJJJ"
               type="date"
-              v-model="formData.availabelFrom"
-              :max="formData.availabelTill"
+              v-model="formData.availableFrom"
+              :max="formData.availableTill"
               variant="outlined"
           ></v-text-field>
 
@@ -81,8 +81,8 @@
               label="Bis"
               placeholder="TT.MM.JJJJ"
               type="date"
-              :min="formData.availabelFrom"
-              v-model="formData.availabelTill"
+              :min="formData.availableFrom"
+              v-model="formData.availableTill"
               variant="outlined"
           ></v-text-field>
 
@@ -105,12 +105,6 @@
               variant="outlined"
               prefix="m²"
               v-model="formData.area"
-          ></v-text-field>
-
-          <v-text-field
-              label="Anzahl Zimmer"
-              variant="outlined"
-              v-model="formData.rooms"
           ></v-text-field>
 
           <v-checkbox
@@ -137,7 +131,7 @@
           :value="2"
       >
         <UploadImagesStep
-          ref="uploadImagesForm"
+            ref="uploadImagesForm"
         ></UploadImagesStep>
       </v-window-item>
 
@@ -337,7 +331,6 @@ export default {
         location: '',
         price: '',
         area: '',
-        rooms: '',
         furniture: false,
         community: false,
         selectedGender: '',
@@ -356,7 +349,6 @@ export default {
         "availableFrom": "Von:",
         "availableTill": "Bis:",
         "area": "Wohnfläche in m²:",
-        "rooms": "Zimmer:",
         "price": "Warmmiete in €:",
         "description": "Beschreibung:",
         "location": "Ort / Stadtteil:",
