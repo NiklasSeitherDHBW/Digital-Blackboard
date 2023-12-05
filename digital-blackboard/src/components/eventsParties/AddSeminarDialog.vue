@@ -90,7 +90,6 @@
             <v-text-field
                 label="maximale Teilnehmeranzahl"
                 variant="outlined"
-                v-model="seminarData.maxParticipantsLimit"
             ></v-text-field>
           </v-card-text>
         </v-window-item>
@@ -220,7 +219,7 @@ export default {
       location: '',
       price: '',
       community: '',
-      maxParticipantsLimit: '',
+      availability: '',
       category: 'Seminare'
     },
 
@@ -230,7 +229,7 @@ export default {
       "date": "Wann:",
       "location": "Wo:",
       "price": "Preis in €:",
-      "maxParticipantsLimit": "Anzahl Teilnehmer:",
+      "availability": "max. Anzahl Teilnehmer:",
       "community": "Zielgruppe:",
     },
 
