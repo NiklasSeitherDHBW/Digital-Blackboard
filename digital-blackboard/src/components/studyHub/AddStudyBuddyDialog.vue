@@ -58,6 +58,7 @@
                 class="mt-2"
                 maxlength="50"
                 v-model="buddyData.title"
+                :rules="titleRules"
                 counter
                 required
             ></v-text-field>
@@ -71,15 +72,17 @@
             ></v-text-field>
 
             <v-text-field
-                label="Preis pro Stunde"
+                label="Preis pro Stunde *"
                 prefix="€"
                 variant="outlined"
                 v-model="buddyData.price"
+                :rules="numRules"
             ></v-text-field>
 
             <v-text-field
-                label="Fächer"
+                label="Fächer *"
                 variant="outlined"
+                :rules="generalRules"
                 v-model="buddyData.subject"
             ></v-text-field>
 
@@ -109,14 +112,16 @@
               placeholder="Maxime Musterfrau"
               variant="outlined"
               class="mt-2"
+              :rules="nameRules"
               v-model="contactData.name"
           ></v-text-field>
 
           <v-text-field
-              label="Telefon"
+              label="Telefon *"
               placeholder="+49123456789"
               variant="outlined"
               type="tel"
+              :rules="phoneRules"
               v-model="contactData.phone"
           ></v-text-field>
 
@@ -125,6 +130,7 @@
               placeholder="john@google.com"
               variant="outlined"
               type="email"
+              :rules="emailRules"
               v-model="contactData.email"
           ></v-text-field>
         </v-window-item>
@@ -219,29 +225,38 @@
         <v-spacer></v-spacer>
 
         <v-btn
-            v-if="step < 3"
+            v-if="step === 1"
             color="red"
-            variant="flat"
             class="float right"
+            type="submit"
+            @click="validateDataForm"
+        >
+          Nächste
+        </v-btn>
+        <!--Nur sichtbar solange man sich in den ersten 2 Seiten befindet -->
+        <v-btn
+            v-if="step === 2"
+            color="red"
+            class="float right"
+            type="submit"
             @click="step++"
         >
           Nächste
         </v-btn>
-
+        <!--Nur sichtbar solange man sich auf der 3. Seite befindet -->
         <v-btn
             v-if="step === 3"
             color="red"
-            variant="flat"
             class="float right"
-            @click="step++"
+            type="submit"
+            @click="validateContactForm"
         >
-          Inserat teilen
+          Inserat fertigstellen
         </v-btn>
-
+        <!--Nur sichtbar solange man sich auf der letzten Seite befindet -->
         <v-btn
             v-if="step === 4"
             color="red"
-            variant="flat"
             class="float right"
             @click="closeDialog()"
         >
@@ -268,6 +283,35 @@ export default {
 
     infosContact: [
       "name", "phone", "email"
+    ],
+
+    titleRules: [
+      (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
+      (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
+    ],
+    generalRules: [
+      (value) => value ? true : 'Bitte gebe weitere Informationen an!'
+    ],
+    dateRules: [
+      (value) => value ? true : 'Bitte wähle ein Datum aus!'
+    ],
+    numRules: [
+      (value) => value ? true : 'Bitte gebe weitere Informationen an!',
+      (value) => /\d+$/.test(value) ? true : 'Die angegebene Information darf nur Zahlen (0-9) beinhalten!',
+    ],
+
+    nameRules : [
+      (value) => value ? true : 'Bitte gebe einen Vor- und Nachnamen an!',
+      (value) => value.length >= 5 ? true : 'Der Name muss mindestens 5 Zeichen lang sein!',
+    ],
+    phoneRules : [
+      (value) => value ? true : 'Bitte gebe eine Telefonnummer an!',
+      (value) => /^\+?\d+$/.test(value) ? true : 'Die Telefonnummer darf nur Zahlen und das Pluszeichen enthalten!',
+      (value) => value.length >= 5 ? true : 'Die Telefonnummer muss mindestens 5 Zeichen lang sein!',
+    ],
+    emailRules : [
+      (value) => value ? true : 'Bitte gebe eine E-Mail-Adresse an!',
+      (value) => /\S+@\S+\.\S+/.test(value) ? true : 'Die E-Mail-Adresse ist ungültig!',
     ],
 
     buddyData: {
@@ -311,6 +355,41 @@ export default {
   }),
 
   methods: {
+    validateDataForm() {
+      const isValid = this.validateFields([
+        { value: this.buddyData.title, rules: this.titleRules },
+        { value: this.buddyData.subject, rules: this.generalRules },
+        { value: this.buddyData.price, rules: this.numRules },
+      ]);  console.log(isValid)
+      if (isValid) {
+        return this.step++
+      }
+    },
+
+    validateContactForm() {
+      const isValid = this.validateFields([
+        { value: this.contactData.name, rules: this.nameRules },
+        { value: this.contactData.phone, rules: this.phoneRules },
+        { value: this.contactData.email, rules: this.emailRules },
+      ]);
+      if (isValid) {
+        return this.step++
+      }
+    },
+    validateFields(fields) {
+      // Überprüfe jede Regel für jedes Feld
+      for (const field of fields) {
+        for (const rule of field.rules) {
+          const isValid = rule(field.value);
+          if (isValid !== true) {
+            // Wenn die Regel nicht erfüllt ist, zeige die Fehlermeldung an
+            console.error(isValid);
+            return false;
+          }
+        }
+      }
+      return true; // Alle Regeln wurden erfüllt => nächste Seite
+    },
     onFileChange() {
       this.selectedImages = this.selectedImages.map((file) => ({
         file,

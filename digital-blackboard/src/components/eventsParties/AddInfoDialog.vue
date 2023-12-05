@@ -51,6 +51,7 @@
                 class="mt-2"
                 maxlength="50"
                 v-model="infoData.title"
+                :rules="titleRules"
                 counter
                 required
             ></v-text-field>
@@ -64,16 +65,18 @@
             ></v-text-field>
 
             <v-text-field
-                label="Ort"
+                label="Ort *"
                 placeholder="Coblitzallee 1-9, 68163 Mannheim"
                 variant="outlined"
                 v-model="infoData.location"
+                :rules="generalRules"
             ></v-text-field>
 
             <v-text-field
                 label="Zielgruppe *"
                 variant="outlined"
                 v-model="infoData.community"
+                :rules="generalRules"
             ></v-text-field>
 
             <v-text-field
@@ -158,11 +161,11 @@
         <v-spacer></v-spacer>
 
         <v-btn
-            v-if="step < 2"
+            v-if="step === 1"
             color="red"
             variant="flat"
             class="float right"
-            @click="step++"
+            @click="validateDataForm"
         >
           Nächste
         </v-btn>
@@ -205,6 +208,21 @@ export default {
       "title", "description", "location", "community"
     ],
 
+    titleRules: [
+      (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
+      (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
+    ],
+    generalRules: [
+      (value) => value ? true : 'Bitte gebe weitere Informationen an!'
+    ],
+    dateRules: [
+      (value) => value ? true : 'Bitte wähle ein Datum aus!'
+    ],
+    numRules: [
+      (value) => value ? true : 'Bitte gebe weitere Informationen an!',
+      (value) => /\d+$/.test(value) ? true : 'Die angegebene Information darf nur Zahlen (0-9) beinhalten!',
+    ],
+
     infoData: {
       title: '',
       description: '',
@@ -236,6 +254,32 @@ export default {
   }),
 
   methods: {
+    validateDataForm() {
+      const isValid = this.validateFields([
+        { value: this.infoData.title, rules: this.titleRules },
+        { value: this.infoData.subject, rules: this.generalRules },
+        { value: this.infoData.location, rules: this.generalRules },
+
+      ]);  console.log(isValid)
+      if (isValid) {
+        return this.step++
+      }
+    },
+
+    validateFields(fields) {
+      // Überprüfe jede Regel für jedes Feld
+      for (const field of fields) {
+        for (const rule of field.rules) {
+          const isValid = rule(field.value);
+          if (isValid !== true) {
+            // Wenn die Regel nicht erfüllt ist, zeige die Fehlermeldung an
+            console.error(isValid);
+            return false;
+          }
+        }
+      }
+      return true; // Alle Regeln wurden erfüllt => nächste Seite
+    },
     onFileChange() {
       this.selectedImages = this.selectedImages.map((file) => ({
         file,
