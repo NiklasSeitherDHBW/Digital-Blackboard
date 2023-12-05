@@ -44,7 +44,7 @@ export default {
         "price", "subject"
       ],
       extraInfosKeywords: [
-        "description", "availability",
+        "description", "availability", "contact"
       ],
 
       dictionary: {
@@ -52,7 +52,8 @@ export default {
         "price": "Preis pro Stunde in €",
         "description": "Beschreibung",
         "subject": "Fächer",
-      },
+        "contact": "Kontakt",
+      }
     };
   },
   computed: {
