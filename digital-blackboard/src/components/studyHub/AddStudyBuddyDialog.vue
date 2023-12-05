@@ -65,7 +65,7 @@
             <v-text-field
                 label="Beschreibung"
                 variant="outlined"
-                maxlength="200"
+                maxlength="300"
                 v-model="buddyData.description"
                 counter
             ></v-text-field>
