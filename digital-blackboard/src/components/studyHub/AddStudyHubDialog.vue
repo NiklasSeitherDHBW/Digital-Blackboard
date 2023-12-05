@@ -95,7 +95,7 @@
                 class="mb-4"
                 contain
                 height="128"
-                src="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
+                src="https://firebasestorage.googleapis.com/v0/b/digital-blackboard-dhbw.appspot.com/o/dhbw-logo-small.jpg?alt=media"
             ></v-img>
             <h3 class="text-h6 font-weight-light mb-2">
               Ihre Gruppe wurde erfolgreich geteilt!
