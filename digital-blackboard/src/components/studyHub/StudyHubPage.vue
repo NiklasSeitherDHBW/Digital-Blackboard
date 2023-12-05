@@ -109,9 +109,6 @@
 
 
 <script>
-import {collection, addDoc, getDocs, Timestamp} from 'firebase/firestore'
-import db from '@/db'
-
 export default {
   data: () => ({
     showDialogAddStudyHub: false,
@@ -119,8 +116,7 @@ export default {
     showDialogImages: false,
 
     selectedItem: null,
-    advertisements: [],
-    advertisements_old: [
+    advertisements: [
       {
         title: "Korrektur von Hausarbeiten, Bachelor- oder Masterarbeiten",
         images: ["https://media.licdn.com/dms/image/C4D03AQFeRA_eM_cKJg/profile-displayphoto-shrink_800_800/0/1613511035989?e=2147483647&v=beta&t=N8yoITebVYvJzeeFtH8CTXZGy5MmTwj-rnwNh1W3Ivw"],
@@ -207,7 +203,7 @@ export default {
         activities: "Essen, Trinken, Clubbing",
         category: "group"
       },
-    ], // TODO: Remove
+    ],
     search: "",
   }),
   computed : {
@@ -232,55 +228,43 @@ export default {
       this.showDialogImages = true;
     },
 
-    async closeDialogAddStudyBuddy(images, buddyData, contactData) {
+    closeDialogAddStudyBuddy(images, buddyData, contactData) {
       this.showDialogAddStudyBuddy = false;
 
       let new_item = {
-        images: images,
-
         title: buddyData.title,
-        date_created: Timestamp.fromDate(new Date()),
-
+        date_created: new Date().toLocaleDateString("de-DE", { year: 'numeric', month: '2-digit', day: '2-digit' }), // TODO: needs to be changed: Push date obejct to database and convert it to string when retrieving data
+        description: buddyData.description,
         price: buddyData.price,
         subject: buddyData.subject,
-
-        description: buddyData.description,
-        availability: buddyData.availability,
-
+        category: buddyData.category,
+        images: images,
+        rating: buddyData.rating,
         name: contactData.name,
         phone: contactData.phone,
         email: contactData.email,
-
-        category: buddyData.category,
       }
 
-      await addDoc(collection(db, "study-hub"), new_item);
-
-      this.fetchData();
-
+      this.advertisements.push(new_item);
     },
-    async closeDialogAddStudyHub(images, hubData) {
+    closeDialogAddStudyHub(images, hubData) {
       this.showDialogAddStudyHub = false;
 
       let new_item = {
-        images: images,
-
         title: hubData.title,
         date_created: new Date().toLocaleDateString("de-DE", { year: 'numeric', month: '2-digit', day: '2-digit' }), // TODO: needs to be changed: Push date obejct to database and convert it to string when retrieving data
-
-        subject: hubData.subject,
-        members: hubData.members,
-
         description: hubData.description,
+        subject: hubData.subject,
+        category: hubData.category,
         activities: hubData.activities,
-
+        images: images,
+        availability: hubData.availability,
+        members: hubData.members,
         joined: hubData.joined,
-        category: "group",
+
       }
 
-      await addDoc(collection(db, "study-hub"), new_item);
-
-      this.fetchData();
+      this.advertisements.push(new_item);
     },
 
     itemChanged(oldItem, newItem) {
@@ -290,36 +274,7 @@ export default {
         }
       }
     },
-
-    async fetchData() {
-      const querySnapshot = await getDocs(collection(db, "study-hub"));
-
-      // Convert the QueryDocumentSnapshots into an array of dictionaries
-      const transformedData = querySnapshot.docs.map((doc) => {
-        let tmp = doc.data();
-
-        // Prepare data for displaying in card
-        // assign document id as unique identifier for reading a specific advertisement
-        tmp["id"] = doc.id;
-
-        // Display dates in format TT.MM.YYYY
-        tmp["date_created"] = new Date(tmp["date_created"].seconds * 1000).toLocaleDateString("de-DE", {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        });
-
-        return tmp;
-      });
-
-      console.log(transformedData);
-
-      this.advertisements = transformedData;
-    },
   },
-  mounted() {
-    this.fetchData();
-  }
 };
 </script>
 
