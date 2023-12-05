@@ -47,14 +47,14 @@
           :value="1"
       >
         <v-form
-            ref="form"
-            @submit="submitForm"
+            @submit.prevent
         >
           <v-text-field
               class="mt-2"
-              label="Titel des Inserats"
+              label="Titel des Inserats *"
               variant="outlined"
               v-model="formData.title"
+              :rules="titleRules"
               maxlength="60"
               counter
               required
@@ -70,11 +70,12 @@
 
           <v-text-field
               label="Von"
-              placeholder="TT.MM.JJJJ"
+              placeholder="TT.MM.JJJJ *"
               type="date"
               v-model="formData.availableFrom"
               :max="formData.availableTill"
               variant="outlined"
+              required
           ></v-text-field>
 
           <v-text-field
@@ -87,24 +88,38 @@
           ></v-text-field>
 
           <v-text-field
-              label="Ort"
+              label="Ort *"
               placeholder="Mannheim Neuostheim"
               variant="outlined"
+              :rules="generalRules"
               v-model="formData.location"
+              required
           ></v-text-field>
 
           <v-text-field
-              label="monatliche Miete"
+              label="monatliche Miete *"
               variant="outlined"
               prefix="€"
               v-model="formData.price"
+              :rules="numRules"
+              required
           ></v-text-field>
 
           <v-text-field
-              label="Wohnfläche"
+              label="Wohnfläche *"
               variant="outlined"
               prefix="m²"
               v-model="formData.area"
+              :rules="numRules"
+              required
+          ></v-text-field>
+
+          <v-text-field
+              label="Anzahl Zimmer *"
+              variant="outlined"
+              v-model="formData.rooms"
+              :rules="numRules"
+              required
           ></v-text-field>
 
           <v-checkbox
@@ -146,14 +161,16 @@
               placeholder="Maxime Musterfrau"
               variant="outlined"
               class="mt-2"
+              :rules="nameRules"
               v-model="contactData.name"
           ></v-text-field>
 
           <v-text-field
-              label="Telefon"
+              label="Telefon *"
               placeholder="+49123456789"
               variant="outlined"
               type="tel"
+              :rules="phoneRules"
               v-model="contactData.phone"
           ></v-text-field>
 
@@ -162,6 +179,7 @@
               placeholder="john@google.com"
               variant="outlined"
               type="email"
+              :rules="emailRules"
               v-model="contactData.email"
           ></v-text-field>
         </v-form>
@@ -202,6 +220,7 @@
           <v-card-title>Immobilienangaben</v-card-title>
 
           <v-card-text>
+            <!-- Alle Elemente, die in den basicInfos enthalten sind, werden in einer Liste zusammengefasst (Preview) -->
             <v-row
                 v-for="item in basicInfos"
                 :key="item.label"
@@ -215,6 +234,7 @@
               </v-col>
 
               <v-col>
+                <!--Der Datentyp von furniture und community sind true/false, entsprechend wird ein check-/ close-symbol eingetragen-->
                 <p
                     v-if="item && typeof item.value === 'boolean'"
                 >
@@ -238,6 +258,7 @@
           <v-card-title>Kontaktdaten</v-card-title>
 
           <v-card-text>
+            <!-- Alle Elemente, die in den extraInfos enthalten sind, werden in einer Liste zusammengefasst (Preview) -->
             <v-row
                 v-for="item in extraInfos"
                 :key="item.label"
@@ -263,7 +284,6 @@
 
     <v-card-actions>
       <v-btn
-          v-if="step > 1 && step < 5"
           variant="text"
           @click="step--"
       >
@@ -271,9 +291,18 @@
       </v-btn>
 
       <v-spacer></v-spacer>
-
       <v-btn
-          v-if="step < 3"
+          v-if="step === 1"
+          color="red"
+          class="float right"
+          type="submit"
+          @click="validateDataForm"
+      >
+        Inserat fertigstellen
+      </v-btn>
+      <!--Nur sichtbar solange man sich in den ersten 2 Seiten befindet -->
+      <v-btn
+          v-if="step === 2"
           color="red"
           class="float right"
           type="submit"
@@ -281,15 +310,17 @@
       >
         Nächste
       </v-btn>
+      <!--Nur sichtbar solange man sich auf der 3. Seite befindet -->
       <v-btn
           v-if="step === 3"
           color="red"
           class="float right"
           type="submit"
-          @click="submitForm"
+          @click="validateContactForm"
       >
         Inserat fertigstellen
       </v-btn>
+      <!--Nur sichtbar solange man sich auf der letzten Seite befindet -->
       <v-btn
           v-if="step === 4"
           color="red"
@@ -301,6 +332,7 @@
     </v-card-actions>
   </v-stepper>
 </template>
+
 
 <script>
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
@@ -316,13 +348,43 @@ export default {
       isCommunityLiving: false,
       selectedDate: null,
 
+      titleRules: [
+          (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
+          (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
+      ],
+      generalRules: [
+          (value) => value ? true : 'Bitte gebe weitere Informationen an!'
+      ],
+      numRules: [
+          (value) => value ? true : 'Bitte gebe weitere Informationen an!',
+          (value) => /\d+$/.test(value) ? true : 'Die angegebene Information darf nur Zahlen (0-9) beinhalten!',
+      ],
+
+      nameRules : [
+          (value) => value ? true : 'Bitte gebe einen Vor- und Nachnamen an!',
+          (value) => value.length >= 5 ? true : 'Der Name muss mindestens 5 Zeichen lang sein!',
+      ],
+      phoneRules : [
+        (value) => value ? true : 'Bitte gebe eine Telefonnummer an!',
+        (value) => /^\+?\d+$/.test(value) ? true : 'Die Telefonnummer darf nur Zahlen und das Pluszeichen enthalten!',
+        (value) => value.length >= 5 ? true : 'Die Telefonnummer muss mindestens 5 Zeichen lang sein!',
+      ],
+      emailRules : [
+        (value) => value ? true : 'Bitte gebe eine E-Mail-Adresse an!',
+        (value) => /\S+@\S+\.\S+/.test(value) ? true : 'Die E-Mail-Adresse ist ungültig!',
+      ],
+
+      // Liste aller anzuzeigenden Daten über die Immobilie -> basicInfos
       infosAppartment: [
         "title", "description", "availableFrom", "availableTill", "location", "price", "area", "furniture", "community", "selectedGender",
       ],
+
+      // Liste aller anzuzeigenden Daten über die Kontaktperson -> extraInfos
       infosContact: [
         "name", "phone", "email"
       ],
 
+      // Form für alle eingetragenen Daten über die Immobilie
       formData: {
         title: '',
         description: '',
@@ -331,24 +393,27 @@ export default {
         location: '',
         price: '',
         area: '',
+        rooms: '',
         furniture: false,
         community: false,
         selectedGender: '',
         images: [],
         date_created: '',
       },
-
+      // Form für alle eingetragenen Daten über die Kontaktperson
       contactData: {
         name: '',
         phone: '',
         email: '',
       },
 
+      // Dictionary für die "Titel" der in den Previews zu zeigenden Informationen
       dictionary: {
         "title": "Titel:",
         "availableFrom": "Von:",
         "availableTill": "Bis:",
         "area": "Wohnfläche in m²:",
+        "rooms": "Zimmer:",
         "price": "Warmmiete in €:",
         "description": "Beschreibung:",
         "location": "Ort / Stadtteil:",
@@ -362,18 +427,56 @@ export default {
       },
     };
   },
+  // zum nächsten Step im Stepper springen
   methods: {
-    submitForm() {
-      this.step++
+    validateDataForm() {
+      const isValid = this.validateFields([
+        { value: this.formData.title, rules: this.titleRules },
+        { value: this.formData.availableFrom, rules: this.generalRules },
+        { value: this.formData.price, rules: this.numRules },
+        { value: this.formData.area, rules: this.numRules },
+        { value: this.formData.rooms, rules: this.numRules },
+      ]);
+      if (isValid) {
+        return this.step++
+      }
     },
+
+    validateContactForm() {
+      const isValid = this.validateFields([
+      { value: this.contactData.name, rules: this.nameRules },
+      { value: this.contactData.phone, rules: this.phoneRules },
+      { value: this.contactData.email, rules: this.emailRules },
+    ]);
+      if (isValid) {
+        return this.step++
+      }
+  },
+    validateFields(fields) {
+      // Überprüfe jede Regel für jedes Feld
+      for (const field of fields) {
+        for (const rule of field.rules) {
+          const isValid = rule(field.value);
+          if (isValid !== true) {
+            // Wenn die Regel nicht erfüllt ist, zeige die Fehlermeldung an
+            console.error(isValid);
+            return false;
+          }
+        }
+      }
+      return true; // Alle Regeln wurden erfüllt => nächste Seite
+    },
+
     moveToNextStep() {
       this.step++
     },
+
     closeDialog() {
       this.$emit("close-dialog", this.formData, this.$refs.uploadImagesForm.imagePreviews, this.contactData)
     },
   },
   computed: {
+    //anzuzeigende Titel der einzelnen Stepper-schritte
     currentTitle() {
       switch (this.step) {
         case 1:
@@ -386,6 +489,7 @@ export default {
           return "Inserat erstellt";
       }
     },
+    //iterieren, durch alle Informationen über die Immobilie aus infosAppartment, um die Entsprechenden Titel mit Wert als Preview anzuzeigen
     basicInfos() {
       let basicInfos = [];
       for (const attribute of this.infosAppartment) {
@@ -394,6 +498,7 @@ export default {
       }
       return basicInfos;
     },
+    //iterieren, durch alle Informationen über die Kontaktperson aus infosContact, um die Entsprechenden Titel mit Wert als Preview anzuzeigen
     extraInfos() {
       let extraInfos = [];
       for (const attribute of this.infosContact) {
@@ -405,7 +510,7 @@ export default {
   },
   watch: {
     isCommunityLiving(value) {
-      // Clear the selection if the community living checkbox is unchecked
+      //Wenn die Checkbox nicht mehr ausgewählt ist, wird der ausgewählte inhalt gelöscht
       if (!value) {
         this.formData.selectedGender = "";
       }

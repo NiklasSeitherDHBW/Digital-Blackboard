@@ -60,7 +60,7 @@ export default {
         {icon: 'mdi-domain', title: 'Dual Living', value: 'dualliving'},
         {icon: 'mdi-calendar-clock', title: 'Events', value: 'events'},
         {icon: 'mdi-school', title: 'Study Hub', value: 'studyhub'},
-        {icon: 'mdi-login-variant', title: 'Login', value: 'login'},
+        {icon: 'mdi-account', title: 'Account', value: 'account'},
       ],
     };
   },

@@ -8,6 +8,7 @@
       @action-clicked="showDialogContactInfo=true"
   ></CustomCard>
 
+  <!-- Alle Kontaktdaten, die in den advertisments (Immobilieninseraten -> DualLivingPage) enthalten sind, werden in einem dialog dargestellt -> Button: Kontaktieren-->
   <v-dialog
       v-model="showDialogContactInfo"
       transition="dialog-bottom-transition"
@@ -38,15 +39,21 @@ export default {
     return {
       showDialogContactInfo: false,
 
+      // Liste aller Primärdaten über die Immobilie -> basicInfos
       basicInfosKeywords: [
-        "availability", "area", "price"
+        "availability", "area", "rooms", "price"
       ],
+
+      // Liste aller Sekundärdaten über die Immobilie -> extraInfos
       extraInfosKeywords: [
         "description", "location", "furniture", "community"
       ],
+
+      // Form für alle eingetragenen Daten über die Immobilie
       dictionary: {
         "availability": "Zeitraum",
         "area": "Wohnfläche in m²",
+        "rooms": "Zimmer",
         "price" : "monatliche Miete in €",
         "description": "Beschreibung",
         "location": "Ort / Stadtteil",
@@ -56,12 +63,15 @@ export default {
     };
   },
   computed: {
+    //iterieren, durch alle primären Informationen über die Immobilie aus basicInfosKeywords, um die Entsprechenden Titel mit Wert des attributes anzuzeigen
     basicInfos() {
       return this.basicInfosKeywords.map((attribute) => ({
         label: this.dictionary[attribute],
         value: this.item[attribute],
       }));
     },
+
+    //iterieren, durch alle extra Informationen über die Immobilie aus extraInfosKeywords, um die Entsprechenden Titel mit Wert des attributes anzuzeigen
     extraInfos() {
       return this.extraInfosKeywords.map((attribute) => ({
         label: this.dictionary[attribute],

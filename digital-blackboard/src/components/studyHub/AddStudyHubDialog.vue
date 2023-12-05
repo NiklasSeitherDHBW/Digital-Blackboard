@@ -51,6 +51,7 @@
                 class="mt-2"
                 maxlength="50"
                 v-model="hubData.title"
+                :rules="titleRules"
                 counter
                 required
             ></v-text-field>
@@ -64,9 +65,10 @@
             ></v-text-field>
 
             <v-text-field
-                label="Thema"
+                label="Thema *"
                 variant="outlined"
                 v-model="hubData.subject"
+                :rules="generalRules"
             ></v-text-field>
 
             <v-text-field
@@ -149,11 +151,11 @@
         <v-spacer></v-spacer>
 
         <v-btn
-            v-if="step < 2"
+            v-if="step === 1"
             color="red"
             variant="flat"
             class="float right"
-            @click="step++"
+            @click="validatehubForm"
         >
           Nächste
         </v-btn>
@@ -192,6 +194,14 @@ export default {
     step: 1,
     selectedImages: [],
 
+    titleRules: [
+      (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
+      (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
+    ],
+    generalRules: [
+      (value) => value ? true : 'Bitte gebe weitere Informationen an!'
+    ],
+
     infosEvent: [
       "title", "description", "subject", "activities"
     ],
@@ -227,6 +237,30 @@ export default {
   }),
 
   methods: {
+    validatehubForm() {
+      const isValid = this.validateFields([
+        { value: this.hubData.title, rules: this.titleRules },
+        { value: this.hubData.subject, rules: this.generalRules },
+
+      ]);
+      if (isValid) {
+        return this.step++
+      }
+    },
+    validateFields(fields) {
+      // Überprüfe jede Regel für jedes Feld
+      for (const field of fields) {
+        for (const rule of field.rules) {
+          const isValid = rule(field.value);
+          if (isValid !== true) {
+            // Wenn die Regel nicht erfüllt ist, zeige die Fehlermeldung an
+            console.error(isValid);
+            return false;
+          }
+        }
+      }
+      return true; // Alle Regeln wurden erfüllt => nächste Seite
+    },
     onFileChange() {
       this.selectedImages = this.selectedImages.map((file) => ({
         file,
