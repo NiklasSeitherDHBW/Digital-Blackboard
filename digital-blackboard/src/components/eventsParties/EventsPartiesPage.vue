@@ -20,9 +20,22 @@
             :key="category"
             :value="category"
         >
-          {{ category }}
-        </v-tab>
-      </v-tabs>
+
+          <v-card
+              :color="category === this.selectedCategory ? '#eb1b2a' : '#FFFFFF'"
+              :style="{ width: category === this.selectedCategory ? '100%' : 'auto', 'font-size': category === this.selectedCategory ? '20px' : '16px' }"
+              @click="this.selectedCategory = category;"
+          >
+            <v-card-title
+                class="text-center transition-swing"
+                :style="{ fontSize: category === this.selectedCategory ? '22px' : '16px' }"
+            >
+              {{ category }}
+            </v-card-title>
+          </v-card>
+        </v-col>
+      </v-row>
+
 
       <!-- Display Events -->
       <v-container

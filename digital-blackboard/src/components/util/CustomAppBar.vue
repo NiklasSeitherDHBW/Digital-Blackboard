@@ -3,10 +3,9 @@
       color="white"
       height="100"
   >
-    <v-app-bar-title
-        class="d-flex align-center"
-    >
-      <div>
+    <v-app-bar-title class="text-center">
+
+      <div class="title-container">
         <h2
             class="title-red"
         >
