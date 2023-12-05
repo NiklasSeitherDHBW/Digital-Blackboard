@@ -54,7 +54,7 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
     </template>
-    <v-card min-width="300">
+    <v-card min-width="300" >
       <v-text-field
           v-model="search"
           hide-details
@@ -91,18 +91,17 @@
 
 <script setup>
 import AppBar from "@/components/util/CustomAppBar.vue";
+
 import AddApartment from "@/components/dualLiving/AddAppartmentDialog.vue";
 import DualLivingCard from "@/components/dualLiving/DualLivingCard.vue";
 
 import {useDisplay} from "vuetify";
 
 const {mobile} = useDisplay()
+
 </script>
 
 <script>
-import {collection, addDoc, getDocs, Timestamp} from 'firebase/firestore'
-import db from '@/db'
-
 export default {
   data: () => ({
     showDialogAddApartment: false,
@@ -111,8 +110,7 @@ export default {
     direction: 'left',
 
     selectedItem: null,
-    advertisements: [],
-    advertisements_old: [
+    advertisements: [
       {
         id: 1,
         title: 'Attraktive Studentenwohnung: Ab Januar 2024',
@@ -321,78 +319,28 @@ export default {
       this.selectedItem = item;
       this.showDialogImages = true;
     },
-    async closeDialogAddAppartment(formData, images, contactData) {
+    closeDialogAddAppartment(formData, images, contactData) {
+      //deflaut: wird nicht gezeigt
       this.showDialogAddApartment = false;
 
-      // Split date by every component to create a date object for firebase
-      let fromParts = formData.availableFrom.split("-")
-      let untilParts = formData.availableTill.split("-")
-
-      // Create new document
       let new_item = {
         title: formData.title,
-        date_created: Timestamp.fromDate(new Date()),
-
-        available_from: Timestamp.fromDate(new Date(fromParts[0], fromParts[1] - 1, fromParts[2])), // parts[1] - 1 because JavaScript counts months from 0 (January - 1, Februaray - 2, etc.)
-        available_until: Timestamp.fromDate(new Date(untilParts[0], fromParts[1] - 1, fromParts[2])),
-        area: formData.area,
-        price: formData.price,
-
         description: formData.description,
         location: formData.location,
-        furniture: formData.furniture,
-        community: formData.community,
-        community_type: formData.selectedGender,
-        
+        date_created: new Date().toLocaleDateString("de-DE", {year: 'numeric', month: '2-digit', day: '2-digit'}), // TODO: needs to be changed: Push date obejct to database and convert it to string when retrieving data
+        availability: `${formData.availableFrom} - ${formData.availableTill}`,
+        furniture: formData.furniture ? "Ja" : "Nein",
+        community: `${formData.community ? 'Ja -' : 'Nein'} ${formData.selectedGender}`,
+        price: formData.price,
+        area: formData.area,
+        rooms: formData.rooms,
         images: images,
-
         name: contactData.name,
         phone: contactData.phone,
         email: contactData.email,
       }
 
-      // Store advertisement in database
-      await addDoc(collection(db, "dual-living"), new_item);
-
-      this.fetchData();
-    },
-
-    async fetchData() {
-      const querySnapshot = await getDocs(collection(db, "dual-living"));
-
-      // Convert the QueryDocumentSnapshots into an array of dictionaries
-      const transformedData = querySnapshot.docs.map((doc) => {
-        let tmp = doc.data();
-
-        // Prepare data for displaying in card
-        // assign document id as unique identifier for reading a specific advertisement
-        tmp["id"] = doc.id;
-
-        // Display dates in format TT.MM.YYYY
-        tmp["date_created"] = new Date(tmp["date_created"].seconds * 1000).toLocaleDateString("de-DE", {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        });
-        tmp["available_from"] = new Date(tmp["available_from"].seconds * 1000).toLocaleDateString("de-DE", {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        });
-        tmp["available_until"] = new Date(tmp["available_until"].seconds * 1000).toLocaleDateString("de-DE", {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        });
-        tmp["availability"] = tmp["available_from"] + " - " + tmp["available_until"];
-
-        tmp["furniture"] = tmp["furniture"] ? "Ja" : "Nein";
-        tmp["community"] = tmp["community"] ? "Ja - " + tmp["community_type"] : "Nein";
-
-        return tmp;
-      });
-
-      this.advertisements = transformedData;
+      this.advertisements.push(new_item);
     },
   },
 };

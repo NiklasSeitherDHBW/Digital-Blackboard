@@ -72,8 +72,8 @@
               label="Von"
               placeholder="TT.MM.JJJJ *"
               type="date"
-              v-model="formData.availableFrom"
-              :max="formData.availableTill"
+              v-model="formData.availabelFrom"
+              :max="formData.availabelTill"
               variant="outlined"
               required
           ></v-text-field>
@@ -82,8 +82,8 @@
               label="Bis"
               placeholder="TT.MM.JJJJ"
               type="date"
-              :min="formData.availableFrom"
-              v-model="formData.availableTill"
+              :min="formData.availabelFrom"
+              v-model="formData.availabelTill"
               variant="outlined"
           ></v-text-field>
 
@@ -146,7 +146,7 @@
           :value="2"
       >
         <UploadImagesStep
-            ref="uploadImagesForm"
+          ref="uploadImagesForm"
         ></UploadImagesStep>
       </v-window-item>
 
