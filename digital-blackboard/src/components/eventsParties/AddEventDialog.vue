@@ -51,7 +51,6 @@
                 class="mt-2"
                 maxlength="50"
                 v-model="eventData.title"
-                :rules="titleRules"
                 counter
                 required
             ></v-text-field>
@@ -69,7 +68,6 @@
                 placeholder="TT.MM.JJJJ"
                 variant="outlined"
                 type="date"
-                :rules="generalRules"
                 v-model="eventData.date"
             ></v-text-field>
 
@@ -77,22 +75,19 @@
                 label="Ort *"
                 placeholder="Coblitzallee 1-9, 68163 Mannheim"
                 variant="outlined"
-                :rules="generalRules"
                 v-model="eventData.location"
             ></v-text-field>
 
             <v-text-field
-                label="Zielgruppe *"
+                label="Zielgruppe"
                 variant="outlined"
                 v-model="eventData.community"
             ></v-text-field>
 
             <v-text-field
-                label="Preis p.p. *"
+                label="Preis p.p."
                 variant="outlined"
-                placeholder="Kostenlos = 0"
                 prefix="€"
-                :rules="numRules"
                 v-model="eventData.price"
             ></v-text-field>
 
@@ -174,11 +169,11 @@
         <v-spacer></v-spacer>
 
         <v-btn
-            v-if="step === 1"
+            v-if="step < 2"
             color="red"
             variant="flat"
             class="float right"
-            @click="validateEventForm"
+            @click="step++"
         >
           Nächste
         </v-btn>
@@ -217,18 +212,6 @@ export default {
     step: 1,
     selectedImages: [],
 
-    titleRules: [
-      (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
-      (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
-    ],
-    generalRules: [
-      (value) => value ? true : 'Bitte gebe weitere Informationen an!'
-    ],
-    numRules: [
-      (value) => value ? true : 'Bitte gebe weitere Informationen an!',
-      (value) => /\d+$/.test(value) ? true : 'Die angegebene Information darf nur Zahlen (0-9) beinhalten!',
-    ],
-
     infosEvent: [
       "title", "description", "date", "location", "price", "community"
     ],
@@ -266,33 +249,6 @@ export default {
   }),
 
   methods: {
-    validateEventForm() {
-      const isValid = this.validateFields([
-        { value: this.eventData.title, rules: this.titleRules },
-        { value: this.eventData.location, rules: this.generalRules },
-        { value: this.eventData.community, rules: this.generalRules },
-        { value: this.eventData.date, rules: this.generalRules },
-        { value: this.eventData.price, rules: this.numRules },
-      ]);
-      if (isValid) {
-        return this.step++
-      }
-    },
-    validateFields(fields) {
-      // Überprüfe jede Regel für jedes Feld
-      for (const field of fields) {
-        for (const rule of field.rules) {
-          const isValid = rule(field.value);
-          if (isValid !== true) {
-            // Wenn die Regel nicht erfüllt ist, zeige die Fehlermeldung an
-            console.error(isValid);
-            return false;
-          }
-        }
-      }
-      return true; // Alle Regeln wurden erfüllt => nächste Seite
-    },
-
     onFileChange() {
       this.selectedImages = this.selectedImages.map((file) => ({
         file,

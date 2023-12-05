@@ -50,7 +50,6 @@
                 variant="outlined"
                 class="mt-2"
                 maxlength="50"
-                :rules="titleRules"
                 v-model="infoData.title"
                 counter
                 required
@@ -75,7 +74,6 @@
                 label="Zielgruppe *"
                 variant="outlined"
                 v-model="infoData.community"
-                :rules="generalRules"
             ></v-text-field>
 
             <v-text-field
@@ -83,7 +81,6 @@
                 placeholder="TT.MM.JJJJ"
                 variant="outlined"
                 type="date"
-                :rules="generalRules"
                 v-model="infoData.date"
             ></v-text-field>
 
@@ -161,11 +158,11 @@
         <v-spacer></v-spacer>
 
         <v-btn
-            v-if="step === 1"
+            v-if="step < 2"
             color="red"
             variant="flat"
             class="float right"
-            @click="validateInfoForm"
+            @click="step++"
         >
           Nächste
         </v-btn>
@@ -204,18 +201,6 @@ export default {
     step: 1,
     selectedImages: [],
 
-    titleRules: [
-      (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
-      (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
-    ],
-    generalRules: [
-      (value) => value ? true : 'Bitte gebe weitere Informationen an!'
-    ],
-    numRules: [
-      (value) => value ? true : 'Bitte gebe weitere Informationen an!',
-      (value) => /\d+$/.test(value) ? true : 'Die angegebene Information darf nur Zahlen (0-9) beinhalten!',
-    ],
-
     infosEvent: [
       "title", "description", "location", "community"
     ],
@@ -251,32 +236,6 @@ export default {
   }),
 
   methods: {
-    validateInfoForm() {
-      const isValid = this.validateFields([
-        { value: this.eventData.title, rules: this.titleRules },
-        { value: this.eventData.community, rules: this.generalRules },
-        { value: this.eventData.date, rules: this.generalRules },
-        { value: this.eventData.price, rules: this.numRules },
-      ]);
-      if (isValid) {
-        return this.step++
-      }
-    },
-    validateFields(fields) {
-      // Überprüfe jede Regel für jedes Feld
-      for (const field of fields) {
-        for (const rule of field.rules) {
-          const isValid = rule(field.value);
-          if (isValid !== true) {
-            // Wenn die Regel nicht erfüllt ist, zeige die Fehlermeldung an
-            console.error(isValid);
-            return false;
-          }
-        }
-      }
-      return true; // Alle Regeln wurden erfüllt => nächste Seite
-    },
-
     onFileChange() {
       this.selectedImages = this.selectedImages.map((file) => ({
         file,
