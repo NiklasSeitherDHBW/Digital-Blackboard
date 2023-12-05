@@ -15,7 +15,7 @@
       class="justify-center"
   >
     <ContactCard
-        :name="item.title"
+        :name="item.name"
         :course="item.subject"
         :phone="item.phone"
         :email="item.email"
