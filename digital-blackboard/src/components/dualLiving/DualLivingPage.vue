@@ -11,7 +11,6 @@
   >
 
     <v-row>
-      <!-- alle Inhalte anzeigen, die dem suchbegriff enthalten-->
       <v-col
           v-for="(item, index) in filteredAdvertisements"
           :key="index"
@@ -22,13 +21,11 @@
           xl="4"
           xxl="3"
       >
-        <!--div erstellen mit id, um zu diesem per link navigieren zu können -->
         <div
           :id="item.id"
           class="rounded"
           style="height: 100%;"
         >
-          <!--erstellen der items mithilfe der importierten DualLivingCard-->
           <DualLivingCard
               :item="item"
           ></DualLivingCard>
@@ -37,7 +34,6 @@
     </v-row>
   </v-container>
 
-  <!--Suchbutton, bei interaktion fährt die Suchleiste nach links aus, Inhalte werden in echtzeit nach der Eingabe gefiltert-->
   <v-menu
       transition="slide-x-transition-reverse"
       location="start"
@@ -65,7 +61,6 @@
     </v-card>
   </v-menu>
 
-  <!--Dialog fenster zum erstellen eigener Inserate für die Seite Dual Living, nach der Vorlage AddApartment-->
   <v-btn
       style="border-radius: 5px; color:#E0001BFF; background-color: white; position: fixed; right:1rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #000000"
       :style="{ bottom: mobile ? '75px' : '20px' }"
@@ -261,29 +256,20 @@ export default {
 
   computed: {
     filteredAdvertisements() {
-      // Iterate over each element (dictionary) in advertisements
-      return this.advertisements.filter(ad => {
-        // Get keys of dictionary
-        let keys = Object.keys(ad);
-        // Assume that advertisement should not be shown
+      return this.advertisements.filter(p => {
+        let keys = Object.keys(p);
         let showItem = false;
 
-
         for (let key of keys) {
-          // If the entered search text is a substring of any variable in an advertisement,
-          // the item satisfies the filter policy and should be displayed.
-          if (String(ad[key]).toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
+          if (String(p[key]).toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
             showItem = true;
           }
         }
 
-
-        // Return whether item should be displayed or not
         return showItem;
       });
     }
   },
-  //scrollToCard soll beim aufrufen der Seite sofort ausgeführt werden
   mounted() {
     this.fetchData();
     this.scrollToCard()
@@ -291,19 +277,16 @@ export default {
 
   methods: {
     scrollToCard() {
-      // die cardId wird durch "pfad?=card(num)" definiert
       const cardId = this.$route.query.card
       if (cardId) {
-        // das element mit der cardId wird gesucht
         const element = document.getElementById(cardId)
         if (element) {
-          // es wird smooth zu diesem Element gescrollt, und es wird hervorgehoben
           element.scrollIntoView({behavior: 'smooth'})
 
-          // den Style zum hervorheben festlegen
+          // den Style zum hervorheben auswählen
           element.style.border = '5px solid red';
 
-          // Timeout um das Hervorheben des Inserates mit Fade-Effekt umzukehren
+          // Timeout um das HErvorheben umzukehren
           setTimeout(() => {
 
             element.style.transition = 'border-width 0.5s ease, opacity 0.5s ease'; // Verzögerter Übergang in Originalzustand für Fade Effekt
@@ -320,7 +303,6 @@ export default {
       this.showDialogImages = true;
     },
     closeDialogAddAppartment(formData, images, contactData) {
-      //deflaut: wird nicht gezeigt
       this.showDialogAddApartment = false;
 
       let new_item = {

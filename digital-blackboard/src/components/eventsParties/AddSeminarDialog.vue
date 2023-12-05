@@ -51,7 +51,6 @@
                 class="mt-2"
                 maxlength="50"
                 v-model="seminarData.title"
-                :rules="titleRules"
                 counter
                 required
             ></v-text-field>
@@ -72,7 +71,6 @@
                 data-date=""
                 data-date-format="DD MMMM YYYY"
                 v-model="seminarData.date"
-                :rules="generalRules"
             ></v-text-field>
 
             <v-text-field
@@ -80,22 +78,13 @@
                 placeholder="Coblitzallee 1-9, 68163 Mannheim"
                 variant="outlined"
                 v-model="seminarData.location"
-                :rules="generalRules"
             ></v-text-field>
 
             <v-text-field
-                label="Preis p.p. *"
+                label="Preis p.p."
                 variant="outlined"
                 prefix="€"
-                :rules="numRules"
                 v-model="seminarData.price"
-            ></v-text-field>
-
-            <v-text-field
-                label="Zielgruppe *"
-                variant="outlined"
-                :rules="generalRules"
-                v-model="seminarData.community"
             ></v-text-field>
 
             <v-text-field
@@ -176,11 +165,11 @@
         <v-spacer></v-spacer>
 
         <v-btn
-            v-if="step === 1"
+            v-if="step < 2"
             color="red"
             variant="flat"
             class="float right"
-            @click="validateSeminarForm"
+            @click="step++"
         >
           Nächste
         </v-btn>
@@ -218,18 +207,6 @@ export default {
   data: () => ({
     step: 1,
     selectedImages: [],
-
-    titleRules: [
-      (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
-      (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
-    ],
-    generalRules: [
-      (value) => value ? true : 'Bitte gebe weitere Informationen an!'
-    ],
-    numRules: [
-      (value) => value ? true : 'Bitte gebe weitere Informationen an!',
-      (value) => /\d+$/.test(value) ? true : 'Die angegebene Information darf nur Zahlen (0-9) beinhalten!',
-    ],
 
     infosEvent: [
       "title", "description", "date", "location", "price", "community"
@@ -270,33 +247,6 @@ export default {
   }),
 
   methods: {
-    validateSeminarForm() {
-      const isValid = this.validateFields([
-        { value: this.seminarData.title, rules: this.titleRules },
-        { value: this.seminarData.community, rules: this.generalRules },
-        { value: this.seminarData.date, rules: this.generalRules },
-        { value: this.seminarData.price, rules: this.numRules },
-        { value: this.seminarData.location, rules: this.generalRules },
-
-      ]);
-      if (isValid) {
-        return this.step++
-      }
-    },
-    validateFields(fields) {
-      // Überprüfe jede Regel für jedes Feld
-      for (const field of fields) {
-        for (const rule of field.rules) {
-          const isValid = rule(field.value);
-          if (isValid !== true) {
-            // Wenn die Regel nicht erfüllt ist, zeige die Fehlermeldung an
-            console.error(isValid);
-            return false;
-          }
-        }
-      }
-      return true; // Alle Regeln wurden erfüllt => nächste Seite
-    },
     onFileChange() {
       this.selectedImages = this.selectedImages.map((file) => ({
         file,
