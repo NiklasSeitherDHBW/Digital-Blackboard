@@ -15,7 +15,8 @@
             active-color="#eb1b2a"
             density="comfortable"
             class="pt-2"
-        >{{ item.liked }}</v-rating>
+        >{{ item.liked }}
+        </v-rating>
       </div>
     </template>
   </CustomCard>
