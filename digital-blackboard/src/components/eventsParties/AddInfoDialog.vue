@@ -271,7 +271,6 @@ export default {
           const isValid = rule(field.value);
           if (isValid !== true) {
             // Wenn die Regel nicht erfüllt ist, zeige die Fehlermeldung an
-            console.error(isValid);
             return false;
           }
         }
