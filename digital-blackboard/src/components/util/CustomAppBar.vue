@@ -1,6 +1,6 @@
 <template>
   <v-app-bar
-      color="white"
+      color=""
       height="100"
   >
     <v-app-bar-title class="text-center">

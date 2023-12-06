@@ -1,12 +1,34 @@
 <template>
   <v-stepper
       v-model="step"
-      :editable=true
       alt-labels
-      class="sticky-stepper"
   >
+    <v-stepper-header>
+      <v-stepper-item
+          :title="mobile ? '' : 'Angaben zum Event'"
+          :icon="mobile ? 'mdi-text-box-outline' : ''"
+          :value="1"
+      ></v-stepper-item>
+
+      <v-divider></v-divider>
+
+      <v-stepper-item
+          :title="mobile ? '' : 'Fotos des Objektes'"
+          :subtitle="mobile ? '' : 'Optional'"
+          :icon="mobile ? 'mdi-image-outline' : ''"
+          :value="2"
+      ></v-stepper-item>
+
+      <v-divider></v-divider>
+
+      <v-stepper-item
+          :title="mobile ? '' : 'Zusammenfassung'"
+          :icon="mobile ? 'mdi-checkbox-marked-circle-outline' : ''"
+          :value="3"
+      ></v-stepper-item>
+    </v-stepper-header>
+
     <v-stepper-header
-        class="sticky-stepper-header"
     >
       <v-stepper-item
           title="Angaben zum Event"
@@ -44,6 +66,7 @@
         <v-window-item
             :value="1"
         >
+          <!-- Form für den Input des Users -> v-model, und Eingabehinweise -> prefix, rules, placeholder -->
           <v-card-text>
             <v-text-field
                 label="Name des Events *"
@@ -119,10 +142,10 @@
                 class="mb-4"
                 contain
                 height="128"
-                src="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
+                src="https://firebasestorage.googleapis.com/v0/b/digital-blackboard-dhbw.appspot.com/o/dhbw-logo-small.jpg?alt=media"
             ></v-img>
             <h3 class="text-h6 font-weight-light mb-2">
-              Ihr Event wurde erfolgreich geteilt
+              Noch ein letzter Check das alles passt!
             </h3>
             <span
                 class="text-caption text-grey"
@@ -134,7 +157,7 @@
               variant="outlined"
           >
             <v-card-title>Angaben zum Event</v-card-title>
-
+            <!-- Preview der angegebenen Informationen -->
             <v-card-text>
               <v-row
                   v-for="item in eventInfos"
@@ -165,7 +188,7 @@
       <v-card-actions>
         <v-btn
             v-if="step > 1"
-            variant="text"
+            variant="outlined"
             @click="step--"
         >
           Zurück
@@ -176,9 +199,10 @@
         <v-btn
             v-if="step === 1"
             color="red"
-            variant="flat"
             class="float right"
-            @click="validateDataForm"
+            type="submit"
+            variant="outlined"
+            @click="validateDataForm()"
         >
           Nächste
         </v-btn>
@@ -186,27 +210,34 @@
         <v-btn
             v-if="step === 2"
             color="red"
-            variant="flat"
             class="float right"
+            type="submit"
+            variant="outlined"
             @click="step++"
         >
-          Event teilen
+          Zusammenfassung
         </v-btn>
 
         <v-btn
             v-if="step === 3"
             color="red"
-            variant="flat"
             class="float right"
+            type="submit"
+            variant="outlined"
             @click="closeDialog()"
         >
-          Schließen
+          Event teilen
         </v-btn>
       </v-card-actions>
     </v-stepper-window>
   </v-stepper>
 </template>
 
+<script setup>
+import {useDisplay} from "vuetify";
+
+const {mobile} = useDisplay()
+</script>
 
 <script>
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
@@ -222,6 +253,7 @@ export default {
     ],
 
     titleRules: [
+        // es muss etwas ins Feld eingegeben werden, min länge 3 Zeichen
       (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
       (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
     ],
@@ -233,6 +265,7 @@ export default {
     ],
     numRules: [
       (value) => value ? true : 'Bitte gebe weitere Informationen an!',
+        // nur Zahlen werden erlaubt
       (value) => /\d+$/.test(value) ? true : 'Die angegebene Information darf nur Zahlen (0-9) beinhalten!',
     ],
 
@@ -256,21 +289,10 @@ export default {
       "community": "Zielgruppe:",
       "maxParticipantsLimit": "max. Anzahl Teilnehmer"
     },
-
-    titlerules: [
-      value => {
-        if (value) return true
-        return 'Bitte erstellen Sie einen Titel für Ihr Inserat.'
-      },],
-    descriptionrules: [
-      value => {
-        if (value) return true
-        return 'Bitte erstellen Sie eine Beschreibung für Ihr Inserat.'
-      }
-    ]
   }),
 
   methods: {
+    // kritische Eventdaten werden durch rules validiert, wenn alle felder richtig ausgefüllt werden kann die nächste seite erreich werden
     validateDataForm() {
       const isValid = this.validateFields([
         { value: this.eventData.title, rules: this.titleRules },
@@ -314,11 +336,13 @@ export default {
         }
       });
     },
+    // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
     closeDialog() {
       this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.eventData)
     }
   },
   computed: {
+    // einzelnen Schritte des Steppers
     currentTitle () {
       switch (this.step) {
         case 1: return 'Angaben zum Event';
@@ -328,6 +352,7 @@ export default {
       }
     },
     eventInfos() {
+      // iteriert über alle eventData Attribute und deren titel aus dictionary um diese als Preview anzuzeigen
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
         let value = this.eventData[attribute];
@@ -338,16 +363,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.sticky-stepper {
-  position: sticky;
-  overflow: visible;
-}
-
-.sticky-stepper-header {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-</style>

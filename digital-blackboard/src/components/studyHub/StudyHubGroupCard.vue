@@ -5,7 +5,7 @@
       :basicInfos="basicInfos"
       :extraInfos="extraInfos"
       :action="item.joined ? 'Beigetreten' : 'Beitreten'"
-      :actionBackground="item.joined ? 'grey' : 'red'"
+      :actionBackground="item.joined ? '#7C868DFF' : '#eb1b2a'"
       @action-clicked="joinGroup"
   ></CustomCard>
 </template>

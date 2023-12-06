@@ -3,9 +3,23 @@
       :item="item"
       :basicInfos="basicInfos"
       :extraInfos="extraInfos"
-      action="Mitmachen"
-      :customClick="createShareLink"
-  ></CustomCard>
+      :action="item.joined ? 'Angefragt' : 'Mitmachen'"
+      :actionBackground="item.joined ? '#7C868DFF' : '#eb1b2a'"
+      @action-clicked="joinEvent(item)"
+  >
+    <template v-slot:bottomBasicInfos>
+      <div v-if="item.category !== 'Informationen'"
+        class="d-flex"
+      >
+        <v-icon
+          :color="item.liked ? '#eb1b2a' : '#7C868DFF'"
+        >
+          mdi-heart
+        </v-icon>
+        <p>{{ item.likes }}</p>
+      </div>
+    </template>
+  </CustomCard>
 </template>
 
 <script setup>
@@ -13,6 +27,9 @@ import CustomCard from "@/components/util/CustomCard.vue"
 </script>
 
 <script>
+import { doc, getDoc, setDoc } from "firebase/firestore"
+import {db} from "@/db"
+
 export default {
   props: {
     item: Object,
@@ -28,6 +45,25 @@ export default {
         "date": "Wann",
       }
     };
+  },
+  methods: {
+    async joinEvent(item) {
+      const docRef = doc(db, "events-parties", item.id)
+      const docSnap = await getDoc(docRef)
+
+      const data = docSnap.data()
+          data["joined"] = !data["joined"]
+          if (data["joined"]) {
+            data["members"] = data["members"] + 1
+          }
+          else {
+            data["members"] = data["members"] - 1
+          }
+
+      await setDoc(docRef, data, {merge: true})
+
+      this.$emit("itemChanged");
+    },
   },
   computed: {
     basicInfosKeywords() {

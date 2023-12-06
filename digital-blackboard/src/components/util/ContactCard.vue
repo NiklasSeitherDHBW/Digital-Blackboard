@@ -98,7 +98,7 @@ export default {
 
 <style scoped>
 .button-round {
-  background: white;
-  color: #e0001bff; /* TODO: Change to color-dhbw-red */
+  color: #E0001BFF;
+  border: 1px solid #E0001BFF
 }
 </style>

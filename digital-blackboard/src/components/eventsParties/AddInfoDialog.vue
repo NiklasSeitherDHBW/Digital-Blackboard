@@ -1,30 +1,30 @@
 <template>
   <v-stepper
       v-model="step"
-      :editable=true
       alt-labels
-      class="sticky-stepper"
+
   >
-    <v-stepper-header
-        class="sticky-stepper-header"
-    >
+    <v-stepper-header>
       <v-stepper-item
-          title="Informationsangaben"
+          :title="mobile ? '' : 'Angaben zur Information'"
+          :icon="mobile ? 'mdi-text-box-outline' : ''"
           :value="1"
       ></v-stepper-item>
 
       <v-divider></v-divider>
 
       <v-stepper-item
-          subtitle="optional"
-          title="Fotos"
+          :title="mobile ? '' : 'Fotos'"
+          :subtitle="mobile ? '' : 'Optional'"
+          :icon="mobile ? 'mdi-image-outline' : ''"
           :value="2"
       ></v-stepper-item>
 
       <v-divider></v-divider>
 
       <v-stepper-item
-          title="Zusammenfassung"
+          :title="mobile ? '' : 'Zusammenfassung'"
+          :icon="mobile ? 'mdi-checkbox-marked-circle-outline' : ''"
           :value="3"
       ></v-stepper-item>
     </v-stepper-header>
@@ -44,6 +44,7 @@
         <v-window-item
             :value="1"
         >
+          <!-- Form für den Input des Users -> v-model, und Eingabehinweise -> prefix, rules, placeholder -->
           <v-card-text>
             <v-text-field
                 label="Titel der Information *"
@@ -106,10 +107,10 @@
                 class="mb-4"
                 contain
                 height="128"
-                src="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
+                src="https://firebasestorage.googleapis.com/v0/b/digital-blackboard-dhbw.appspot.com/o/dhbw-logo-small.jpg?alt=media"
             ></v-img>
             <h3 class="text-h6 font-weight-light mb-2">
-              Ihre Information wurde erfolgreich geteilt
+              Noch ein letzter Check das alles passt!
             </h3>
             <span
                 class="text-caption text-grey"
@@ -152,7 +153,7 @@
       <v-card-actions>
         <v-btn
             v-if="step > 1"
-            variant="text"
+            variant="outlined"
             @click="step--"
         >
           Zurück
@@ -163,9 +164,10 @@
         <v-btn
             v-if="step === 1"
             color="red"
-            variant="flat"
             class="float right"
-            @click="validateDataForm"
+            type="submit"
+            variant="outlined"
+            @click="validateDataForm()"
         >
           Nächste
         </v-btn>
@@ -173,27 +175,34 @@
         <v-btn
             v-if="step === 2"
             color="red"
-            variant="flat"
             class="float right"
+            type="submit"
+            variant="outlined"
             @click="step++"
         >
-          Information teilen
+          Zusammenfassung
         </v-btn>
 
         <v-btn
             v-if="step === 3"
             color="red"
-            variant="flat"
             class="float right"
+            type="submit"
+            variant="outlined"
             @click="closeDialog()"
         >
-          Schließen
+          Information teilen
         </v-btn>
       </v-card-actions>
     </v-stepper-window>
   </v-stepper>
 </template>
 
+<script setup>
+import {useDisplay} from "vuetify";
+
+const {mobile} = useDisplay()
+</script>
 
 <script>
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
@@ -229,7 +238,7 @@ export default {
       location: '',
       community: '',
       date: '',
-      category: 'Informationen'
+      category: 'Infos'
     },
 
     dictionary: {
@@ -239,25 +248,14 @@ export default {
       "community": "Zielgruppe:",
       "date": "Wann:"
     },
-
-    titlerules: [
-      value => {
-        if (value) return true
-        return 'Bitte erstellen Sie einen Titel für Ihr Inserat.'
-      },],
-    descriptionrules: [
-      value => {
-        if (value) return true
-        return 'Bitte erstellen Sie eine Beschreibung für Ihr Inserat.'
-      }
-    ]
   }),
 
   methods: {
+    // kritische Eventdaten werden durch rules validiert, wenn alle felder richtig ausgefüllt werden kann die nächste seite erreich werden
     validateDataForm() {
       const isValid = this.validateFields([
         { value: this.infoData.title, rules: this.titleRules },
-        { value: this.infoData.subject, rules: this.generalRules },
+        { value: this.infoData.community, rules: this.generalRules },
         { value: this.infoData.location, rules: this.generalRules },
 
       ]);  console.log(isValid)
@@ -273,7 +271,6 @@ export default {
           const isValid = rule(field.value);
           if (isValid !== true) {
             // Wenn die Regel nicht erfüllt ist, zeige die Fehlermeldung an
-            console.error(isValid);
             return false;
           }
         }
@@ -296,12 +293,14 @@ export default {
         }
       });
     },
+    // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
     closeDialog() {
       this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.infoData)
     }
   },
   computed: {
     currentTitle () {
+      // einzelnen Schritte des Steppers
       switch (this.step) {
         case 1: return 'Angaben zur Information';
         case 2: return 'Fotos';
@@ -310,6 +309,7 @@ export default {
       }
     },
     eventInfos() {
+      // iteriert über alle infoData Attribute und deren titel aus dictionary um diese als Preview anzuzeigen
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
         let value = this.infoData[attribute];
@@ -320,16 +320,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.sticky-stepper {
-  position: sticky;
-  overflow: visible;
-}
-
-.sticky-stepper-header {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-</style>

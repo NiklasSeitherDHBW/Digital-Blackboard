@@ -6,7 +6,19 @@
       :extraInfos="extraInfos"
       action="Kontaktieren"
       @action-clicked="showDialogContactInfo=true"
-  ></CustomCard>
+  >
+    <template v-slot:bottomBasicInfos>
+      <div v-if="item.category !== 'group'">
+        <v-rating
+            readonly
+            color="#7C868DFF"
+            active-color="#eb1b2a"
+            density="comfortable"
+            class="pt-2"
+        >{{ item.liked }}</v-rating>
+      </div>
+    </template>
+  </CustomCard>
 
   <v-dialog
       v-model="showDialogContactInfo"

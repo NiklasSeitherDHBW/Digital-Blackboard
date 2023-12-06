@@ -1,37 +1,37 @@
 <template>
   <v-stepper
       v-model="step"
-      :editable=true
       alt-labels
-      class="sticky-stepper"
   >
-    <v-stepper-header
-        class="sticky-stepper-header"
-    >
+    <v-stepper-header>
       <v-stepper-item
-          title="Angaben zum Buddy"
+          :title="mobile ? '' : 'Angaben zum Buddy'"
+          :icon="mobile ? 'mdi-text-box-outline' : ''"
           :value="1"
       ></v-stepper-item>
 
       <v-divider></v-divider>
 
       <v-stepper-item
-          subtitle="optional"
-          title="Fotos"
+          :title="mobile ? '' : 'Fotos'"
+          :subtitle="mobile ? '' : 'Optional'"
+          :icon="mobile ? 'mdi-image-outline' : ''"
           :value="2"
       ></v-stepper-item>
 
       <v-divider></v-divider>
 
       <v-stepper-item
-          title="Kontaktdaten"
+          :title="mobile ? '' : 'Kontaktdaten'"
           :value="3"
+          :icon="mobile ? 'mdi-account-box' : ''"
       ></v-stepper-item>
 
       <v-divider></v-divider>
 
       <v-stepper-item
-          title="Zusammenfassung"
+          :title="mobile ? '' : 'Zusammenfassung'"
+          :icon="mobile ? 'mdi-checkbox-marked-circle-outline' : ''"
           :value="4"
       ></v-stepper-item>
     </v-stepper-header>
@@ -143,10 +143,10 @@
                 class="mb-4"
                 contain
                 height="128"
-                src="https://yt3.googleusercontent.com/OHp7wtYIU-VBDoPxa66Vm-2NLB7_dyccu8LuXdVZ9KWQXzaHjU5jEMkBtAfCxN4plfX3VlyKQg=s900-c-k-c0x00ffffff-no-rj"
+                src="https://firebasestorage.googleapis.com/v0/b/digital-blackboard-dhbw.appspot.com/o/dhbw-logo-small.jpg?alt=media"
             ></v-img>
             <h3 class="text-h6 font-weight-light mb-2">
-              Ihr Inserat wurde erfolgreich geteilt!
+              Noch ein letzter Check das alles passt!
             </h3>
             <span
                 class="text-caption text-grey"
@@ -216,7 +216,7 @@
       <v-card-actions>
         <v-btn
             v-if="step > 1"
-            variant="text"
+            variant="outlined"
             @click="step--"
         >
           Zurück
@@ -229,6 +229,7 @@
             color="red"
             class="float right"
             type="submit"
+            variant="outlined"
             @click="validateDataForm"
         >
           Nächste
@@ -239,6 +240,7 @@
             color="red"
             class="float right"
             type="submit"
+            variant="outlined"
             @click="step++"
         >
           Nächste
@@ -249,24 +251,32 @@
             color="red"
             class="float right"
             type="submit"
+            variant="outlined"
             @click="validateContactForm"
         >
-          Inserat fertigstellen
+          Zusammenfassung
         </v-btn>
         <!--Nur sichtbar solange man sich auf der letzten Seite befindet -->
         <v-btn
             v-if="step === 4"
             color="red"
             class="float right"
+            type="submit"
+            variant="outlined"
             @click="closeDialog()"
         >
-          Schließen
+          Seminar teilen
         </v-btn>
       </v-card-actions>
     </v-stepper-window>
   </v-stepper>
 </template>
 
+<script setup>
+import {useDisplay} from "vuetify";
+
+const {mobile} = useDisplay()
+</script>
 
 <script>
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
@@ -284,7 +294,7 @@ export default {
     infosContact: [
       "name", "phone", "email"
     ],
-
+    // regeln zum validieren des Inputs
     titleRules: [
       (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
       (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
@@ -302,15 +312,17 @@ export default {
 
     nameRules : [
       (value) => value ? true : 'Bitte gebe einen Vor- und Nachnamen an!',
-      (value) => value.length >= 5 ? true : 'Der Name muss mindestens 5 Zeichen lang sein!',
+      (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
     ],
     phoneRules : [
       (value) => value ? true : 'Bitte gebe eine Telefonnummer an!',
+      // regel zum erzwingen von + und numerischen Werten von mindestlänge 5
       (value) => /^\+?\d+$/.test(value) ? true : 'Die Telefonnummer darf nur Zahlen und das Pluszeichen enthalten!',
       (value) => value.length >= 5 ? true : 'Die Telefonnummer muss mindestens 5 Zeichen lang sein!',
     ],
     emailRules : [
       (value) => value ? true : 'Bitte gebe eine E-Mail-Adresse an!',
+      // regel zum erzwingen einer validen E-mail Adresse: aaa@bbb.ccc
       (value) => /\S+@\S+\.\S+/.test(value) ? true : 'Die E-Mail-Adresse ist ungültig!',
     ],
 
@@ -356,6 +368,7 @@ export default {
 
   methods: {
     validateDataForm() {
+      // kritische Daten werden durch rules validiert, wenn alle felder richtig ausgefüllt werden kann die nächste seite erreich werden
       const isValid = this.validateFields([
         { value: this.buddyData.title, rules: this.titleRules },
         { value: this.buddyData.subject, rules: this.generalRules },
@@ -407,11 +420,13 @@ export default {
       });
     },
     closeDialog() {
+      // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
       this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.buddyData, this.contactData)
     }
   },
   computed: {
     currentTitle () {
+      // einzelnen Schritte des Steppers
       switch (this.step) {
         case 1: return 'Informationsangaben';
         case 2: return 'Fotos';
@@ -421,6 +436,7 @@ export default {
       }
     },
     eventInfos() {
+      // iteriert über alle buddyData Attribute und deren titel aus dictionary um diese als Preview anzuzeigen
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
         let value = this.buddyData[attribute];
@@ -429,6 +445,7 @@ export default {
       return eventInfos;
     },
     extraInfos() {
+      // iteriert über alle contactData Attribute und deren titel aus dictionary um diese als Preview anzuzeigen
       let extraInfos = [];
       for (const attribute of this.infosContact) {
         let value = this.contactData[attribute];
@@ -439,16 +456,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.sticky-stepper {
-  position: sticky;
-  overflow: visible;
-}
-
-.sticky-stepper-header {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-</style>
