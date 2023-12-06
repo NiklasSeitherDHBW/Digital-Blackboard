@@ -278,6 +278,7 @@ export default {
       community: '',
       maxParticipantsLimit: 1,
       category: 'Events',
+      userId: 1,
     },
 
     dictionary: {

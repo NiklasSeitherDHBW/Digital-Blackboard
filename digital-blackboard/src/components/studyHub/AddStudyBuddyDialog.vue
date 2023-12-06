@@ -334,6 +334,7 @@ export default {
       availability: '',
       category: 'buddy',
       rating: '',
+      userId: 1,
     },
 
     contactData: {

@@ -418,6 +418,7 @@ export default {
         selectedGender: '',
         images: [],
         date_created: '',
+        userId: 1,
       },
 
       contactData: {

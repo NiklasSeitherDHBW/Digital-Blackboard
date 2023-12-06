@@ -238,7 +238,8 @@ export default {
       location: '',
       community: '',
       date: '',
-      category: 'Infos'
+      category: 'Infos',
+      userId: 1,
     },
 
     dictionary: {

@@ -254,7 +254,8 @@ export default {
       price: '',
       community: '',
       maxParticipantsLimit: '',
-      category: 'Seminare'
+      category: 'Seminare',
+      userId: 1,
     },
 
     dictionary: {
