@@ -51,6 +51,8 @@
         <v-window-item
             :value="1"
         >
+          <v-form
+              @submit.prevent>
           <v-card-text>
             <v-text-field
                 label="Titel des Buddys *"
@@ -94,6 +96,27 @@
             ></v-text-field>
 
           </v-card-text>
+            <v-card-actions>
+              <v-btn
+                  color="red"
+                  class="mr-2 mb-2"
+                  variant="outlined"
+                  @click="exitDialog()"
+              >
+                Schließen
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn
+                  color="red"
+                  class="mr-2 mb-2"
+                  type="submit"
+                  variant="outlined"
+                  @click="validateDataForm()"
+              >
+                Nächste
+              </v-btn>
+            </v-card-actions>
+          </v-form>
         </v-window-item>
 
         <v-window-item
@@ -102,11 +125,32 @@
           <UploadImagesStep
               ref="uploadImagesForm"
           ></UploadImagesStep>
+          <v-card-actions>
+            <v-btn
+                variant="outlined"
+                @click="step--"
+            >
+              Zurück
+            </v-btn>
+
+            <v-spacer></v-spacer>
+            <v-btn
+                color="red"
+                class="float right"
+                type="submit"
+                variant="outlined"
+                @click="step++"
+            >
+              Nächste
+            </v-btn>
+          </v-card-actions>
         </v-window-item>
 
         <v-window-item
             :value="3"
         >
+          <v-form
+            @submit.prevent>
           <v-text-field
               label="Vor-/Nachname *"
               placeholder="Maxime Musterfrau"
@@ -117,7 +161,7 @@
           ></v-text-field>
 
           <v-text-field
-              label="Telefon *"
+              label="Telefon"
               placeholder="+49123456789"
               variant="outlined"
               type="tel"
@@ -133,6 +177,32 @@
               :rules="emailRules"
               v-model="contactData.email"
           ></v-text-field>
+          <span
+              class="text-caption text-grey-darken-1"
+          >
+              Diese Daten werden Interessenten zur Verfügung gestellt um Kontakt aufzunehmen.
+        </span>
+          <v-card-actions>
+            <v-btn
+                variant="outlined"
+                @click="step--"
+            >
+              Zurück
+            </v-btn>
+
+            <v-spacer></v-spacer>
+            <!--Nur sichtbar solange man sich auf der 3. Seite befindet, validiert den auf Seite 3 getätigten Input -->
+            <v-btn
+                color="red"
+                class="float right"
+                type="submit"
+                variant="outlined"
+                @click="validateContactForm()"
+            >
+              Zusammenfassung
+            </v-btn>
+          </v-card-actions>
+          </v-form>
         </v-window-item>
 
         <v-window-item :value="4">
@@ -208,66 +278,28 @@
               </v-row>
             </v-card-text>
           </v-card>
+          <v-card-actions>
+            <v-btn
+                variant="outlined"
+                @click="step--"
+            >
+              Zurück
+            </v-btn>
+
+            <v-spacer></v-spacer>
+            <!--Nur sichtbar solange man sich auf der letzten Seite befindet, übergibt die Inputdaten -->
+            <v-btn
+                color="red"
+                class="float right"
+                variant="outlined"
+                type="submit"
+                @click="closeDialog"
+            >
+              Inserat teilen
+            </v-btn>
+          </v-card-actions>
         </v-window-item>
       </v-window>
-
-      <v-divider></v-divider>
-
-      <v-card-actions>
-        <v-btn
-            v-if="step > 1"
-            variant="outlined"
-            @click="step--"
-        >
-          Zurück
-        </v-btn>
-
-        <v-spacer></v-spacer>
-
-        <v-btn
-            v-if="step === 1"
-            color="red"
-            class="float right"
-            type="submit"
-            variant="outlined"
-            @click="validateDataForm"
-        >
-          Nächste
-        </v-btn>
-        <!--Nur sichtbar solange man sich in den ersten 2 Seiten befindet -->
-        <v-btn
-            v-if="step === 2"
-            color="red"
-            class="float right"
-            type="submit"
-            variant="outlined"
-            @click="step++"
-        >
-          Nächste
-        </v-btn>
-        <!--Nur sichtbar solange man sich auf der 3. Seite befindet -->
-        <v-btn
-            v-if="step === 3"
-            color="red"
-            class="float right"
-            type="submit"
-            variant="outlined"
-            @click="validateContactForm"
-        >
-          Zusammenfassung
-        </v-btn>
-        <!--Nur sichtbar solange man sich auf der letzten Seite befindet -->
-        <v-btn
-            v-if="step === 4"
-            color="red"
-            class="float right"
-            type="submit"
-            variant="outlined"
-            @click="closeDialog()"
-        >
-          Seminar teilen
-        </v-btn>
-      </v-card-actions>
     </v-stepper-window>
   </v-stepper>
 </template>
@@ -353,18 +385,6 @@ export default {
       "phone": "Telefon:",
       "email": "E-Mail",
     },
-
-    titlerules: [
-      value => {
-        if (value) return true
-        return 'Bitte erstellen Sie einen Titel für Ihr Inserat.'
-      },],
-    descriptionrules: [
-      value => {
-        if (value) return true
-        return 'Bitte erstellen Sie eine Beschreibung für Ihr Inserat.'
-      }
-    ]
   }),
 
   methods: {
@@ -383,7 +403,6 @@ export default {
     validateContactForm() {
       const isValid = this.validateFields([
         { value: this.contactData.name, rules: this.nameRules },
-        { value: this.contactData.phone, rules: this.phoneRules },
         { value: this.contactData.email, rules: this.emailRules },
       ]);
       if (isValid) {
@@ -419,6 +438,10 @@ export default {
           console.log('Uploading:', image.url);
         }
       });
+    },
+    exitDialog() {
+      // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
+      this.$emit("exit-dialog")
     },
     closeDialog() {
       // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben

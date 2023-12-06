@@ -44,6 +44,8 @@
         <v-window-item
             :value="1"
         >
+          <v-form
+              @submit.prevent>
           <!-- Form für den Input des Users -> v-model, und Eingabehinweise -> prefix, rules, placeholder -->
           <v-card-text>
             <v-text-field
@@ -85,10 +87,32 @@
                 placeholder="TT.MM.JJJJ"
                 variant="outlined"
                 type="date"
+                :rules="dateRules"
                 v-model="infoData.date"
             ></v-text-field>
 
           </v-card-text>
+            <v-card-actions>
+              <v-btn
+                  color="red"
+                  class="mr-2 mb-2"
+                  variant="outlined"
+                  @click="exitDialog()"
+              >
+                Schließen
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn
+                  color="red"
+                  class="mr-2 mb-2"
+                  type="submit"
+                  variant="outlined"
+                  @click="validateDataForm()"
+              >
+                Nächste
+              </v-btn>
+            </v-card-actions>
+          </v-form>
         </v-window-item>
 
         <v-window-item
@@ -97,6 +121,25 @@
           <UploadImagesStep
               ref="uploadImagesForm"
           ></UploadImagesStep>
+          <v-card-actions>
+            <v-btn
+                variant="outlined"
+                @click="step--"
+            >
+              Zurück
+            </v-btn>
+
+            <v-spacer></v-spacer>
+            <v-btn
+                color="red"
+                class="float right"
+                type="submit"
+                variant="outlined"
+                @click="step++"
+            >
+              Zusammenfassung
+            </v-btn>
+          </v-card-actions>
         </v-window-item>
 
         <v-window-item :value="3">
@@ -144,56 +187,31 @@
                 </v-col>
               </v-row>
             </v-card-text>
+            <v-card-actions>
+              <v-btn
+                  variant="outlined"
+                  @click="step--"
+              >
+                Zurück
+              </v-btn>
+
+              <v-spacer></v-spacer>
+              <!--Nur sichtbar solange man sich auf der letzten Seite befindet, übergibt die Inputdaten -->
+              <v-btn
+                  color="red"
+                  class="float right"
+                  variant="outlined"
+                  type="submit"
+                  @click="closeDialog"
+              >
+                Information teilen
+              </v-btn>
+            </v-card-actions>
           </v-card>
         </v-window-item>
       </v-window>
 
       <v-divider></v-divider>
-
-      <v-card-actions>
-        <v-btn
-            v-if="step > 1"
-            variant="outlined"
-            @click="step--"
-        >
-          Zurück
-        </v-btn>
-
-        <v-spacer></v-spacer>
-
-        <v-btn
-            v-if="step === 1"
-            color="red"
-            class="float right"
-            type="submit"
-            variant="outlined"
-            @click="validateDataForm()"
-        >
-          Nächste
-        </v-btn>
-
-        <v-btn
-            v-if="step === 2"
-            color="red"
-            class="float right"
-            type="submit"
-            variant="outlined"
-            @click="step++"
-        >
-          Zusammenfassung
-        </v-btn>
-
-        <v-btn
-            v-if="step === 3"
-            color="red"
-            class="float right"
-            type="submit"
-            variant="outlined"
-            @click="closeDialog()"
-        >
-          Information teilen
-        </v-btn>
-      </v-card-actions>
     </v-stepper-window>
   </v-stepper>
 </template>
@@ -257,6 +275,7 @@ export default {
       const isValid = this.validateFields([
         { value: this.infoData.title, rules: this.titleRules },
         { value: this.infoData.community, rules: this.generalRules },
+        { value: this.infoData.date, rules: this.dateRules},
         { value: this.infoData.location, rules: this.generalRules },
 
       ]);  console.log(isValid)
@@ -293,6 +312,10 @@ export default {
           console.log('Uploading:', image.url);
         }
       });
+    },
+    exitDialog() {
+      // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
+      this.$emit("exit-dialog")
     },
     // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
     closeDialog() {

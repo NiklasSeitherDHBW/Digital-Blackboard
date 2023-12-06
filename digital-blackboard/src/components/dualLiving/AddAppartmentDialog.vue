@@ -51,8 +51,7 @@
           :value="1"
       >
         <v-form
-            @submit.prevent
-        >
+            @submit.prevent>
           <!-- Form für den Input des Users -> v-model, und Eingabehinweise -> prefix, rules, placeholder -->
           <v-text-field
               class="mt-2"
@@ -77,8 +76,10 @@
               label="Von *"
               placeholder="TT.MM.JJJJ"
               type="date"
+              :min="new Date().toISOString().split('T')[0]"
               :max="formData.availableTill"
               v-model="formData.availableFrom"
+              :rules="dateRules"
               variant="outlined"
               required
           ></v-text-field>
@@ -89,6 +90,7 @@
               type="date"
               :min="formData.availableFrom"
               v-model="formData.availableTill"
+              :rules="dateRules"
               variant="outlined"
           ></v-text-field>
 
@@ -146,6 +148,27 @@
               :items="['Jungs', 'Mädchen', 'Gemischt']"
               label="bevorzugtes Geschlecht *"
           ></v-select>
+
+          <v-card-actions>
+            <v-btn
+                color="red"
+                class="mr-2 mb-2"
+                variant="outlined"
+                @click="exitDialog()"
+            >
+              Schließen
+            </v-btn>
+            <v-spacer></v-spacer>
+          <v-btn
+              color="red"
+              class="mr-2 mb-2"
+              type="submit"
+              variant="outlined"
+              @click="validateDataForm()"
+          >
+            Nächste
+          </v-btn>
+          </v-card-actions>
         </v-form>
       </v-window-item>
 
@@ -155,14 +178,32 @@
         <UploadImagesStep
             ref="uploadImagesForm"
         ></UploadImagesStep>
+        <v-card-actions>
+          <v-btn
+              variant="outlined"
+              @click="step--"
+          >
+            Zurück
+          </v-btn>
+
+          <v-spacer></v-spacer>
+        <v-btn
+            color="red"
+            class="float right"
+            type="submit"
+            variant="outlined"
+            @click="step++"
+        >
+          Nächste
+        </v-btn>
+        </v-card-actions>
       </v-window-item>
 
       <v-window-item
           :value="3"
       >
         <v-form
-            ref="form"
-        >
+            @submit.prevent>
           <!-- Form für den Input der User Kontaktdaten -> v-model, und Eingabehinweise -> prefix, rules, placeholder -->
           <v-text-field
               label="Vor-/Nachname *"
@@ -174,7 +215,7 @@
           ></v-text-field>
 
           <v-text-field
-              label="Telefon *"
+              label="Telefon"
               placeholder="+49123456789"
               variant="outlined"
               type="tel"
@@ -190,12 +231,32 @@
               :rules="emailRules"
               v-model="contactData.email"
           ></v-text-field>
-        </v-form>
-        <span
-            class="text-caption text-grey-darken-1"
-        >
-              Diese E-Mail steht Interessenten zur Verfügung, um Kontakt aufzunehmen.
+          <span
+              class="text-caption text-grey-darken-1"
+          >
+              Diese Daten werden Interessenten zur Verfügung gestellt um Kontakt aufzunehmen.
         </span>
+          <v-card-actions>
+          <v-btn
+              variant="outlined"
+              @click="step--"
+          >
+            Zurück
+          </v-btn>
+
+          <v-spacer></v-spacer>
+          <!--Nur sichtbar solange man sich auf der 3. Seite befindet, validiert den auf Seite 3 getätigten Input -->
+          <v-btn
+              color="red"
+              class="float right"
+              type="submit"
+              variant="outlined"
+              @click="validateContactForm()"
+          >
+            Zusammenfassung
+          </v-btn>
+          </v-card-actions>
+        </v-form>
 
       </v-window-item>
 
@@ -284,64 +345,28 @@
             </v-row>
           </v-card-text>
         </v-card>
+        <v-card-actions>
+          <v-btn
+              variant="outlined"
+              @click="step--"
+          >
+            Zurück
+          </v-btn>
+
+          <v-spacer></v-spacer>
+          <!--Nur sichtbar solange man sich auf der letzten Seite befindet, übergibt die Inputdaten -->
+          <v-btn
+              color="red"
+              class="float right"
+              variant="outlined"
+              type="submit"
+              @click="closeDialog"
+          >
+            Inserat teilen
+          </v-btn>
+        </v-card-actions>
       </v-window-item>
     </v-stepper-window>
-
-    <v-card-actions>
-      <v-btn
-          v-if="step > 1 && step < 5"
-          variant="outlined"
-          @click="step--"
-      >
-        Zurück
-      </v-btn>
-
-      <v-spacer></v-spacer>
-      <!--Nur sichtbar solange man sich auf der 1. Seite befindet, validiert den auf Seite 1 getätigten Input -->
-      <v-btn
-          v-if="step === 1"
-          color="red"
-          class="float right"
-          type="submit"
-          variant="outlined"
-          @click="validateDataForm"
-      >
-        Nächste
-      </v-btn>
-      <!--Nur sichtbar solange man sich in den ersten 2 Seiten befindet -->
-      <v-btn
-          v-if="step === 2"
-          color="red"
-          class="float right"
-          type="submit"
-          variant="outlined"
-          @click="step++"
-      >
-        Nächste
-      </v-btn>
-      <!--Nur sichtbar solange man sich auf der 3. Seite befindet, validiert den auf Seite 3 getätigten Input -->
-      <v-btn
-          v-if="step === 3"
-          color="red"
-          class="float right"
-          type="submit"
-          variant="outlined"
-          @click="validateContactForm"
-      >
-        Zusammenfassung
-      </v-btn>
-      <!--Nur sichtbar solange man sich auf der letzten Seite befindet, übergibt die Inputdaten -->
-      <v-btn
-          v-if="step === 4"
-          color="red"
-          class="float right"
-          type="submit"
-          variant="outlined"
-          @click="closeDialog()"
-      >
-        Inserat teilen
-      </v-btn>
-    </v-card-actions>
   </v-stepper>
 </template>
 
@@ -493,6 +518,11 @@ export default {
         }
       }
       return true; // Alle Regeln wurden erfüllt => nächste Seite
+    },
+
+    exitDialog() {
+      // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
+      this.$emit("exit-dialog")
     },
 
     closeDialog() {
