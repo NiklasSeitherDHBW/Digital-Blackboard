@@ -357,6 +357,8 @@ export default {
         max_participants_limit: eventData.maxParticipantsLimit,
 
         category: eventData.category,
+
+        userId: eventData.userId,
       }
 
       await addDoc(collection(db, "events-parties"), new_item);

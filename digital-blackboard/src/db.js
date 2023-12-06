@@ -88,11 +88,14 @@ export async function createAdDualLiving(formData, images, contactData) {
         name: contactData.name,
         phone: contactData.phone,
         email: contactData.email,
+
+        userId: formData.userId,
     }
 
     // Store advertisement in database
     await addDoc(collection(db, "dual-living"), new_item);
 }
+
 
 // All database operations regarding events, infos and workshops page
 
@@ -128,7 +131,6 @@ export async function fetchAdsEvents() {
 
     return transformedData;
 }
-
 
 
 // All database operations regarding study hub page

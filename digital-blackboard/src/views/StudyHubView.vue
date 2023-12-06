@@ -253,6 +253,8 @@ export default {
         email: contactData.email,
 
         category: buddyData.category,
+
+        userId: buddyData.userId,
       }
 
       await addDoc(collection(db, "study-hub"), new_item);
