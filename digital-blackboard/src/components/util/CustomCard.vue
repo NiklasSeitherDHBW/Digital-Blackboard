@@ -21,7 +21,7 @@
           v-model="showDialogImagesFullscreen"
           max-width="1200px"
       >
-        <v-card>
+        <v-card :class="{ 'text-wrap' : showDialogImagesFullscreen}">
           <v-row class="d-flex align-center ma-3">
             <v-card-title>
               {{ item.title }}
@@ -50,7 +50,7 @@
       </v-dialog>
     </v-carousel>
 
-    <v-card-title>
+    <v-card-title class="text-wrap">
       {{ item.title }}
     </v-card-title>
 
@@ -58,7 +58,7 @@
         Erstelldatum: {{ item.date_created }}
     </v-card-subtitle>
 
-    <v-card-text class="ma-1">
+    <v-card-text class="ma-1 text-wrap">
       <v-row
           v-for="(field, index) in basicInfos"
           :key="index"
@@ -103,6 +103,7 @@
         Mehr Informationen
       </p>
     </v-container>
+
 
     <v-divider></v-divider>
 
@@ -192,5 +193,8 @@ export default {
 .button-round {
   background: white;
   color: #eb1b2a;
+}
+.text-wrap {
+  white-space: normal;
 }
 </style>
