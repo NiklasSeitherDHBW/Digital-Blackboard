@@ -169,8 +169,8 @@ const {mobile} = useDisplay()
 </script>
 
 <script>
-import {addDoc, collection, getDocs, Timestamp} from "firebase/firestore";
-import { db } from "@/db";
+import {addDoc, collection, Timestamp} from "firebase/firestore";
+import {db, fetchAdsEventsInfos} from "@/db";
 
 export default {
   data() {
@@ -421,56 +421,11 @@ export default {
     },
 
     async refreshItems() {
-      await this.fetchData();
+      this.advertisements = await fetchAdsEventsInfos();
     },
-    setDefaultImages() {
-      this.advertisements.forEach(event => {
-        if (event.images.length === 0) {
-          if (event.category === "Events") {
-            event.images.push("https://th.bing.com/th/id/OIP.4yTkUC3EzS64VKlszOiukQHaBl?rs=1&pid=ImgDetMain");
-          } else if (event.category === "Seminare") {
-            event.images.push("https://www.frankfurt-school.de/.imaging/mte/fs-theme/stage-content-MQ2/dam/News/2022/Dezember/Graduation/Graduation-Ceremony-2022-Header-1266x321.jpg/jcr:content/Graduation%20Ceremony%202022%20Header%201266x321.jpg");
-          } else if (event.category === "Infos") {
-            event.images.push("https://images.bild.de/5d415fba73cf6900016c8002/e35d695972ab704197e0a736aa3515c8,3a0a2df3?w=992");
-          }
-        }
-      })
-    },
-    async fetchData() {
-      const querySnapshot = await getDocs(collection(db, "events-parties"));
-
-      // Convert the QueryDocumentSnapshots into an array of dictionaries
-      const transformedData = querySnapshot.docs.map((doc) => {
-        let tmp = doc.data();
-
-        // Prepare data for displaying in card
-        // assign document id as unique identifier for reading a specific advertisement
-        tmp["id"] = doc.id;
-
-        // Display dates in format TT.MM.YYYY
-        tmp["date_created"] = new Date(tmp["date_created"].seconds * 1000).toLocaleDateString("de-DE", {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        });
-
-        tmp["date"] = new Date(tmp["date"].seconds * 1000).toLocaleDateString("de-DE", {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        });
-
-        tmp["availability"] = tmp["members"] + " / " + tmp["max_participants_limit"];
-
-        return tmp;
-      });
-
-      this.advertisements = transformedData;
-    }
   },
   mounted() {
-    this.fetchData();
-    this.setDefaultImages();
+    this.refreshItems()
   }
 }
 </script>
