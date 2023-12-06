@@ -110,7 +110,7 @@
         filteredAdvertisements() {
           const now = new Date();
           const fourteenDaysAgo = new Date(now);
-          fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 7);
+          fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 3);
 
           return this.advertisements.filter(ad => {
 
