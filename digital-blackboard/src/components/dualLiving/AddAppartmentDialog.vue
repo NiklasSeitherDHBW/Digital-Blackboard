@@ -366,7 +366,7 @@ export default {
       selectedDate: null,
 
       infosAppartment: [
-        "title", "description", "availableFrom", "availableTill", "location", "price", "area", "furniture", "community", "selectedGender",
+        "title", "description", "availableFrom", "availableTill", "location", "price", "rooms", "area", "furniture", "community", "selectedGender",
       ],
       infosContact: [
         "name", "phone", "email"
@@ -414,6 +414,7 @@ export default {
         area: '',
         furniture: false,
         community: false,
+        rooms: '',
         selectedGender: '',
         images: [],
         date_created: '',
@@ -436,6 +437,7 @@ export default {
         "furniture": "möbiliert:",
         "community": "WG-Zimmer:",
         "selectedGender": "WG-Typ:",
+        "rooms": 'Zimmer:',
 
         "name": "Vor-/Nachname:",
         "phone": "Handynummer:",
