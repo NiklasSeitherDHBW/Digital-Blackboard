@@ -109,7 +109,7 @@ const {mobile} = useDisplay()
 </script>
 
 <script>
-import {fetchAdsDualLiving, fetchAdsEvents, fetchAdsStudyHub} from '@/db'
+import {fetchAdsDualLiving, fetchAdsEventsInfos, fetchAdsStudyHub} from '@/db'
 
 export default {
   data: () => ({
@@ -124,7 +124,7 @@ export default {
   }),
   computed: {
     filteredAdvertisements() {
-      return this.advertisements.filter(ad => {
+      let filteredAds = this.advertisements.filter(ad => {
         if (ad.userId !== 1) {
           return false
         }
@@ -144,14 +144,20 @@ export default {
 
         return showItem;
       });
+
+      filteredAds.forEach((ad) => {
+        ad["editable"] = true;
+      })
+
+      return filteredAds
     },
   },
   async mounted() {
-    let test = await fetchAdsDualLiving();
-    let test2 = await fetchAdsEvents();
-    let test3 = await fetchAdsStudyHub();
+    let adsDualLiving = await fetchAdsDualLiving();
+    let adsEventsInfos = await fetchAdsEventsInfos();
+    let adsStudyHub = await fetchAdsStudyHub();
 
-    this.advertisements = test.concat(test2).concat(test3)
+    this.advertisements = adsDualLiving.concat(adsEventsInfos).concat(adsStudyHub)
   }
 }
 </script>
