@@ -388,17 +388,17 @@ export default {
         (value) => /\d+$/.test(value) ? true : 'Die angegebene Information darf nur Zahlen (0-9) beinhalten!',
       ],
 
-      nameRules : [
+      nameRules: [
         (value) => value ? true : 'Bitte gebe einen Vor- und Nachnamen an!',
         (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
       ],
-      phoneRules : [
+      phoneRules: [
         (value) => value ? true : 'Bitte gebe eine Telefonnummer an!',
         // regel zum erzwingen von + und numerischen Werten
         (value) => /^\+?\d+$/.test(value) ? true : 'Die Telefonnummer darf nur Zahlen und das Pluszeichen enthalten!',
         (value) => value.length >= 5 ? true : 'Die Telefonnummer muss mindestens 5 Zeichen lang sein!',
       ],
-      emailRules : [
+      emailRules: [
         (value) => value ? true : 'Bitte gebe eine E-Mail-Adresse an!',
         // regel zum erzwingen einer validen E-mail Adresse: aaa@bbb.ccc
         (value) => /\S+@\S+\.\S+/.test(value) ? true : 'Die E-Mail-Adresse ist ungültig!',
@@ -449,15 +449,17 @@ export default {
   methods: {
     validateDataForm() {
       let validation_list = [
-        { value: this.formData.title, rules: this.titleRules },
-        { value: this.formData.location, rules: this.generalRules },
-        { value: this.formData.price, rules: this.numRules },
-        { value: this.formData.area, rules: this.numRules },
-        { value: this.formData.rooms, rules: this.numRules },
+        {value: this.formData.title, rules: this.titleRules},
+        {value: this.formData.location, rules: this.generalRules},
+        {value: this.formData.availableFrom, rules: this.dateRules},
+        {value: this.formData.availableTill, rules: this.dateRules},
+        {value: this.formData.price, rules: this.numRules},
+        {value: this.formData.area, rules: this.numRules},
+        {value: this.formData.rooms, rules: this.numRules},
       ]
 
       if (this.formData.community) {
-       validation_list.push({ value: this.formData.selectedGender, rules: this.generalRules });
+        validation_list.push({value: this.formData.selectedGender, rules: this.generalRules});
       }
 
       // kritische Daten werden durch rules validiert,
@@ -471,9 +473,8 @@ export default {
     },
     validateContactForm() {
       const isValid = this.validateFields([
-        { value: this.contactData.name, rules: this.nameRules },
-        { value: this.contactData.phone, rules: this.phoneRules },
-        { value: this.contactData.email, rules: this.emailRules },
+        {value: this.contactData.name, rules: this.nameRules},
+        {value: this.contactData.email, rules: this.emailRules},
       ]);
       if (isValid) {
         return this.step++
