@@ -180,7 +180,7 @@ export default {
       showDialogAddSeminar: false,
 
       eventCategories: [
-        "Events", "Informationen", "Seminare"
+        "Events", "Infos", "Seminare"
       ],
       selectedCategory: null,
 
@@ -188,7 +188,7 @@ export default {
       advertisements_old: [
         {
           title: 'Dualer Master',
-          category: 'Informationen',
+          category: 'Infos',
           date: '2023-01-15',
           date_created: "08.01.2023",
           description: 'Wie kannst du einen Dualen Master überleben.',
@@ -250,7 +250,7 @@ export default {
         },
         {
           title: "Auslandstudium und -Praxis",
-          category: "Informationen",
+          category: "Infos",
           date: "2023-11-27",
           date_created: "01.01.2023",
           description: "Studierende, die 2024 im Ausland studieren wollen, aufgepasst: Hier bekommen Sie alle wichtigen Infos rund um das Thema Beratung zu Gebührenprogrammen an der VIU, Kanada, oder dem ICMS, Australien.",
@@ -262,7 +262,7 @@ export default {
         },
         {
           title: "Literaturverwaltung mit Zotero",
-          category: "Informationen",
+          category: "Infos",
           date: "2023-11-29",
           date_created: "01.01.2023",
           description: "Lernen Sie in diesem Online- Vortrag, wie Sie das Literaturverwaltungsprogramm Zotero effektiv nutzen können und profitieren Sie somit von Tipps & Tricks für Ihre Studienzeit ..",
@@ -428,7 +428,7 @@ export default {
             event.images.push("https://th.bing.com/th/id/OIP.4yTkUC3EzS64VKlszOiukQHaBl?rs=1&pid=ImgDetMain");
           } else if (event.category === "Seminare") {
             event.images.push("https://www.frankfurt-school.de/.imaging/mte/fs-theme/stage-content-MQ2/dam/News/2022/Dezember/Graduation/Graduation-Ceremony-2022-Header-1266x321.jpg/jcr:content/Graduation%20Ceremony%202022%20Header%201266x321.jpg");
-          } else if (event.category === "Informationen") {
+          } else if (event.category === "Infos") {
             event.images.push("https://images.bild.de/5d415fba73cf6900016c8002/e35d695972ab704197e0a736aa3515c8,3a0a2df3?w=992");
           }
         }
