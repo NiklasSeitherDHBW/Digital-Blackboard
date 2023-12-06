@@ -7,7 +7,21 @@
   <v-container
       style="width: 90%;"
   >
-    <v-card-title>Deine Inserate</v-card-title>
+    <div class="d-flex">
+      <v-divider></v-divider>
+      <v-card-title>Deine Kontaktinformationen</v-card-title>
+      <v-divider></v-divider>
+    </div>
+
+    <p>Name: Vorname Nachname</p>
+    <p>Username: User1</p>
+    <p>Weiter Infos...</p>
+
+    <div class="d-flex mt-5">
+      <v-divider></v-divider>
+      <v-card-title>Deine Inserate</v-card-title>
+      <v-divider></v-divider>
+    </div>
 
     <v-tabs
         v-model="this.selectedAdType"
@@ -45,21 +59,25 @@
             <DualLivingCard
                 v-if="item.adType === 'dualLiving'"
                 :item="item"
+                @itemsChanged="this.fetchAds"
             ></DualLivingCard>
 
             <EventsPartiesCard
                 v-if="item.adType === 'events'"
                 :item="item"
+                @itemsChanged="this.fetchAds"
             ></EventsPartiesCard>
 
             <StudyHubBuddyCard
                 v-if="item.adType === 'studyHub' && item.category === 'buddy'"
                 :item="item"
+                @itemsChanged="this.fetchAds"
             ></StudyHubBuddyCard>
 
             <StudyHubGroupCard
                 v-if="item.adType === 'studyHub' && item.category === 'group'"
                 :item="item"
+                @itemsChanged="this.fetchAds"
             ></StudyHubGroupCard>
           </div>
         </v-col>
@@ -79,12 +97,10 @@
           :style="{ bottom: mobile ? '75px' : '20px' }"
           text="Suche"
           icon="mdi-magnify"
-      >
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
+      ></v-btn>
     </template>
 
-    <v-card min-width="300" >
+    <v-card min-width="300">
       <v-text-field
           v-model="search"
           hide-details
@@ -117,9 +133,9 @@ export default {
     advertisements: [],
     search: "",
     icons: {
-        'dualLiving': 'mdi-domain',
-        'events': 'mdi-calendar-clock',
-        'studyHub': 'mdi-school',
+      'dualLiving': 'mdi-domain',
+      'events': 'mdi-calendar-clock',
+      'studyHub': 'mdi-school',
     },
   }),
   computed: {
@@ -152,12 +168,18 @@ export default {
       return filteredAds
     },
   },
-  async mounted() {
-    let adsDualLiving = await fetchAdsDualLiving();
-    let adsEventsInfos = await fetchAdsEventsInfos();
-    let adsStudyHub = await fetchAdsStudyHub();
+  methods: {
+    async fetchAds() {
+      console.log("fetchAds aufgerufen")
+      let adsDualLiving = await fetchAdsDualLiving();
+      let adsEventsInfos = await fetchAdsEventsInfos();
+      let adsStudyHub = await fetchAdsStudyHub();
 
-    this.advertisements = adsDualLiving.concat(adsEventsInfos).concat(adsStudyHub)
+      this.advertisements = adsDualLiving.concat(adsEventsInfos).concat(adsStudyHub)
+    }
+  },
+  async mounted() {
+    await this.fetchAds();
   }
 }
 </script>
