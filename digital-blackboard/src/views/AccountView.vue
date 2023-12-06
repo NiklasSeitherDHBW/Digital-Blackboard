@@ -28,12 +28,10 @@
     <v-container
         :fluid=true
     >
-
       <v-row>
         <v-col
             v-for="(item, index) in filteredAdvertisements"
             :key="index"
-            cols="12"
             sm="12"
             md="6"
             lg="6"
@@ -42,7 +40,6 @@
         >
           <div
               :id="item.id"
-              class="rounded"
               style="height: 100%;"
           >
             <DualLivingCard
@@ -128,6 +125,10 @@ export default {
   computed: {
     filteredAdvertisements() {
       return this.advertisements.filter(ad => {
+        if (ad.userId !== 1) {
+          return false
+        }
+
         if (ad.adType !== this.selectedAdType) {
           return false;
         }
