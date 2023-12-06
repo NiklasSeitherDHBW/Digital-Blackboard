@@ -10,6 +10,21 @@
       style="width: 85%;"
   >
 
+    <v-tabs
+        v-model="this.selectedCategory"
+        bg-color="transparent"
+        color="#E0001BFF"
+        grow
+    >
+      <v-tab
+          v-for="category in studyhubCategories"
+          :key="category"
+          :value="category"
+      >
+        {{ category }}
+      </v-tab>
+    </v-tabs>
+
     <v-row>
       <v-col
           v-for="(item, index) in filteredAdvertisements"
@@ -142,6 +157,10 @@ export default {
     showDialogAddStudyBuddy: false,
     showDialogImages: false,
 
+    studyhubCategories: [
+        "Nachhilfe", "Gruppe"
+    ],
+    selectedCategory: null,
     selectedItem: null,
     advertisements: [],
     advertisements_old: [
@@ -155,6 +174,7 @@ export default {
         rating: 4,
         contact: "cschneider2@web.de",
         category: "buddy",
+        categories: "Nachhilfe",
         availability: "Jederzeit"
       },
       {
@@ -167,6 +187,7 @@ export default {
         rating: 3,
         category: "buddy",
         availability: "Verfügbar",
+        categories: "Nachhilfe",
         contact: "mathetutorium@outlook.com"
       },
       {
@@ -176,6 +197,7 @@ export default {
         category: "group",
         members: 10,
         joined: true,
+        categories: "Gruppe",
         images: ['https://www.peoplegrove.com/wp-content/uploads/2022/07/networking-hero.png'],
         description: "Einmal in der Woche treffen sich alle Ersti´s, um sich gemeinsam kennen zu lernen, Fragen zu stellen und neue Freunde zu finden! Wenn du neu an der DHBW bist, dann sei dabei - wir freuen uns auf dich!",
         activities: "Restaurantbesuche, Kneipentouren, Treffen an der DHBW, gemeinsam in die Kantine gehen, ..."
@@ -187,6 +209,7 @@ export default {
         subject: "Programmiert gemeinsam und tauscht euch über eure Fähigkeiten aus - teilt eure Tipps und Tricks!",
         category: "group",
         members: 16,
+        categories: "Gruppe",
         description: "Einmal wöchentlich habt ihr die Möglichkeit, im Raum 069C gemeinsam um 16 Uhr euer Expertenwissen im Programmieren zu teilen und unter Beweis zu stellen. Wir haben bereits tolle Projekte durchgeführt und viele Apps entwickelt. Sei dabei!",
         activities: "Code-Wettbewerbe, gemeinsame Coding-Projekte, Weiterbildungen, Fragen und Antworten"
       },
@@ -198,6 +221,7 @@ export default {
         subject: "Gemeinsam laufen wir und steigern uns Woche für Woche!",
         description: "Wenn du Schwierigkeiten hast dich zu motivieren, schließe dich gerne an und lass dich von anderen mitziehen.",
         activities: "30-120 min. Joggen gehen",
+        categories: "Gruppe",
         category: "group"
       },
       {
@@ -208,6 +232,7 @@ export default {
         subject: "Du bist gut im Billiard? Stelle dein Können unter Beweis!",
         description: "Alle zwei Wochen findet im großen Billiard-Raum im Gebäude C der DHBW ein Billiard-Turnier statt. Es gibt tolle Preise zu gewinnen.",
         activities: "Billiardturniere",
+        categories: "Gruppe",
         category: "group"
       },
       {
@@ -219,6 +244,7 @@ export default {
         availability: "Verfügbar",
         description: "Du brauchst Hilfe in Programmieren und völlig am verzweifeln? Kein Problem - bei mir lernst du Schritt für Schritt zu coden.",
         contact: "06180-478392",
+        categories: "Nachhilfe",
         category: "buddy"
       },
       {
@@ -229,6 +255,7 @@ export default {
         subject: "Die Stadt Mannheim gemeinsam erkunden",
         description: "Du bist neu in der Stadt? Schließe dich gerne unserer Gruppe an und probiere neue Bars, Restaurant und nette Locations aus.",
         activities: "Essen, Trinken, Clubbing",
+        categories: "Gruppe",
         category: "group"
       },
     ], // TODO: Remove
@@ -237,6 +264,9 @@ export default {
   computed : {
     filteredAdvertisements() {
       return this.advertisements.filter(ad => {
+        if (ad.categories !== this.selectedCategory) {
+          return false;
+        }
         let keys = Object.keys(ad);
         let showItem = false;
 
