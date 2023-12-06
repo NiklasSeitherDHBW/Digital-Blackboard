@@ -74,7 +74,12 @@
         </v-col>
       </v-row>
     </v-card-text>
-
+    <div
+        v-if="item.editable"
+        class="d-inline-flex">
+        <v-btn
+        icon="mdi-pencil-outline"></v-btn>
+    </div>
     <v-divider></v-divider>
 
     <v-container
