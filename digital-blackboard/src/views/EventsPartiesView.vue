@@ -6,7 +6,7 @@
 
   <v-app>
     <v-container
-        style="width: 85%;"
+        style="width: 90%;"
     >
 
       <v-tabs
@@ -57,7 +57,7 @@
         >
           <v-btn
               v-bind="activatorProps"
-              style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 1rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
+              style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
               :style="{ bottom: mobile ? '75px' : '20px' }"
               icon="mdi-plus"
               text="+"
@@ -133,7 +133,7 @@
     >
       <template v-slot:activator="{ props }">
         <v-btn
-            style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 1rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
+            style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
             v-bind="props"
             :style="{ bottom: mobile ? '75px' : '20px' }"
             text="Suche"
