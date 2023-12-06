@@ -72,9 +72,25 @@
     >
       <AddApartment
           @close-dialog="closeDialogAddAppartment"
+          @exit-dialog="exitDialogAddAppartment"
       ></AddApartment>
     </v-dialog>
   </v-btn>
+  <v-snackbar v-model="snackbarVisible" :timeout="timeout">
+    Ihr Inserat wurde erfolgreich geteilt!
+    <template v-slot:actions>
+      <v-btn
+          color="red"
+          variant="text"
+          float-right
+          size="small"
+          class="mr-1"
+          @click="closeSnackbar"
+      >
+        Schließen
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
 <script setup>
@@ -92,6 +108,9 @@ import {createAdDualLiving, fetchAdsDualLiving} from '@/db'
 
 export default {
   data: () => ({
+    snackbarVisible: false,
+    timeout: 5000,
+
     showDialogAddApartment: false,
     showDialogImages: false,
     showDialogsContact: false,
@@ -248,12 +267,20 @@ export default {
     }
   },
   methods: {
+    closeSnackbar() {
+      this.snackbarVisible = false;
+    },
     openDialogImagesFullscreen(item) {
       this.selectedItem = item;
       this.showDialogImages = true;
     },
+    async exitDialogAddAppartment() {
+      this.showDialogAddApartment = false;
+    },
+
     async closeDialogAddAppartment(formData, images, contactData) {
       this.showDialogAddApartment = false;
+      this.snackbarVisible = true;
 
       await createAdDualLiving(formData, images, contactData)
 

@@ -1,7 +1,7 @@
 <template>
   <CustomAppBar
       titleRed="Events &amp;"
-      titleGrey="Veranstaltungen"
+      titleGrey="Infos"
   ></CustomAppBar>
 
   <v-app>
@@ -102,6 +102,7 @@
           :style="{ maxWidth: mobile ? '100%' : '60%' }"
       >
         <AddEventDialog
+            @exit-dialog="exitDialogAddEvent"
             @close-dialog="closeDialogAddEvent"
         ></AddEventDialog>
       </v-dialog>
@@ -112,6 +113,7 @@
           :style="{ maxWidth: mobile ? '100%' : '60%' }"
       >
         <AddInfoDialog
+            @exit-dialog="exitDialogAddInfo"
             @close-dialog="closeDialogAddInfo"
         ></AddInfoDialog>
       </v-dialog>
@@ -122,6 +124,7 @@
           :style="{ maxWidth: mobile ? '100%' : '60%' }"
       >
         <AddSeminarDialog
+            @exit-dialog="exitDialogAddSeminar"
             @close-dialog="closeDialogAddSeminar"
         ></AddSeminarDialog>
       </v-dialog>
@@ -153,6 +156,21 @@
         ></v-text-field>
       </v-card>
     </v-menu>
+    <v-snackbar v-model="snackbarVisible" :timeout="timeout">
+      Ihr Inserat wurde erfolgreich geteilt!
+      <template v-slot:actions>
+        <v-btn
+            color="red"
+            variant="text"
+            float-right
+            size="small"
+            class="mr-1"
+            @click="closeSnackbar"
+        >
+          Schließen
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -174,6 +192,9 @@ import {createAdEvents, createAdInfo, createAdSeminar, fetchAdsEventsInfos} from
 export default {
   data() {
     return {
+      snackbarVisible: false,
+      timeout: 5000,
+
       showDialogAddEvent: false,
       showDialogAddInfo: false,
       showDialogAddSeminar: false,
@@ -209,24 +230,40 @@ export default {
     },
   },
   methods: {
+    closeSnackbar() {
+      this.snackbarVisible = false;
+    },
+
+    async exitDialogAddEvent() {
+      this.showDialogAddEvent = false;
+    },
     async closeDialogAddEvent(images, eventData) {
       this.showDialogAddEvent = false;
+      this.snackbarVisible = true;
 
       await createAdEvents(images, eventData);
 
       this.refreshItems();
     },
 
+    async exitDialogAddInfo() {
+      this.showDialogAddInfo = false;
+    },
     async closeDialogAddInfo(images, infoData) {
       this.showDialogAddInfo = false;
+      this.snackbarVisible = true;
 
       await createAdInfo(images, infoData);
 
       await this.refreshItems();
     },
 
+    async exitDialogAddSeminar() {
+      this.showDialogAddSeminar = false;
+    },
     async closeDialogAddSeminar(images, seminarData) {
       this.showDialogAddSeminar = false;
+      this.snackbarVisible = true;
 
       await createAdSeminar(images, seminarData);
 
