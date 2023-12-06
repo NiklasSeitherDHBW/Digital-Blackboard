@@ -9,14 +9,14 @@
   >
     <template v-slot:bottomBasicInfos>
       <div v-if="item.category !== 'Informationen'"
-        class="d-flex"
+        class="d-flex pt-2"
       >
         <v-icon
           :color="item.liked ? '#eb1b2a' : '#7C868DFF'"
         >
           mdi-heart
         </v-icon>
-        <p>{{ item.likes }}</p>
+        <p class="pl-2">{{ item.likes }}</p>
       </div>
     </template>
   </CustomCard>
