@@ -214,7 +214,7 @@ export default {
     selectedImages: [],
 
     infosEvent: [
-      "title", "description", "location", "community"
+      "title", "description", "location", "community", "date"
     ],
 
     titleRules: [
