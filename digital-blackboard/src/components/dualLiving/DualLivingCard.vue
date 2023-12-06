@@ -72,15 +72,21 @@
 <script setup>
 import CustomCard from "@/components/util/CustomCard.vue"
 import ContactCard from "@/components/util/ContactCard.vue";
+import EditAppartmentDialog from "@/components/dualLiving/EditAppartmentDialog.vue";
 </script>
 
 <script>
+import {deleteAd} from "@/db.js"
 export default {
   props: {
     item: Object,
   },
   data() {
     return {
+      snackbarCreate: false,
+      snackbarDelete: false,
+      timeout: 5000,
+
       showDialogContactInfo: false,
       showDialogEditAd: false,
 

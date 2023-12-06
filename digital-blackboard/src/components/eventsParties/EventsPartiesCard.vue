@@ -106,6 +106,7 @@
 
 <script setup>
 import CustomCard from "@/components/util/CustomCard.vue"
+import EditEventDialog from "@/components/eventsParties/EditEventDialog.vue";
 </script>
 
 <script>
@@ -128,16 +129,23 @@ export default {
       showDialogEditAd: false,
 
       dictionary: {
-        "availability": "Anzahl Teilnehmer",
-        "price": "Preis",
-        "description": "Beschreibung",
-        "location": "Wo",
-        "community": "Zielgruppe",
-        "date": "Wann",
+        "availability": "Anzahl Teilnehmer:",
+        "price": "Preis p.p. in €:",
+        "description": "Beschreibung:",
+        "location": "Wo:",
+        "community": "Zielgruppe:",
+        "date": "Wann:",
       }
     };
   },
   methods: {
+    closeSnackbar() {
+      this.snackbarCreate = false;
+      this.snackbarDelete = false;
+      this.snackbarJoin = false;
+      this.snackbarLeft = false;
+    },
+
     async joinEvent(item) {
       const docRef = doc(db, "events-parties", item.id)
       const docSnap = await getDoc(docRef)
@@ -146,9 +154,11 @@ export default {
           data["joined"] = !data["joined"]
           if (data["joined"]) {
             data["members"] = data["members"] + 1
+            this.snackbarJoin = true;
           }
           else {
             data["members"] = data["members"] - 1
+            this.snackbarLeft = true;
           }
 
       await setDoc(docRef, data, {merge: true})
