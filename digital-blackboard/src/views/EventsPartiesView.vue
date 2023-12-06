@@ -42,6 +42,7 @@
           >
             <EventsPartiesCard
                 :item="item"
+                @itemChanged="refreshItems"
             ></EventsPartiesCard>
           </v-col>
         </v-row>
@@ -417,6 +418,9 @@ export default {
       this.fetchData();
     },
 
+    async refreshItems() {
+      await this.fetchData();
+    },
     setDefaultImages() {
       this.advertisements.forEach(event => {
         if (event.images.length === 0) {
