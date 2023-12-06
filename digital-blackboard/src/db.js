@@ -74,6 +74,7 @@ export async function createAdDualLiving(formData, images, contactData) {
         available_from: Timestamp.fromDate(new Date(fromParts[0], fromParts[1] - 1, fromParts[2])), // parts[1] - 1 because JavaScript counts months from 0 (January - 1, Februaray - 2, etc.)
         available_until: Timestamp.fromDate(new Date(untilParts[0], fromParts[1] - 1, fromParts[2])),
         area: formData.area,
+        rooms: formData.rooms,
         price: formData.price,
 
         description: formData.description,
