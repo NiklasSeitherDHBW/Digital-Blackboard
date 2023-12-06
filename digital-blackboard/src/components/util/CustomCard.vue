@@ -105,7 +105,6 @@
       </p>
     </v-container>
 
-
     <v-divider></v-divider>
 
     <v-expand-transition>
