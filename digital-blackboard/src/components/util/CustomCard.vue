@@ -79,30 +79,50 @@
 
       <slot name="bottomBasicInfos"></slot>
     </v-card-text>
-    <div
-        v-if="item.editable"
-        class="d-inline-flex">
-      <v-btn
-          icon="mdi-pencil-outline"
-      ></v-btn>
-    </div>
+
     <v-divider></v-divider>
 
-    <v-container
-        style="display: flex; align-items: center;"
-    >
-      <v-btn
-          class="button-round"
-          density="compact"
-          :icon="showAll ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-          @click="showAll = !showAll"
-      ></v-btn>
-
-      <p
-          class="ml-3"
+    <v-container>
+      <v-row
+          style="align-items: center;"
+          class="my-0 mx-0"
       >
-        Mehr Informationen
-      </p>
+        <v-btn
+            class="button-round"
+            density="compact"
+            size="large"
+            :icon="showAll ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+            @click="showAll = !showAll"
+        ></v-btn>
+
+        <p class="ml-3">Mehr Informationen</p>
+
+        <div class="d-flex ml-auto">
+          <v-btn
+              v-if="item.editable"
+              icon
+              class="button-round"
+              density="compact"
+              size="large"
+              @click="this.$emit('editAdClicked', item)"
+          >
+            <v-icon>mdi-pencil-outline</v-icon>
+          </v-btn>
+
+          <p class="mx-1"></p>
+
+          <v-btn
+              v-if="item.editable"
+              icon
+              class="button-round"
+              density="compact"
+              size="large"
+              @click="this.$emit('deleteAd')"
+          >
+            <v-icon color="red">mdi-trash-can-outline</v-icon>
+          </v-btn>
+        </div>
+      </v-row>
     </v-container>
 
     <v-divider></v-divider>
