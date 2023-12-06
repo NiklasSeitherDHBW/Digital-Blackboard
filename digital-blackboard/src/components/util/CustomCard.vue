@@ -13,7 +13,9 @@
           :src="image"
           :cover=true
           class="align-end"
-      ></v-carousel-item>
+          @click="showDialogImagesFullscreen=true"
+      >
+      </v-carousel-item>
 
       <v-dialog
           v-model="showDialogImagesFullscreen"
@@ -28,6 +30,7 @@
             <v-btn
                 class="button-round ml-auto mr-1"
                 icon="mdi-close"
+                @click="showDialogImagesFullscreen=false"
             ></v-btn>
           </v-row>
 
@@ -73,6 +76,8 @@
           </p>
         </v-col>
       </v-row>
+
+      <slot name="bottomBasicInfos"></slot>
     </v-card-text>
     <div
         v-if="item.editable"
@@ -102,7 +107,6 @@
     <v-divider></v-divider>
 
     <v-expand-transition>
-
       <div
           v-if="showAll"
       >

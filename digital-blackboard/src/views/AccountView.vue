@@ -147,12 +147,10 @@ export default {
   },
   async mounted() {
     let test = await fetchAdsDualLiving();
-    console.log(test)
     let test2 = await fetchAdsEvents();
     let test3 = await fetchAdsStudyHub();
 
     this.advertisements = test.concat(test2).concat(test3)
-
   }
 }
 </script>
