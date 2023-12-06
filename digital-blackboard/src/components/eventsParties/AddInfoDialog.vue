@@ -167,7 +167,7 @@
             class="float right"
             type="submit"
             variant="outlined"
-            @click="validateDataForm"
+            @click="validateDataForm()"
         >
           Nächste
         </v-btn>
@@ -238,7 +238,7 @@ export default {
       location: '',
       community: '',
       date: '',
-      category: 'Informationen'
+      category: 'Infos'
     },
 
     dictionary: {
@@ -255,7 +255,7 @@ export default {
     validateDataForm() {
       const isValid = this.validateFields([
         { value: this.infoData.title, rules: this.titleRules },
-        { value: this.infoData.subject, rules: this.generalRules },
+        { value: this.infoData.community, rules: this.generalRules },
         { value: this.infoData.location, rules: this.generalRules },
 
       ]);  console.log(isValid)
