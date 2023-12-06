@@ -5,8 +5,9 @@
   ></AppBar>
 
   <v-container
-      style="width: 85%;"
+      style="width: 90%;"
   >
+    <v-card-title>Deine Inserate</v-card-title>
 
     <v-tabs
         v-model="this.selectedAdType"
@@ -19,7 +20,8 @@
           :key="content"
           :value="content"
       >
-        {{ content }}
+        <v-icon v-if="mobile">{{ icons[content] }}</v-icon>
+        <p v-else>{{ content }}</p>
       </v-tab>
     </v-tabs>
 
@@ -75,12 +77,10 @@
   >
     <template v-slot:activator="{ props }">
       <v-btn
-          style="border-radius: 5px; position: fixed; right: 1rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5);"
+          style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
           v-bind="props"
           :style="{ bottom: mobile ? '75px' : '20px' }"
           text="Suche"
-          variant="outlined"
-          color="red"
           icon="mdi-magnify"
       >
         <v-icon>mdi-magnify</v-icon>
@@ -119,6 +119,11 @@ export default {
     selectedAdType: null,
     advertisements: [],
     search: "",
+    icons: {
+        'dualLiving': 'mdi-domain',
+        'events': 'mdi-calendar-clock',
+        'studyHub': 'mdi-school',
+    },
   }),
   computed: {
     filteredAdvertisements() {
