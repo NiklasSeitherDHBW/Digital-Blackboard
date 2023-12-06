@@ -55,7 +55,7 @@
     </v-card-title>
 
     <v-card-subtitle>
-        Erstelldatum: {{ item.date_created }}
+      Erstelldatum: {{ item.date_created }}
     </v-card-subtitle>
 
     <v-card-text class="ma-1 text-wrap">
@@ -82,8 +82,9 @@
     <div
         v-if="item.editable"
         class="d-inline-flex">
-        <v-btn
-        icon="mdi-pencil-outline"></v-btn>
+      <v-btn
+          icon="mdi-pencil-outline"
+      ></v-btn>
     </div>
     <v-divider></v-divider>
 
@@ -186,8 +187,7 @@ export default {
       if (this.customClick && typeof this.customClick === 'function') {
         // If yes, execute the custom click function provided via props
         this.customClick();
-      }
-      else {
+      } else {
         const link = window.location.origin + this.$route.path + '?card=' + this.item.id
         navigator.clipboard.writeText(link);
         alert(`Der Link zum Inserat wurde in deine Zwischenablage kopiert`);
@@ -203,6 +203,7 @@ export default {
   background: white;
   color: #eb1b2a;
 }
+
 .text-wrap {
   white-space: normal;
 }
