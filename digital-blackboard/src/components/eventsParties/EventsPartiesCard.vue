@@ -8,7 +8,7 @@
       @action-clicked="joinEvent(item)"
   >
     <template v-slot:bottomBasicInfos>
-      <div v-if="item.category !== 'Informationen'"
+      <div v-if="item.category !== 'Infos'"
         class="d-flex pt-2"
       >
         <v-icon
@@ -75,7 +75,7 @@ export default {
     basicInfosKeywords() {
       if (this.item.category === "Events") {
         return ["date", "price", "community"]
-      } else if (this.item.category === "Informationen") {
+      } else if (this.item.category === "Infos") {
         return ["date", "community"]
       } else if (this.item.category === "Seminare") {
         return ["date", "price", "community"]
@@ -86,7 +86,7 @@ export default {
     extraInfosKeywords() {
       if (this.item.category === "Events") {
         return ["description", "location", "availability"]
-      } else if (this.item.category === "Informationen") {
+      } else if (this.item.category === "Infos") {
         return ["description", "location"]
       } else if (this.item.category === "Seminare") {
         return ["description", "location", "availability"]
