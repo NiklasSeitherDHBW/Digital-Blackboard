@@ -228,6 +228,8 @@ export default {
       category: 'group',
       members: 1,
       joined: false,
+      userId: 1,
+
     },
 
     dictionary: {
