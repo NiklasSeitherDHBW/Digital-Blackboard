@@ -110,8 +110,7 @@
 
 
 <script>
-import {collection, addDoc, Timestamp} from 'firebase/firestore'
-import {db, fetchAdsStudyHub} from '@/db'
+import {createAdStudyBuddy, createAdStudyGroup, fetchAdsStudyHub} from '@/db'
 
 export default {
   data: () => ({
@@ -236,28 +235,7 @@ export default {
     async closeDialogAddStudyBuddy(images, buddyData, contactData) {
       this.showDialogAddStudyBuddy = false;
 
-      let new_item = {
-        images: images,
-
-        title: buddyData.title,
-        date_created: Timestamp.fromDate(new Date()),
-
-        price: buddyData.price,
-        subject: buddyData.subject,
-
-        description: buddyData.description,
-        availability: buddyData.availability,
-
-        name: contactData.name,
-        phone: contactData.phone,
-        email: contactData.email,
-
-        category: buddyData.category,
-
-        userId: buddyData.userId,
-      }
-
-      await addDoc(collection(db, "study-hub"), new_item);
+      await createAdStudyBuddy(buddyData, images, contactData)
 
       this.advertisements = await fetchAdsStudyHub();
 
@@ -265,23 +243,7 @@ export default {
     async closeDialogAddStudyHub(images, hubData) {
       this.showDialogAddStudyHub = false;
 
-      let new_item = {
-        images: images,
-
-        title: hubData.title,
-        date_created: Timestamp.fromDate(new Date()),
-
-        subject: hubData.subject,
-        members: hubData.members,
-
-        description: hubData.description,
-        activities: hubData.activities,
-
-        joined: hubData.joined,
-        category: "group",
-      }
-
-      await addDoc(collection(db, "study-hub"), new_item);
+      await createAdStudyGroup(hubData, images)
 
       this.advertisements = await fetchAdsStudyHub();
     },

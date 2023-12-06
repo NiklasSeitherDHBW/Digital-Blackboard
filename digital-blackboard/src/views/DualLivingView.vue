@@ -9,7 +9,6 @@
       style="width: 85%;"
       align="center"
   >
-
     <v-row>
       <v-col
           v-for="(item, index) in filteredAdvertisements"
@@ -258,11 +257,14 @@ export default {
 
       await createAdDualLiving(formData, images, contactData)
 
+      await this.fetchAds();
+    },
+    async fetchAds() {
       this.advertisements = await fetchAdsDualLiving();
     },
   },
   async mounted() {
-    this.advertisements = await fetchAdsDualLiving();
+    await this.fetchAds();
   }
 };
 </script>
