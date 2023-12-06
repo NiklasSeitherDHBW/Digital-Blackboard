@@ -2,10 +2,11 @@
   <v-stepper
       v-model="step"
       alt-labels
+
   >
     <v-stepper-header>
       <v-stepper-item
-          :title="mobile ? '' : 'Angaben zur Gruppe'"
+          :title="mobile ? '' : 'Angaben zur Information'"
           :icon="mobile ? 'mdi-text-box-outline' : ''"
           :value="1"
       ></v-stepper-item>
@@ -45,40 +46,52 @@
         >
           <v-form
               @submit.prevent>
-          <v-card-text>
-            <v-text-field
-                label="Titel der Gruppe *"
-                variant="outlined"
-                class="mt-2"
-                maxlength="50"
-                v-model="hubData.title"
-                :rules="titleRules"
-                counter
-                required
-            ></v-text-field>
+            <!-- Form für den Input des Users -> v-model, und Eingabehinweise -> prefix, rules, placeholder -->
+            <v-card-text>
+              <v-text-field
+                  label="Titel der Information *"
+                  variant="outlined"
+                  class="mt-2"
+                  maxlength="50"
+                  v-model="infoData.title"
+                  :rules="titleRules"
+                  counter
+                  required
+              ></v-text-field>
 
-            <v-text-field
-                label="Beschreibung"
-                variant="outlined"
-                maxlength="200"
-                v-model="hubData.description"
-                counter
-            ></v-text-field>
+              <v-text-field
+                  label="Beschreibung"
+                  variant="outlined"
+                  maxlength="200"
+                  v-model="infoData.description"
+                  counter
+              ></v-text-field>
 
-            <v-text-field
-                label="Thema"
-                variant="outlined"
-                v-model="hubData.subject"
-                :rules="generalRules"
-            ></v-text-field>
+              <v-text-field
+                  label="Ort *"
+                  placeholder="Coblitzallee 1-9, 68163 Mannheim"
+                  variant="outlined"
+                  v-model="infoData.location"
+                  :rules="generalRules"
+              ></v-text-field>
 
-            <v-text-field
-                label="Aktivitäten"
-                variant="outlined"
-                v-model="hubData.activities"
-            ></v-text-field>
+              <v-text-field
+                  label="Zielgruppe *"
+                  variant="outlined"
+                  v-model="infoData.community"
+                  :rules="generalRules"
+              ></v-text-field>
 
-          </v-card-text>
+              <v-text-field
+                  label="Datum *"
+                  placeholder="TT.MM.JJJJ"
+                  variant="outlined"
+                  type="date"
+                  :rules="dateRules"
+                  v-model="infoData.date"
+              ></v-text-field>
+
+            </v-card-text>
             <v-card-actions>
               <v-btn
                   color="red"
@@ -140,7 +153,7 @@
                 src="https://firebasestorage.googleapis.com/v0/b/digital-blackboard-dhbw.appspot.com/o/dhbw-logo-small.jpg?alt=media"
             ></v-img>
             <h3 class="text-h6 font-weight-light mb-2">
-              Ihre Gruppe wurde erfolgreich geteilt!
+              Noch ein letzter Check das alles passt!
             </h3>
             <span
                 class="text-caption text-grey"
@@ -151,7 +164,7 @@
               class="ma-1"
               variant="outlined"
           >
-            <v-card-title>Angaben zur Gruppe</v-card-title>
+            <v-card-title>Informationsangaben</v-card-title>
 
             <v-card-text>
               <v-row
@@ -174,29 +187,31 @@
                 </v-col>
               </v-row>
             </v-card-text>
-          </v-card>
-          <v-card-actions>
-            <v-btn
-                variant="outlined"
-                @click="step--"
-            >
-              Zurück
-            </v-btn>
+            <v-card-actions>
+              <v-btn
+                  variant="outlined"
+                  @click="step--"
+              >
+                Zurück
+              </v-btn>
 
-            <v-spacer></v-spacer>
-            <!--Nur sichtbar solange man sich auf der letzten Seite befindet, übergibt die Inputdaten -->
-            <v-btn
-                color="red"
-                class="float right"
-                variant="outlined"
-                type="submit"
-                @click="closeDialog"
-            >
-              Gruppe teilen
-            </v-btn>
-          </v-card-actions>
+              <v-spacer></v-spacer>
+              <!--Nur sichtbar solange man sich auf der letzten Seite befindet, übergibt die Inputdaten -->
+              <v-btn
+                  color="red"
+                  class="float right"
+                  variant="outlined"
+                  type="submit"
+                  @click="closeDialog"
+              >
+                Information teilen
+              </v-btn>
+            </v-card-actions>
+          </v-card>
         </v-window-item>
       </v-window>
+
+      <v-divider></v-divider>
     </v-stepper-window>
   </v-stepper>
 </template>
@@ -211,15 +226,20 @@ const {mobile} = useDisplay()
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
 
 export default {
-  components: {UploadImagesStep},
+  props: {
+    item: Object,
+  },
+  components: {
+    UploadImagesStep
+  },
   data: () => ({
     step: 1,
     selectedImages: [],
 
     infosEvent: [
-      "title", "description", "subject", "activities"
+      "title", "description", "location", "community", "date"
     ],
-    // regeln zum validieren des Inputs
+
     titleRules: [
       (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
       (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
@@ -235,32 +255,34 @@ export default {
       (value) => /\d+$/.test(value) ? true : 'Die angegebene Information darf nur Zahlen (0-9) beinhalten!',
     ],
 
-    hubData: {
+    infoData: {
       title: '',
       description: '',
-      subject: '',
-      activities: '',
-      category: 'group',
-      members: 1,
-      joined: false,
+      location: '',
+      community: '',
+      date: '',
+      category: 'Infos',
       userId: 1,
-
     },
 
     dictionary: {
       "title": "Titel:",
       "description": "Beschreibung:",
-      "activities": "Aktivitäten:",
-      "subject": "Thema:",
+      "location": "Wo:",
+      "community": "Zielgruppe:",
+      "date": "Wann:"
     },
   }),
 
   methods: {
+    // kritische Eventdaten werden durch rules validiert, wenn alle felder richtig ausgefüllt werden kann die nächste seite erreich werden
     validateDataForm() {
-      // kritische Daten werden durch rules validiert, wenn alle felder richtig ausgefüllt werden kann die nächste seite erreich werden
       const isValid = this.validateFields([
-        { value: this.hubData.title, rules: this.titleRules },
-        { value: this.hubData.subject, rules: this.generalRules },
+        { value: this.infoData.title, rules: this.titleRules },
+        { value: this.infoData.community, rules: this.generalRules },
+        { value: this.infoData.date, rules: this.dateRules},
+        { value: this.infoData.location, rules: this.generalRules },
+
       ]);  console.log(isValid)
       if (isValid) {
         return this.step++
@@ -274,7 +296,6 @@ export default {
           const isValid = rule(field.value);
           if (isValid !== true) {
             // Wenn die Regel nicht erfüllt ist, zeige die Fehlermeldung an
-            console.error(isValid);
             return false;
           }
         }
@@ -301,29 +322,44 @@ export default {
       // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
       this.$emit("exit-dialog")
     },
+    // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
     closeDialog() {
-      // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
-      this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.hubData)
+      this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.infoData)
     }
   },
   computed: {
     currentTitle () {
+      // einzelnen Schritte des Steppers
       switch (this.step) {
-        case 1: return 'Angaben zur Gruppe';
+        case 1: return 'Angaben zur Information';
         case 2: return 'Fotos';
         case 3: return 'Zusammenfassung';
-        default: return 'Gruppe wurde erfolgreich erstellt!';
+        default: return 'Information wurde erfolgreich geteilt!';
       }
     },
     eventInfos() {
-      // iteriert über alle formData Attribute und deren Titel aus dictionary um diese als Preview anzuzeigen
+      // iteriert über alle infoData Attribute und deren titel aus dictionary um diese als Preview anzuzeigen
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
-        let value = this.hubData[attribute];
+        let value = this.infoData[attribute];
         eventInfos.push({ label: this.dictionary[attribute], value: value });
       }
       return eventInfos;
     },
+  },
+  mounted() {
+    let partsFrom = this.item.date.split(".")
+
+    this.infoData = {
+      title: this.item.title,
+      description: this.item.description,
+      date: partsFrom[2] + "-" + partsFrom[1] + "-" + partsFrom[0],
+      location: this.item.location,
+      community: this.item.community,
+      images: this.item.images,
+      date_created: this.item.date_created,
+      userId: this.item.userId,
+    }
   },
 };
 </script>

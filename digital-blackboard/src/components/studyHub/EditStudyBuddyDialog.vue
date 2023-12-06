@@ -53,49 +53,49 @@
         >
           <v-form
               @submit.prevent>
-          <v-card-text>
-            <v-text-field
-                label="Titel des Buddys *"
-                variant="outlined"
-                class="mt-2"
-                maxlength="50"
-                v-model="buddyData.title"
-                :rules="titleRules"
-                counter
-                required
-            ></v-text-field>
+            <v-card-text>
+              <v-text-field
+                  label="Titel des Buddys *"
+                  variant="outlined"
+                  class="mt-2"
+                  maxlength="50"
+                  v-model="buddyData.title"
+                  :rules="titleRules"
+                  counter
+                  required
+              ></v-text-field>
 
-            <v-text-field
-                label="Beschreibung"
-                variant="outlined"
-                maxlength="200"
-                v-model="buddyData.description"
-                counter
-            ></v-text-field>
+              <v-text-field
+                  label="Beschreibung"
+                  variant="outlined"
+                  maxlength="200"
+                  v-model="buddyData.description"
+                  counter
+              ></v-text-field>
 
-            <v-text-field
-                label="Preis pro Stunde *"
-                prefix="€"
-                variant="outlined"
-                v-model="buddyData.price"
-                :rules="numRules"
-            ></v-text-field>
+              <v-text-field
+                  label="Preis pro Stunde *"
+                  prefix="€"
+                  variant="outlined"
+                  v-model="buddyData.price"
+                  :rules="numRules"
+              ></v-text-field>
 
-            <v-text-field
-                label="Fächer *"
-                variant="outlined"
-                :rules="generalRules"
-                v-model="buddyData.subject"
-            ></v-text-field>
+              <v-text-field
+                  label="Fächer *"
+                  variant="outlined"
+                  :rules="generalRules"
+                  v-model="buddyData.subject"
+              ></v-text-field>
 
-            <v-text-field
-                label="Verfügbarkeit"
-                placeholder="Nach Absprache"
-                variant="outlined"
-                v-model="buddyData.availability"
-            ></v-text-field>
+              <v-text-field
+                  label="Verfügbarkeit"
+                  placeholder="Nach Absprache"
+                  variant="outlined"
+                  v-model="buddyData.availability"
+              ></v-text-field>
 
-          </v-card-text>
+            </v-card-text>
             <v-card-actions>
               <v-btn
                   color="red"
@@ -150,58 +150,58 @@
             :value="3"
         >
           <v-form
-            @submit.prevent>
-          <v-text-field
-              label="Vor-/Nachname *"
-              placeholder="Maxime Musterfrau"
-              variant="outlined"
-              class="mt-2"
-              :rules="nameRules"
-              v-model="contactData.name"
-          ></v-text-field>
+              @submit.prevent>
+            <v-text-field
+                label="Vor-/Nachname *"
+                placeholder="Maxime Musterfrau"
+                variant="outlined"
+                class="mt-2"
+                :rules="nameRules"
+                v-model="contactData.name"
+            ></v-text-field>
 
-          <v-text-field
-              label="Telefon"
-              placeholder="+49123456789"
-              variant="outlined"
-              type="tel"
-              :rules="phoneRules"
-              v-model="contactData.phone"
-          ></v-text-field>
+            <v-text-field
+                label="Telefon"
+                placeholder="+49123456789"
+                variant="outlined"
+                type="tel"
+                :rules="phoneRules"
+                v-model="contactData.phone"
+            ></v-text-field>
 
-          <v-text-field
-              label="E-Mail *"
-              placeholder="john@google.com"
-              variant="outlined"
-              type="email"
-              :rules="emailRules"
-              v-model="contactData.email"
-          ></v-text-field>
-          <span
-              class="text-caption text-grey-darken-1"
-          >
+            <v-text-field
+                label="E-Mail *"
+                placeholder="john@google.com"
+                variant="outlined"
+                type="email"
+                :rules="emailRules"
+                v-model="contactData.email"
+            ></v-text-field>
+            <span
+                class="text-caption text-grey-darken-1"
+            >
               Diese Daten werden Interessenten zur Verfügung gestellt um Kontakt aufzunehmen.
         </span>
-          <v-card-actions>
-            <v-btn
-                variant="outlined"
-                @click="step--"
-            >
-              Zurück
-            </v-btn>
+            <v-card-actions>
+              <v-btn
+                  variant="outlined"
+                  @click="step--"
+              >
+                Zurück
+              </v-btn>
 
-            <v-spacer></v-spacer>
-            <!--Nur sichtbar solange man sich auf der 3. Seite befindet, validiert den auf Seite 3 getätigten Input -->
-            <v-btn
-                color="red"
-                class="float right"
-                type="submit"
-                variant="outlined"
-                @click="validateContactForm()"
-            >
-              Zusammenfassung
-            </v-btn>
-          </v-card-actions>
+              <v-spacer></v-spacer>
+              <!--Nur sichtbar solange man sich auf der 3. Seite befindet, validiert den auf Seite 3 getätigten Input -->
+              <v-btn
+                  color="red"
+                  class="float right"
+                  type="submit"
+                  variant="outlined"
+                  @click="validateContactForm()"
+              >
+                Zusammenfassung
+              </v-btn>
+            </v-card-actions>
           </v-form>
         </v-window-item>
 
@@ -314,7 +314,12 @@ const {mobile} = useDisplay()
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
 
 export default {
-  components: {UploadImagesStep},
+  props: {
+    item: Object,
+  },
+  components: {
+    UploadImagesStep
+  },
   data: () => ({
     step: 1,
     selectedImages: [],
@@ -477,6 +482,24 @@ export default {
       }
       return extraInfos;
     },
+  },
+  mounted() {
+
+    this.buddyData = {
+      title: this.item.title,
+      description: this.item.description,
+      price: this.item.price,
+      subject: this.item.subject,
+      availability: this.item.availability,
+      images: this.item.images,
+      date_created: this.item.date_created,
+      userId: this.item.userId,
+    }
+    this.contactData = {
+      name: this.item.name,
+      phone: this.item.phone,
+      email: this.item.email,
+    }
   },
 };
 </script>

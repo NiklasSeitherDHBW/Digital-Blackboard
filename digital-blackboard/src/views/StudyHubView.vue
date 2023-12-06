@@ -82,7 +82,10 @@
         v-model="showDialogAddStudyBuddy"
         :style="{ maxWidth: mobile ? '100%' : '60%' }"
     >
-      <AddStudyBuddyDialog @close-dialog="closeDialogAddStudyBuddy"></AddStudyBuddyDialog>
+      <AddStudyBuddyDialog
+          @close-dialog="closeDialogAddStudyBuddy"
+          @exit-dialog="exitDialogAddStudyBuddy">
+      </AddStudyBuddyDialog>
     </v-dialog>
 
     <v-dialog
@@ -90,7 +93,10 @@
         v-model="showDialogAddStudyHub"
         :style="{ maxWidth: mobile ? '100%' : '60%' }"
     >
-      <AddStudyHubDialog @close-dialog="closeDialogAddStudyHub"></AddStudyHubDialog>
+      <AddStudyHubDialog
+          @close-dialog="closeDialogAddStudyHub"
+          @exit-dialog="exitDialogAddStudyHub">
+      </AddStudyHubDialog>
     </v-dialog>
   </div>
 
@@ -121,15 +127,32 @@
       ></v-text-field>
     </v-card>
   </v-menu>
+  <v-snackbar v-model="snackbarVisible" :timeout="timeout">
+    Ihr Inserat wurde erfolgreich geteilt!
+    <template v-slot:actions>
+      <v-btn
+          color="red"
+          variant="text"
+          float-right
+          size="small"
+          class="mr-1"
+          @click="closeSnackbar"
+      >
+        Schließen
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
 
 <script>
-import {collection, addDoc, Timestamp} from 'firebase/firestore'
-import {db, fetchAdsStudyHub} from '@/db'
+import {createAdStudyBuddy, createAdStudyGroup, fetchAdsStudyHub} from '@/db'
 
 export default {
   data: () => ({
+    snackbarVisible: false,
+    timeout: 5000,
+
     showDialogAddStudyHub: false,
     showDialogAddStudyBuddy: false,
     showDialogImages: false,
@@ -258,60 +281,34 @@ export default {
     },
   },
   methods: {
+    closeSnackbar() {
+      this.snackbarVisible = false;
+    },
     openDialogImagesFullscreen(item) {
       this.selectedItem = item;
       this.showDialogImages = true;
     },
+    async exitDialogAddStudyBuddy() {
+      this.showDialogAddStudyBuddy = false;
+    },
 
     async closeDialogAddStudyBuddy(images, buddyData, contactData) {
       this.showDialogAddStudyBuddy = false;
+      this.snackbarVisible = true;
 
-      let new_item = {
-        images: images,
-
-        title: buddyData.title,
-        date_created: Timestamp.fromDate(new Date()),
-
-        price: buddyData.price,
-        subject: buddyData.subject,
-
-        description: buddyData.description,
-        availability: buddyData.availability,
-
-        name: contactData.name,
-        phone: contactData.phone,
-        email: contactData.email,
-
-        category: buddyData.category,
-
-      }
-
-      await addDoc(collection(db, "study-hub"), new_item);
+      await createAdStudyBuddy(buddyData, images, contactData)
 
       this.advertisements = await fetchAdsStudyHub();
 
     },
+    async exitDialogAddStudyHub() {
+      this.showDialogAddStudyHub = false;
+    },
     async closeDialogAddStudyHub(images, hubData) {
       this.showDialogAddStudyHub = false;
+      this.snackbarVisible = true;
 
-      let new_item = {
-        images: images,
-
-        title: hubData.title,
-        date_created: Timestamp.fromDate(new Date()),
-
-        subject: hubData.subject,
-        members: hubData.members,
-
-        description: hubData.description,
-        activities: hubData.activities,
-
-        joined: hubData.joined,
-        category: "group",
-
-      }
-
-      await addDoc(collection(db, "study-hub"), new_item);
+      await createAdStudyGroup(hubData, images)
 
       this.advertisements = await fetchAdsStudyHub();
     },

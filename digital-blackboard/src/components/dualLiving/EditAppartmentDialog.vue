@@ -159,15 +159,15 @@
               Schließen
             </v-btn>
             <v-spacer></v-spacer>
-          <v-btn
-              color="red"
-              class="mr-2 mb-2"
-              type="submit"
-              variant="outlined"
-              @click="validateDataForm()"
-          >
-            Nächste
-          </v-btn>
+            <v-btn
+                color="red"
+                class="mr-2 mb-2"
+                type="submit"
+                variant="outlined"
+                @click="validateDataForm()"
+            >
+              Nächste
+            </v-btn>
           </v-card-actions>
         </v-form>
       </v-window-item>
@@ -187,15 +187,15 @@
           </v-btn>
 
           <v-spacer></v-spacer>
-        <v-btn
-            color="red"
-            class="float right"
-            type="submit"
-            variant="outlined"
-            @click="step++"
-        >
-          Nächste
-        </v-btn>
+          <v-btn
+              color="red"
+              class="float right"
+              type="submit"
+              variant="outlined"
+              @click="step++"
+          >
+            Nächste
+          </v-btn>
         </v-card-actions>
       </v-window-item>
 
@@ -237,24 +237,24 @@
               Diese Daten werden Interessenten zur Verfügung gestellt um Kontakt aufzunehmen.
         </span>
           <v-card-actions>
-          <v-btn
-              variant="outlined"
-              @click="step--"
-          >
-            Zurück
-          </v-btn>
+            <v-btn
+                variant="outlined"
+                @click="step--"
+            >
+              Zurück
+            </v-btn>
 
-          <v-spacer></v-spacer>
-          <!--Nur sichtbar solange man sich auf der 3. Seite befindet, validiert den auf Seite 3 getätigten Input -->
-          <v-btn
-              color="red"
-              class="float right"
-              type="submit"
-              variant="outlined"
-              @click="validateContactForm()"
-          >
-            Zusammenfassung
-          </v-btn>
+            <v-spacer></v-spacer>
+            <!--Nur sichtbar solange man sich auf der 3. Seite befindet, validiert den auf Seite 3 getätigten Input -->
+            <v-btn
+                color="red"
+                class="float right"
+                type="submit"
+                variant="outlined"
+                @click="validateContactForm()"
+            >
+              Zusammenfassung
+            </v-btn>
           </v-card-actions>
         </v-form>
 
@@ -380,6 +380,9 @@ const {mobile} = useDisplay()
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
 
 export default {
+  props: {
+    item: Object,
+  },
   components: {
     UploadImagesStep
   },
@@ -562,6 +565,34 @@ export default {
       }
       return extraInfos;
     },
+  },
+  mounted() {
+    let partsFrom = this.item.available_from.split(".")
+    let partsTill = this.item.available_until.split(".")
+    let communityParts = this.item.community.split(" - ")
+
+    this.formData = {
+      title: this.item.title,
+      description: this.item.description,
+      availableFrom: partsFrom[2] + "-" + partsFrom[1] + "-" + partsFrom[0],
+      availableTill: partsTill[2] + "-" + partsTill[1] + "-" + partsTill[0],
+      location: this.item.location,
+      price: this.item.price,
+      area: this.item.area,
+      furniture: this.item.furniture === "Ja" ? true : false,
+      community: communityParts.length > 1 ? true : false,
+      rooms: this.item.rooms,
+      selectedGender: communityParts.length > 1 ? communityParts[1] : "",
+      images: this.item.images,
+      date_created: this.item.date_created,
+      userId: this.item.userId,
+    }
+
+    this.contactData = {
+      name: this.item.name,
+      phone: this.item.phone,
+      email: this.item.email,
+    }
   },
   watch: {
     isCommunityLiving(value) {

@@ -45,40 +45,40 @@
         >
           <v-form
               @submit.prevent>
-          <v-card-text>
-            <v-text-field
-                label="Titel der Gruppe *"
-                variant="outlined"
-                class="mt-2"
-                maxlength="50"
-                v-model="hubData.title"
-                :rules="titleRules"
-                counter
-                required
-            ></v-text-field>
+            <v-card-text>
+              <v-text-field
+                  label="Titel der Gruppe *"
+                  variant="outlined"
+                  class="mt-2"
+                  maxlength="50"
+                  v-model="hubData.title"
+                  :rules="titleRules"
+                  counter
+                  required
+              ></v-text-field>
 
-            <v-text-field
-                label="Beschreibung"
-                variant="outlined"
-                maxlength="200"
-                v-model="hubData.description"
-                counter
-            ></v-text-field>
+              <v-text-field
+                  label="Beschreibung"
+                  variant="outlined"
+                  maxlength="200"
+                  v-model="hubData.description"
+                  counter
+              ></v-text-field>
 
-            <v-text-field
-                label="Thema"
-                variant="outlined"
-                v-model="hubData.subject"
-                :rules="generalRules"
-            ></v-text-field>
+              <v-text-field
+                  label="Thema"
+                  variant="outlined"
+                  v-model="hubData.subject"
+                  :rules="generalRules"
+              ></v-text-field>
 
-            <v-text-field
-                label="Aktivitäten"
-                variant="outlined"
-                v-model="hubData.activities"
-            ></v-text-field>
+              <v-text-field
+                  label="Aktivitäten"
+                  variant="outlined"
+                  v-model="hubData.activities"
+              ></v-text-field>
 
-          </v-card-text>
+            </v-card-text>
             <v-card-actions>
               <v-btn
                   color="red"
@@ -211,7 +211,12 @@ const {mobile} = useDisplay()
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
 
 export default {
-  components: {UploadImagesStep},
+  props: {
+    item: Object,
+  },
+  components: {
+    UploadImagesStep
+  },
   data: () => ({
     step: 1,
     selectedImages: [],
@@ -240,6 +245,7 @@ export default {
       description: '',
       subject: '',
       activities: '',
+      images: [],
       category: 'group',
       members: 1,
       joined: false,
@@ -324,6 +330,18 @@ export default {
       }
       return eventInfos;
     },
+  },
+  mounted() {
+
+    this.hubData = {
+      title: this.item.title,
+      description: this.item.description,
+      subject: this.item.subject,
+      activities: this.item.activities,
+      images: this.item.images,
+      date_created: this.item.date_created,
+      userId: this.item.userId,
+    }
   },
 };
 </script>

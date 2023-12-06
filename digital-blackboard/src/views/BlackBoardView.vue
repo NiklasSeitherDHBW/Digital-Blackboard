@@ -1,164 +1,169 @@
 <template>
-  <CustomAppBar
+    <AppBar
       titleRed="Digital"
       titleGrey="Blackboard"
       subtitle="Letzte Ereignisse"
-  ></CustomAppBar>
+  ></AppBar>
 
-  <v-data-iterator
-      :items="contents"
-      item-value="name"
-  >
-    <template
-        v-slot:default="{ items , isExpanded, toggleExpand}"
+    <v-container
+        style="width: 100%;"
     >
+
       <v-container
-          fluid="true"
+          :fluid=true
       >
-        <v-row
-            dense
-        >
+        <v-row>
           <v-col
-              v-for="item in items"
-              :key="item.raw.name"
-              :cols="item.raw.flex"
+              v-for="(item, index) in filteredAdvertisements"
+              :key="index"
+              sm="12"
+              md="6"
+              lg="6"
+              xl="4"
+              xxl="3"
           >
-            <v-card
-                class="mx-auto"
+            <div
+                :id="item.id"
+                style="height: 100%;"
             >
+              <DualLivingCard
+                  v-if="item.adType === 'dualLiving'"
+                  :item="item"
+              ></DualLivingCard>
 
-              <v-img
-                  class="align-end"
-                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                  height="200px"
-                  cover
-                  :src="item.raw.src"
-              >
-                <v-card-title
-                    class="d-flex align-center">
-                  <v-icon
-                      :color="item.raw.color"
-                      :icon="item.raw.icon"
-                      start
-                      size="18"
-                  ></v-icon>
-                  <h4
-                      style="color: white"
-                  >
-                    {{ item.raw.name }}
-                  </h4>
-                </v-card-title>
-              </v-img>
+              <EventsPartiesCard
+                  v-if="item.adType === 'events'"
+                  :item="item"
+              ></EventsPartiesCard>
 
-              <v-list-item-subtitle
-                  style="margin-top: 10px; margin-right: 10px"
-              >
-                {{ item.raw.date }}
-              </v-list-item-subtitle>
+              <StudyHubBuddyCard
+                  v-if="item.adType === 'studyHub' && item.category === 'buddy'"
+                  :item="item"
+              ></StudyHubBuddyCard>
 
-              <v-card-text>
-                {{ item.raw.description }}
-              </v-card-text>
-
-              <v-btn
-                  :model-value="isExpanded(item)"
-                  :icon="`${isExpanded(item) ? 'mdi-chevron-up' : 'mdi-chevron-down'}`"
-                  density="compact"
-                  inset
-                  style="margin-bottom: 10px"
-                  @click="() => toggleExpand(item)"
-              ></v-btn>
-
-              <v-spacer></v-spacer>
-
-              <v-expand-transition>
-                <v-container
-                    v-if="isExpanded(item)"
-                >
-                  <v-divider></v-divider>
-
-                  <v-list
-                      density="compact"
-                      :lines="false"
-                  >
-                    <v-list-item
-                        :title="`🔥 Calories: ${item.raw.calories}`"
-                        active
-                    ></v-list-item>
-                  </v-list>
-                </v-container>
-              </v-expand-transition>
-            </v-card>
+              <StudyHubGroupCard
+                  v-if="item.adType === 'studyHub' && item.category === 'group'"
+                  :item="item"
+              ></StudyHubGroupCard>
+            </div>
           </v-col>
         </v-row>
       </v-container>
-    </template>
-  </v-data-iterator>
-</template>
+    </v-container>
 
-<script setup>
-import CustomAppBar from "@/components/util/CustomAppBar.vue";
-</script>
+    <v-menu
+        transition="slide-x-transition-reverse"
+        location="start"
+        :close-on-content-click="false"
+    >
+      <template v-slot:activator="{ props }">
+        <v-btn
+            style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
+            v-bind="props"
+            :style="{ bottom: mobile ? '75px' : '20px' }"
+            text="Suche"
+            icon="mdi-magnify"
+        >
+          <v-icon>mdi-magnify</v-icon>
+        </v-btn>
+      </template>
 
-<script>
-export default {
-  data: () => ({
-    show: false,
+      <v-card min-width="300" >
+        <v-text-field
+            v-model="search"
+            hide-details
+            prepend-inner-icon="mdi-magnify"
+            class="search-bar my-5 mx-auto"
+            placeholder="Suche..."
+        ></v-text-field>
+      </v-card>
+    </v-menu>
+  </template>
 
-    categories: [
-      {
-        name: "Event",
-        flex: 4,
-        icon: "mdi-information-outline",
+  <script setup>
+    import AppBar from "@/components/util/CustomAppBar.vue";
+    import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue";
+    import DualLivingCard from "@/components/dualLiving/DualLivingCard.vue";
+    import StudyHubBuddyCard from "@/components/studyHub/StudyHubBuddyCard.vue";
+    import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
+
+    import {useDisplay} from "vuetify";
+
+    const {mobile} = useDisplay()
+  </script>
+
+  <script>
+    import {fetchAdsDualLiving, fetchAdsEventsInfos, fetchAdsStudyHub} from '@/db'
+
+    export default {
+      data: () => ({
+        selectedAdType: null,
+        advertisements: [],
+        search: "",
+        icons: {
+          'dualLiving': 'mdi-domain',
+          'events': 'mdi-calendar-clock',
+          'studyHub': 'mdi-school',
+        },
+      }),
+      computed: {
+        filteredAdvertisements() {
+          const now = new Date();
+          const fourteenDaysAgo = new Date(now);
+          fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 3);
+
+          return this.advertisements.filter(ad => {
+
+            // Parse the date_created string into a Date object
+            const adCreationDateParts = ad.date_created.split('.');
+            const adCreationDate = new Date(
+                adCreationDateParts[2], // Year
+                adCreationDateParts[1] - 1, // Month (months are 0-indexed in JavaScript)
+                adCreationDateParts[0] // Day
+            );
+
+            // Check if the ad was created less than 14 days ago
+            if (adCreationDate < fourteenDaysAgo) {
+              return false;
+            }
+
+            // Check if any property contains the search term
+            let keys = Object.keys(ad);
+            let showItem = false;
+
+            for (let key of keys) {
+              if (String(ad[key]).toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
+                showItem = true;
+              }
+            }
+
+            return showItem;
+          });
+        },
       },
-      {
-        name: "Housing",
-        flex: 8,
-        icon: "mdi-domain",
-      },
-      {
-        name: "Buddy",
-        flex: 4,
-        icon: "mdi-school",
+      async mounted() {
+        let test = await fetchAdsDualLiving();
+        let test2 = await fetchAdsEventsInfos();
+        let test3 = await fetchAdsStudyHub();
+
+        this.advertisements = test.concat(test2).concat(test3)
       }
-    ],
+    }
+  </script>
 
-    contents: [
-      {
-        name: 'Sophie`s Rechner hebt ab!',
-        description: 'Hauptsache er sah schön aus!!!.',
-        icon: 'mdi-ice-cream',
-        color: '#6EC1E4',
-        flex: 4,
-        src: "https://media.licdn.com/dms/image/D4D03AQE1rqeodXQqtQ/profile-displayphoto-shrink_200_200/0/1691487446798?e=2147483647&v=beta&t=SeFrL8y5GMt4bNt8AHJgM1AXrQOmr5HdVZmMkuwMWbY",
-        date: "08.11.2023",
-        cat: "Event",
-      },
-      {
-        name: 'Ice cream sandwich',
-        description: 'A classic treat featuring a layer of creamy ice cream sandwiched between two cookies or cake layers. Ideal for those hot summer days when you can\'t decide between a cookie and ice cream.',
-        icon: 'mdi-cookie',
-        color: '#F4A261',
-        flex: 8,
-        src: 'https://media.licdn.com/dms/image/D4D03AQE1rqeodXQqtQ/profile-displayphoto-shrink_200_200/0/1691487446798?e=2147483647&v=beta&t=SeFrL8y5GMt4bNt8AHJgM1AXrQOmr5HdVZmMkuwMWbY',
-        date: "08.11.2023",
-        cat: "Housing",
-      },
+  <style scoped>
+    .search-bar {
+      width: 85%;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease-in-out;
+    }
 
-    ],
-  }),
-  methods: {
-    getCategoryDetails(categoryName) {
-      const category = this.categories.find(item => item.cat === categoryName);
-      return {
-        flex: category ? category.flex : 4, // Default flex value if not found
-        icon: category ? category.icon : "mdi-help", // Default icon if not found
-      };
-    },
-  },
-}
-</script>
+    .search-bar input {
+      padding: 10px;
+    }
 
-<style scoped>
-
-</style>
+    .search-bar:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  </style>
