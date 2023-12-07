@@ -219,7 +219,6 @@ export async function createAdSeminar(images, seminarData) {
         category: seminarData.category,
 
         likes: 0,
-
         userId: 1
     }
 
