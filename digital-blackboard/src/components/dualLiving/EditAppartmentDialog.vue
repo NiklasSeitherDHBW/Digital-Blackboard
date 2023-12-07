@@ -3,7 +3,7 @@
       v-model="step"
       alt-labels
   >
-    <v-stepper-header>
+    <v-stepper-header class="fixed-header">
       <v-stepper-item
           :title="mobile ? '' : 'Angaben zu der Wohnung'"
           :icon="mobile ? 'mdi-text-box-outline' : ''"
@@ -72,27 +72,34 @@
               counter
           ></v-textarea>
 
-          <v-text-field
-              label="Von *"
-              placeholder="TT.MM.JJJJ"
-              type="date"
-              :min="new Date().toISOString().split('T')[0]"
-              :max="formData.availableTill"
-              v-model="formData.availableFrom"
-              :rules="dateRules"
-              variant="outlined"
-              required
-          ></v-text-field>
-
-          <v-text-field
-              label="Bis"
-              placeholder="TT.MM.JJJJ"
-              type="date"
-              :min="formData.availableFrom"
-              v-model="formData.availableTill"
-              :rules="dateRules"
-              variant="outlined"
-          ></v-text-field>
+          <v-row>
+            <v-col>
+              <v-text-field
+                  label="Von *"
+                  placeholder="TT.MM.JJJJ"
+                  type="date"
+                  :min="new Date().toISOString().split('T')[0]"
+                  :max="formData.availableTill"
+                  v-model="formData.availableFrom"
+                  :rules="dateRules"
+                  variant="outlined"
+                  required
+              >
+              </v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                  label="Bis"
+                  placeholder="TT.MM.JJJJ"
+                  type="date"
+                  :min="formData.availableFrom"
+                  v-model="formData.availableTill"
+                  :rules="dateRules"
+                  variant="outlined"
+              >
+              </v-text-field>
+            </v-col>
+          </v-row>
 
           <v-text-field
               label="Ort *"
@@ -604,3 +611,20 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.fixed-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000; /* Adjust the z-index as needed */
+  background-color: white; /* Adjust the background color as needed */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
+  /* Additional styles as needed */
+}
+
+/* Add padding to the content below the fixed header */
+.v-stepper-window {
+  padding-top: 60px; /* Adjust the value based on the height of your fixed header */
+}
+</style>
