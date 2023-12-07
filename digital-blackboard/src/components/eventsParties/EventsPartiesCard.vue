@@ -206,8 +206,8 @@ export default {
 
     deleteAdClicked() {
       deleteAd("events-parties", this.item.id);
-      this.$emit("itemsChanged")
       this.snackbarDelete = true;
+      this.$emit("itemsChanged")
     },
 
     createShareLink() {

@@ -58,8 +58,6 @@ export async function fetchAdsDualLiving() {
         return tmp;
     });
 
-    console.log(transformedData)
-
     return transformedData;
 }
 
@@ -92,7 +90,7 @@ export async function createAdDualLiving(formData, images, contactData) {
         phone: contactData.phone,
         email: contactData.email,
 
-        userId: formData.userId,
+        userId: 1,
     }
 
     // Store advertisement in database
@@ -168,7 +166,7 @@ export async function createAdEvents(images, eventData) {
 
         likes: 0,
 
-        userId: eventData.userId,
+        userId: 1,
     }
 
     await addDoc(collection(db, "events-parties"), new_item);
@@ -277,8 +275,9 @@ export async function createAdStudyBuddy(buddyData, images, contactData) {
         email: contactData.email,
 
         category: buddyData.category,
+        categories: "Nachhilfe",
 
-        userId: buddyData.userId,
+        userId: 1,
     }
 
     await addDoc(collection(db, "study-hub"), new_item);
@@ -299,6 +298,7 @@ export async function createAdStudyGroup(hubData, images) {
 
         joined: hubData.joined,
         category: "group",
+        categories: "Gruppe",
 
         userId: 1,
     }
