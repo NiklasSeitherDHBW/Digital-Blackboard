@@ -58,8 +58,6 @@ export async function fetchAdsDualLiving() {
         return tmp;
     });
 
-    console.log(transformedData)
-
     return transformedData;
 }
 
@@ -277,6 +275,7 @@ export async function createAdStudyBuddy(buddyData, images, contactData) {
         email: contactData.email,
 
         category: buddyData.category,
+        categories: "Nachhilfe",
 
         userId: 1,
     }
@@ -299,6 +298,7 @@ export async function createAdStudyGroup(hubData, images) {
 
         joined: hubData.joined,
         category: "group",
+        categories: "Gruppe",
 
         userId: 1,
     }
