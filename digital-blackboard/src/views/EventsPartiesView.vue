@@ -40,10 +40,15 @@
               xl="4"
               xxl="3"
           >
+            <div
+                :id="item.id"
+                class="rounded"
+                style="height: 100%;">
             <EventsPartiesCard
                 :item="item"
                 @itemChanged="refreshItems"
             ></EventsPartiesCard>
+            </div>
           </v-col>
         </v-row>
       </v-container>
@@ -156,21 +161,6 @@
         ></v-text-field>
       </v-card>
     </v-menu>
-    <v-snackbar v-model="snackbarVisible" :timeout="timeout">
-      Ihr Inserat wurde erfolgreich geteilt!
-      <template v-slot:actions>
-        <v-btn
-            color="red"
-            variant="text"
-            float-right
-            size="small"
-            class="mr-1"
-            @click="closeSnackbar"
-        >
-          Schließen
-        </v-btn>
-      </template>
-    </v-snackbar>
   </v-app>
 </template>
 
@@ -230,6 +220,29 @@ export default {
     },
   },
   methods: {
+    scrollToCard() {
+      const cardCategory = this.$route.query.selectedCategory
+      const cardId = this.$route.query.card
+      if (cardId && cardCategory) {
+        this.selectedCategory = cardCategory
+        // Warten bis die DOM alle Elemente fertig geladen hat
+        this.$nextTick(() => {
+          const element = document.getElementById(cardId)
+          if (element) {
+            // zu ausgewählter Karte scrollen
+            element.scrollIntoView({behavior: 'smooth'})
+            // den Style zum hervorheben auswählen
+            element.style.border = '5px solid red';
+            // Timeout um das HErvorheben umzukehren
+            setTimeout(() => {
+              element.style.transition = 'border-width 0.5s ease, opacity 0.5s ease'; // Verzögerter Übergang in Originalzustand für Fade Effekt
+              element.style.border = '5px solid red';
+              element.style.borderWidth = '0';
+            }, 6000);
+          }
+        });
+      }
+    },
     closeSnackbar() {
       this.snackbarVisible = false;
     },
@@ -274,8 +287,9 @@ export default {
       this.advertisements = await fetchAdsEventsInfos();
     },
   },
-  mounted() {
-    this.refreshItems()
+  async mounted() {
+    await this.refreshItems()
+    this.scrollToCard()
   }
 }
 </script>

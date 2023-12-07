@@ -7,7 +7,7 @@
   <v-container
       :fluid=true
       align="center"
-      style="width: 85%;"
+      style="width: 90%;"
   >
 
     <v-tabs
@@ -37,16 +37,22 @@
           xxl="3"
           align="left"
       >
-        <StudyHubBuddyCard
-            v-if="item.category === 'buddy'"
-            :item="item"
-            @itemChanged="itemChanged"
-        ></StudyHubBuddyCard>
-        <StudyHubGroupCard
-            v-if="item.category === 'group'"
-            :item="item"
-            @itemChanged="itemChanged"
-        ></StudyHubGroupCard>
+        <div
+            :id="item.id"
+            class="rounded"
+            style="height: 100%;"
+        >
+          <StudyHubBuddyCard
+              v-if="item.category === 'buddy'"
+              :item="item"
+              @itemChanged="itemChanged"
+          ></StudyHubBuddyCard>
+          <StudyHubGroupCard
+              v-if="item.category === 'group'"
+              :item="item"
+              @itemChanged="itemChanged"
+          ></StudyHubGroupCard>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -69,7 +75,7 @@
 
       <v-list>
         <v-list-item @click="showDialogAddStudyBuddy = true">
-          <v-list-item-title>Buddy</v-list-item-title>
+          <v-list-item-title>Nachhilfe</v-list-item-title>
         </v-list-item>
 
         <v-list-item @click="showDialogAddStudyHub = true">
@@ -145,6 +151,17 @@
   </v-snackbar>
 </template>
 
+<script setup>
+import AppBar from "@/components/util/CustomAppBar.vue";
+import AddStudyHubDialog from "@/components/studyHub/AddStudyHubDialog.vue";
+import AddStudyBuddyDialog from "@/components/studyHub/AddStudyBuddyDialog.vue";
+import StudyHubBuddyCard from "@/components/studyHub/StudyHubBuddyCard.vue";
+import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
+
+import {useDisplay} from "vuetify";
+
+const {mobile} = useDisplay()
+</script>
 
 <script>
 import {createAdStudyBuddy, createAdStudyGroup, fetchAdsStudyHub} from '@/db'
@@ -152,7 +169,7 @@ import {createAdStudyBuddy, createAdStudyGroup, fetchAdsStudyHub} from '@/db'
 export default {
   data: () => ({
     snackbarVisible: false,
-    timeout: 5000,
+    timeout: 3000,
 
     showDialogAddStudyHub: false,
     showDialogAddStudyBuddy: false,
@@ -282,6 +299,29 @@ export default {
     },
   },
   methods: {
+    scrollToCard() {
+      const cardCategory = this.$route.query.selectedCategory
+      const cardId = this.$route.query.card
+      if (cardId && cardCategory) {
+        this.selectedCategory = cardCategory
+        // Warten bis die DOM alle Elemente fertig geladen hat
+        this.$nextTick(() => {
+          const element = document.getElementById(cardId)
+          if (element) {
+            // zu ausgewählter Karte scrollen
+            element.scrollIntoView({behavior: 'smooth'})
+            // den Style zum hervorheben auswählen
+            element.style.border = '5px solid red';
+            // Timeout um das hervorheben umzukehren
+            setTimeout(() => {
+              element.style.transition = 'border-width 0.5s ease, opacity 0.5s ease'; // Verzögerter Übergang in Originalzustand für Fade Effekt
+              element.style.border = '5px solid red';
+              element.style.borderWidth = '0';
+            }, 6000);
+          }
+        });
+      }
+    },
     closeSnackbar() {
       this.snackbarVisible = false;
     },
@@ -319,21 +359,10 @@ export default {
     }
   },
   async mounted() {
-    this.advertisements = await fetchAdsStudyHub();
+    this.advertisements = await fetchAdsStudyHub()
+    this.scrollToCard()
   }
 };
-</script>
-
-<script setup>
-import AppBar from "@/components/util/CustomAppBar.vue";
-import AddStudyHubDialog from "@/components/studyHub/AddStudyHubDialog.vue";
-import AddStudyBuddyDialog from "@/components/studyHub/AddStudyBuddyDialog.vue";
-import StudyHubBuddyCard from "@/components/studyHub/StudyHubBuddyCard.vue";
-import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
-
-import {useDisplay} from "vuetify";
-
-const {mobile} = useDisplay()
 </script>
 
 <style scoped>

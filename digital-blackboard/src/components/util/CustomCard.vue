@@ -178,6 +178,21 @@
       </v-btn>
     </v-card-actions>
   </v-card>
+  <v-snackbar v-model="snackbarVisible" :timeout="timeout">
+    Der Link wurde in deine Zwischenablage kopiert!
+    <template v-slot:actions>
+      <v-btn
+          color="red"
+          variant="text"
+          float-right
+          size="small"
+          class="mr-1"
+          @click="closeSnackbar"
+      >
+        Schließen
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
 <script>
@@ -201,6 +216,9 @@ export default {
   },
   data() {
     return {
+      timeout: 3000,
+      snackbarVisible: false,
+
       showAll: false,
       showDialogImagesFullscreen: false,
     };
@@ -212,11 +230,22 @@ export default {
         // If yes, execute the custom click function provided via props
         this.customClick();
       } else {
-        const link = window.location.origin + this.$route.path + '?card=' + this.item.id
-        navigator.clipboard.writeText(link);
-        alert(`Der Link zum Inserat wurde in deine Zwischenablage kopiert`);
+        if (this.item.adType === 'dualLiving') {
+          const link = window.location.origin + '/dualliving' + '?card=' + this.item.id
+          navigator.clipboard.writeText(link);
+          this.snackbarVisible = true;
+        }
+        else
+        {
+          const link = window.location.origin + this.$route.path + '?card=' + this.item.id
+          navigator.clipboard.writeText(link);
+          this.snackbarVisible = true;
+        }
       }
     },
+    closeSnackbar() {
+      this.snackbarVisible = false;
+    }
   },
 };
 

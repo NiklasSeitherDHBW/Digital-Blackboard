@@ -20,9 +20,14 @@
           xl="4"
           xxl="3"
       >
-        <DualLivingCard
-            :item="item"
-        ></DualLivingCard>
+        <div
+          :id = "item.id"
+          class="rounded"
+          style="height: 100%;">
+          <DualLivingCard
+              :item="item"
+          ></DualLivingCard>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -267,6 +272,23 @@ export default {
     }
   },
   methods: {
+    scrollToCard() {
+      const cardId = this.$route.query.card
+      if (cardId) {
+        const element = document.getElementById(cardId)
+        if (element) {
+          element.scrollIntoView({behavior: 'smooth'})
+          // den Style zum hervorheben auswählen
+          element.style.border = '5px solid red';
+          // Timeout um das HErvorheben umzukehren
+          setTimeout(() => {
+            element.style.transition = 'border-width 0.5s ease, opacity 0.5s ease'; // Verzögerter Übergang in Originalzustand für Fade Effekt
+            element.style.border = '5px solid red';
+            element.style.borderWidth = '0';
+          }, 6000);
+        }
+      }
+    },
     closeSnackbar() {
       this.snackbarVisible = false;
     },
@@ -292,6 +314,7 @@ export default {
   },
   async mounted() {
     await this.fetchAds();
+    this.scrollToCard();
   }
 };
 </script>

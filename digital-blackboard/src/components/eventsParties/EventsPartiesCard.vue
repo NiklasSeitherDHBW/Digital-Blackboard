@@ -5,7 +5,8 @@
       :extraInfos="extraInfos"
       :action="item.joined ? 'Angefragt' : 'Mitmachen'"
       :actionBackground="item.joined ? '#7C868DFF' : '#eb1b2a'"
-      :showActionButton="item.category !== 'Infos' ? true : false"
+      :showActionButton="item.category !== 'Infos'"
+      :customClick="createShareLink"
       @action-clicked="joinEvent(item)"
       @editAdClicked="editAdClicked"
       @deleteAd="deleteAdClicked"
@@ -81,23 +82,8 @@
       </v-btn>
     </template>
   </v-snackbar>
-  <v-snackbar v-model="snackbarJoin" :timeout="timeoutj">
-    Super, deine Anfrage ist raus!
-    <template v-slot:actions>
-      <v-btn
-          color="red"
-          variant="text"
-          float-right
-          size="small"
-          class="mr-1"
-          @click="closeSnackbar"
-      >
-        Schließen
-      </v-btn>
-    </template>
-  </v-snackbar>
-  <v-snackbar v-model="snackbarLeft" :timeout="timeoutj">
-    Schade, deine Anfrage wurde zurückgenommen!
+  <v-snackbar v-model="snackbarShare" :timeout="timeout">
+    Ihr Inserat wurde erfolgreich geteilt!
     <template v-slot:actions>
       <v-btn
           color="red"
@@ -130,10 +116,8 @@ export default {
     return {
       snackbarCreate: false,
       snackbarDelete: false,
-      snackbarJoin: false,
-      snackbarLeft: false,
+      snackbarShare: false,
       timeout: 3000,
-      timeoutj: 2000,
 
       showDialogEditAd: false,
 
@@ -148,11 +132,16 @@ export default {
     };
   },
   methods: {
+    createShareLink() {
+      const link = window.location.origin + '/events' + '?card=' + this.item.id + "&selectedCategory=" + this.item.category;
+      navigator.clipboard.writeText(link);
+      this.snackbarShare = true;
+    },
+
     closeSnackbar() {
       this.snackbarCreate = false;
       this.snackbarDelete = false;
-      this.snackbarJoin = false;
-      this.snackbarLeft = false;
+      this.snackbarShare = false;
     },
 
     async joinEvent(item) {
@@ -209,13 +198,6 @@ export default {
       this.snackbarDelete = true;
       this.$emit("itemsChanged")
     },
-
-    createShareLink() {
-      const link = window.location.origin + this.$route.path + '?card=' + this.item.id + "&selectedCategory=" + this.item.category;
-      navigator.clipboard.writeText(link);
-
-      alert(`Der Link zum Inserat wurde in deine Zwischenablage kopiert`);
-    }
   },
   computed: {
     basicInfosKeywords() {
