@@ -40,6 +40,7 @@
         <StudyHubBuddyCard
             v-if="item.category === 'buddy'"
             :item="item"
+            @itemChanged="itemChanged"
         ></StudyHubBuddyCard>
         <StudyHubGroupCard
             v-if="item.category === 'group'"
@@ -298,7 +299,7 @@ export default {
 
       await createAdStudyBuddy(buddyData, images, contactData)
 
-      this.advertisements = await fetchAdsStudyHub();
+      await this.itemChanged()
 
     },
     async exitDialogAddStudyHub() {
@@ -310,15 +311,11 @@ export default {
 
       await createAdStudyGroup(hubData, images)
 
-      this.advertisements = await fetchAdsStudyHub();
+      await this.itemChanged()
     },
 
-    itemChanged(oldItem, newItem) {
-      for(let i = 0; i < this.advertisements.length; i++) {
-        if (this.advertisements[i] === oldItem) {
-          this.advertisements[i] = newItem;
-        }
-      }
+    async itemChanged() {
+      this.advertisements = await fetchAdsStudyHub()
     }
   },
   async mounted() {

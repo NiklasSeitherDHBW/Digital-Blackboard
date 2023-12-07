@@ -6,7 +6,7 @@
       :extraInfos="extraInfos"
       :action="item.joined ? 'Beigetreten' : 'Beitreten'"
       :actionBackground="item.joined ? '#7C868DFF' : '#eb1b2a'"
-      @action-clicked="joinGroup"
+      @action-clicked="joinGroup(item)"
       @editAdClicked="openDialogEditAd"
       @deleteAd="deleteThisAd"
   ></CustomCard>
@@ -56,7 +56,8 @@
 <script>
 import CustomCard from "@/components/util/CustomCard.vue";
 import EditStudyHubDialog from "@/components/studyHub/EditStudyHubGroup.vue";
-import {deleteAd} from "@/db";
+import {db, deleteAd} from "@/db";
+import {doc, getDoc, setDoc} from "firebase/firestore";
 
 export default {
   components: {EditStudyHubDialog, CustomCard },
@@ -112,11 +113,23 @@ export default {
       this.snackbarCreate = false;
       this.snackbarDelete = false;
     },
-    joinGroup() {
-      let tmp_item = this.item;
-      tmp_item.joined = !tmp_item.joined;
+    async joinGroup(item) {
+      const docRef = doc(db, "study-hub", item.id)
+      const docSnap = await getDoc(docRef)
 
-      this.$emit("itemChanged", this.item, tmp_item);
+      const data = docSnap.data()
+      data["joined"] = !data["joined"]
+      if (data["joined"]) {
+        data["members"] = data["members"] + 1
+        this.snackbarJoin = true;
+      } else {
+        data["members"] = data["members"] - 1
+        this.snackbarLeft = true;
+      }
+
+      await setDoc(docRef, data, {merge: true})
+
+      this.$emit("itemChanged");
     },
     openDialogEditAd() {
       console.log(this.item)
