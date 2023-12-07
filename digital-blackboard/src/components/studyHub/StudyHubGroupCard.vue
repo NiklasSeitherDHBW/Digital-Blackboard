@@ -144,8 +144,8 @@ export default {
       this.$emit("itemsChanged")
     },
     deleteThisAd() {
-      deleteAd("dual-living", this.item.id);
-      this.snackbarDelete= true;
+      deleteAd("study-hub", this.item.id);
+      this.snackbarDelete = true;
       this.$emit("itemsChanged")
     }
   },
