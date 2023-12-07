@@ -9,9 +9,11 @@
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
+    "axios": "^1.6.2",
     "core-js": "^3.8.3",
     "date-fns": "^2.30.0",
     "firebase": "^10.7.0",
+    "openai": "^4.20.1",
     "roboto-fontface": "*",
     "vee-validate": "^4.11.8",
     "vue": "^3.2.13",

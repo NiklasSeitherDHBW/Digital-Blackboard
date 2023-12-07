@@ -61,6 +61,7 @@ export default {
         {icon: 'mdi-calendar-clock', title: 'Events', value: 'events'},
         {icon: 'mdi-school', title: 'Study Hub', value: 'studyhub'},
         {icon: 'mdi-account', title: 'Account', value: 'account'},
+        {icon: 'mdi-chat', title: 'Chat', value: 'chat'},
       ],
     };
   },

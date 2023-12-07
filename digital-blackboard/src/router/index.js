@@ -4,7 +4,7 @@ import StudyBuddy from "../views/StudyHubView.vue"
 import EventsParties from "../views/EventsPartiesView.vue"
 import Account from "../views/AccountView.vue"
 import DualHousing from "../views/DualLivingView.vue"
-
+import ChatBot from "../views/ChatbotView.vue"
 const routes = [
   {
     path: '/',
@@ -30,6 +30,11 @@ const routes = [
     path: "/account",
     name: "account",
     component: Account
+  },
+  {
+    path: "/chat",
+    name: "chat",
+    component: ChatBot
   },
 ]
 
