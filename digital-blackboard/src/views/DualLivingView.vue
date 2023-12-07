@@ -20,9 +20,14 @@
           xl="4"
           xxl="3"
       >
-        <DualLivingCard
-            :item="item"
-        ></DualLivingCard>
+        <div
+          :id = "item.id"
+          class="rounded"
+          style="height: 100%;">
+          <DualLivingCard
+              :item="item"
+          ></DualLivingCard>
+        </div>
       </v-col>
     </v-row>
   </v-container>

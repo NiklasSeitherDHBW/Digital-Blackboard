@@ -230,9 +230,17 @@ export default {
         // If yes, execute the custom click function provided via props
         this.customClick();
       } else {
-        const link = window.location.origin + this.$route.path + '?card=' + this.item.id
-        navigator.clipboard.writeText(link);
-        this.snackbarVisible = true;
+        if (this.item.adType === 'dualLiving') {
+          const link = window.location.origin + '/dualliving' + '?card=' + this.item.id
+          navigator.clipboard.writeText(link);
+          this.snackbarVisible = true;
+        }
+        else
+        {
+          const link = window.location.origin + this.$route.path + '?card=' + this.item.id
+          navigator.clipboard.writeText(link);
+          this.snackbarVisible = true;
+        }
       }
     },
     closeSnackbar() {
