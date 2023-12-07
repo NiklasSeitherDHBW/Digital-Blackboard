@@ -37,6 +37,7 @@
         @close-dialog="closeDialogEditAd"
     ></EditAppartmentDialog>
   </v-dialog>
+
   <v-snackbar v-model="snackbarCreate" :timeout="timeout">
     Ihr Inserat wurde erfolgreich geteilt!
     <template v-slot:actions>
@@ -136,6 +137,9 @@ export default {
     },
     async closeDialogEditAd() {
       this.showDialogEditAd = false
+
+
+
       this.snackbarCreate = true;
 
       this.$emit("itemsChanged")
