@@ -166,6 +166,8 @@ export async function createAdEvents(images, eventData) {
 
         category: eventData.category,
 
+        likes: 0,
+
         userId: eventData.userId,
     }
 
@@ -215,6 +217,8 @@ export async function createAdSeminar(images, seminarData) {
         max_participants_limit: seminarData.maxParticipantsLimit,
 
         category: seminarData.category,
+
+        likes: 0,
 
         userId: 1
     }

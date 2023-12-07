@@ -11,20 +11,28 @@
   >
     <template v-slot:bottomBasicInfos>
       <div v-if="item.category !== 'Infos'"
-        class="d-flex pt-2"
+           class="d-flex pt-2"
       >
-        <v-icon
-            v-if="item.liked"
-          color="#EB1B2A"
+        <v-btn
+          variant="text"
+          icon
+          @click="likeEvent(item)"
         >
-          mdi-heart
-        </v-icon>
-        <v-icon
-          v-if="!item.liked"
-          color="#7C868DFF"
-        >
-          mdi-heart-outline
-        </v-icon>
+          <v-icon
+              v-if="item.liked"
+              color="#EB1B2A"
+              size="30"
+          >
+            mdi-heart
+          </v-icon>
+          <v-icon
+              v-if="!item.liked"
+              color="#7C868DFF"
+              size="30"
+          >
+            mdi-heart-outline
+          </v-icon>
+        </v-btn>
         <p class="pl-2">{{ item.likes }}</p>
       </div>
     </template>
@@ -110,7 +118,7 @@ import EditEventDialog from "@/components/eventsParties/EditEventDialog.vue";
 </script>
 
 <script>
-import { doc, getDoc, setDoc } from "firebase/firestore"
+import {doc, getDoc, setDoc} from "firebase/firestore"
 import {db, deleteAd} from "@/db"
 
 export default {
@@ -151,19 +159,36 @@ export default {
       const docSnap = await getDoc(docRef)
 
       const data = docSnap.data()
-          data["joined"] = !data["joined"]
-          if (data["joined"]) {
-            data["members"] = data["members"] + 1
-            this.snackbarJoin = true;
-          }
-          else {
-            data["members"] = data["members"] - 1
-            this.snackbarLeft = true;
-          }
+      data["joined"] = !data["joined"]
+      if (data["joined"]) {
+        data["members"] = data["members"] + 1
+        this.snackbarJoin = true;
+      } else {
+        data["members"] = data["members"] - 1
+        this.snackbarLeft = true;
+      }
 
       await setDoc(docRef, data, {merge: true})
 
       this.$emit("itemChanged");
+    },
+
+    async likeEvent(item) {
+      const docRef = doc(db, "events-parties", item.id)
+      const docSnap = await getDoc(docRef)
+
+      const data = docSnap.data()
+      data["liked"] = !data["liked"]
+      if (data["liked"]) {
+        data["likes"] = data["likes"] + 1
+      }
+      else {
+        data["likes"] = data["likes"] - 1
+      }
+
+      await setDoc(docRef, data, {merge: true})
+
+      this.$emit("itemChanged")
     },
 
     editAdClicked(item) {
@@ -175,7 +200,7 @@ export default {
     },
     async closeDialogEditAd() {
       this.showDialogEditAd = false
-      this.snackbarCreate= true;
+      this.snackbarCreate = true;
     },
 
     deleteAdClicked() {
