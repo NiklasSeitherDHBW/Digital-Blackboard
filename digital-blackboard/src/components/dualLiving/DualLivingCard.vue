@@ -7,7 +7,7 @@
       action="Kontaktieren"
       @action-clicked="showDialogContactInfo=true"
       @editAdClicked="openDialogEditAd"
-      @deleteAd="deleteAdClicked"
+      @deleteAd="showDialogConfirm=true"
   ></CustomCard>
 
   <v-dialog
@@ -37,23 +37,22 @@
         @close-dialog="closeDialogEditAd"
     ></EditAppartmentDialog>
   </v-dialog>
-  <v-snackbar v-model="snackbarCreate" :timeout="timeout">
-    Ihr Inserat wurde erfolgreich geteilt!
-    <template v-slot:actions>
-      <v-btn
-          color="red"
-          variant="text"
-          float-right
-          size="small"
-          class="mr-1"
-          @click="closeSnackbar"
-      >
-        Schließen
-      </v-btn>
-    </template>
-  </v-snackbar>
-  <v-snackbar v-model="snackbarDelete" :timeout="timeout">
-    Ihr Inserat wurde erfolgreich gelöscht!
+
+  <v-dialog
+      v-model="showDialogConfirm"
+      transition="dialog-bottom-transition"
+      class="justify-center"
+      max-width="500px"
+  >
+    <ConfirmDialog
+        :title="item.title"
+        @confirmedDeletion="deleteAdClicked"
+        @cancelDeletion="exitDialogConfirm"
+    ></ConfirmDialog>
+  </v-dialog>
+
+  <v-snackbar v-model="snackbar" :timeout="timeout">
+    {{ snackbarText }}
     <template v-slot:actions>
       <v-btn
           color="red"
@@ -73,6 +72,7 @@
 import CustomCard from "@/components/util/CustomCard.vue"
 import ContactCard from "@/components/util/ContactCard.vue";
 import EditAppartmentDialog from "@/components/dualLiving/EditAppartmentDialog.vue";
+import ConfirmDialog from "@/components/util/ConfirmDialog.vue";
 </script>
 
 <script>
@@ -83,19 +83,22 @@ export default {
   },
   data() {
     return {
-      snackbarCreate: false,
-      snackbarDelete: false,
-      timeout: 5000,
+      snackbarText: "",
+      snackbar: false,
+      timeout: 3000,
 
+      showDialogConfirm: false,
       showDialogContactInfo: false,
       showDialogEditAd: false,
 
       basicInfosKeywords: [
         "availability", "area", "rooms", "price"
       ],
+
       extraInfosKeywords: [
         "description", "location", "furniture", "community"
       ],
+
       dictionary: {
         "availability": "Zeitraum",
         "area": "Wohnfläche in m²",
@@ -108,6 +111,7 @@ export default {
       },
     };
   },
+
   computed: {
     basicInfos() {
       return this.basicInfosKeywords.map((attribute) => ({
@@ -115,6 +119,7 @@ export default {
         value: this.item[attribute],
       }));
     },
+
     extraInfos() {
       return this.extraInfosKeywords.map((attribute) => ({
         label: this.dictionary[attribute],
@@ -122,28 +127,38 @@ export default {
       }));
     },
   },
+
   methods: {
     closeSnackbar() {
-      this.snackbarCreate = false;
-      this.snackbarDelete = false;
+      this.snackbar = false;
     },
-    openDialogEditAd() {
-      console.log(this.item)
-      this.showDialogEditAd = true
-    },
-    async exitDialogEditAd() {
-      this.showDialogEditAd = false
-    },
-    async closeDialogEditAd() {
-      this.showDialogEditAd = false
-      this.snackbarCreate = true;
 
+    openDialogEditAd() {
+      this.showDialogEditAd = true;
+    },
+
+    async exitDialogEditAd() {
+      this.showDialogEditAd = false;
+    },
+
+    async closeDialogEditAd() {
+      this.showDialogEditAd = false;
+      this.snackbarText = "Ihr Inserat wurde erfolgreich erstellt!";
+      this.snackbar = true;
       this.$emit("itemsChanged")
     },
-    deleteAdClicked() {
-      deleteAd("dual-living", this.item.id);
+
+    async exitDialogConfirm() {
+      this.showDialogConfirm = false;
+    },
+
+    async deleteAdClicked() {
+      this.showDialogConfirm = false;
+      await deleteAd("dual-living", this.item.id);
+      this.snackbarText = "Ihr Inserat wurde erfolgreich gelöscht!";
+      this.snackbar = true;
       this.$emit("itemsChanged")
-      this.snackbarDelete = true;
+
     }
   }
 };

@@ -114,7 +114,7 @@ import {createAdDualLiving, fetchAdsDualLiving} from '@/db'
 export default {
   data: () => ({
     snackbarVisible: false,
-    timeout: 5000,
+    timeout: 3000,
 
     showDialogAddApartment: false,
     showDialogImages: false,
