@@ -59,7 +59,7 @@ export default {
         {icon: 'mdi-bulletin-board', title: 'Blackboard', value: '/'},
         {icon: 'mdi-domain', title: 'Dual Living', value: 'dualliving'},
         {icon: 'mdi-calendar-clock', title: 'Events', value: 'events'},
-        {icon: 'mdi-school', title: 'Study Hub', value: 'studyhub'},
+        {icon: 'mdi-school', title: 'StudyHub', value: 'studyhub'},
         {icon: 'mdi-account', title: 'Account', value: 'account'},
       ],
     };

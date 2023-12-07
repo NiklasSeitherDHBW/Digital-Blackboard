@@ -6,7 +6,7 @@
 
   <v-container
       :fluid="true"
-      style="width: 85%;"
+      style="width: 90%;"
       align="center"
   >
     <v-row>

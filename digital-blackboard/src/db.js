@@ -66,6 +66,7 @@ export async function createAdDualLiving(formData, images, contactData) {
     let fromParts = formData.availableFrom.split("-")
     let untilParts = formData.availableTill.split("-")
 
+
     // Create new document
     let new_item = {
         title: formData.title,
@@ -74,14 +75,14 @@ export async function createAdDualLiving(formData, images, contactData) {
         available_from: Timestamp.fromDate(new Date(fromParts[0], fromParts[1] - 1, fromParts[2])), // parts[1] - 1 because JavaScript counts months from 0 (January - 1, Februaray - 2, etc.)
         available_until: Timestamp.fromDate(new Date(untilParts[0], untilParts[1] - 1, untilParts[2])),
 
-        area: formData.area,
-        rooms: formData.rooms,
-        price: formData.price,
+        area: formData.area || "keine Angabe",
+        rooms: formData.rooms || "keine Angabe",
+        price: formData.price || "keine Angabe",
 
-        description: formData.description,
-        location: formData.location,
-        furniture: formData.furniture,
-        community: formData.community,
+        description: formData.description || "keine Angabe",
+        location: formData.location || "keine Angabe",
+        furniture: formData.furniture ? "Ja" : "Nein",
+        community: formData.community ? "Ja" + formData.community_type : "Nein",
         community_type: formData.selectedGender,
 
         images: images,
@@ -154,13 +155,13 @@ export async function createAdEvents(images, eventData) {
         date_created: Timestamp.fromDate(new Date()),
 
         date: Timestamp.fromDate(new Date(dateParts[0], dateParts[1] - 1, dateParts[2])), // parts[1] - 1 because JavaScript counts months from 0 (January - 1, Februaray - 2, etc.)
-        price: eventData.price,
-        community: eventData.community,
+        price: eventData.price || "keine Angabe",
+        community: eventData.community || "keine Angabe",
 
-        description: eventData.description,
-        location: eventData.location,
+        description: eventData.description || "keine Angabe",
+        location: eventData.location || "keine Angabe",
         members: 0,
-        max_participants_limit: eventData.maxParticipantsLimit,
+        max_participants_limit: eventData.maxParticipantsLimit || "keine Angabe",
 
         category: eventData.category,
 
@@ -182,10 +183,10 @@ export async function createAdInfo(images, infoData) {
         date_created: Timestamp.fromDate(new Date()),
 
         date: Timestamp.fromDate(new Date(dateParts[0], dateParts[1] - 1, dateParts[2])), // parts[1] - 1 because JavaScript counts months from 0 (January - 1, Februaray - 2, etc.)
-        community: infoData.community,
+        community: infoData.community || "keine Angabe",
 
-        description: infoData.description,
-        location: infoData.location,
+        description: infoData.description || "keine Angabe",
+        location: infoData.location || "keine Angabe",
 
         category: infoData.category,
 
@@ -205,14 +206,14 @@ export async function createAdSeminar(images, seminarData) {
         date_created: Timestamp.fromDate(new Date()),
 
         date: Timestamp.fromDate(new Date(dateParts[0], dateParts[1] - 1, dateParts[2])), // parts[1] - 1 because JavaScript counts months from 0 (January - 1, Februaray - 2, etc.)
-        price: seminarData.price,
-        community: seminarData.community,
+        price: seminarData.price || "keine Angabe",
+        community: seminarData.community || "keine Angabe",
 
-        description: seminarData.description,
-        location: seminarData.location,
+        description: seminarData.description || "keine Angabe",
+        location: seminarData.location || "keine Angabe",
 
         members: 0,
-        max_participants_limit: seminarData.maxParticipantsLimit,
+        max_participants_limit: seminarData.maxParticipantsLimit || "keine Angabe",
 
         category: seminarData.category,
 
@@ -264,11 +265,11 @@ export async function createAdStudyBuddy(buddyData, images, contactData) {
         title: buddyData.title,
         date_created: Timestamp.fromDate(new Date()),
 
-        price: buddyData.price,
-        subject: buddyData.subject,
+        price: buddyData.price || "keine Angabe",
+        subject: buddyData.subject || "keine Angabe",
 
-        description: buddyData.description,
-        availability: buddyData.availability,
+        description: buddyData.description || "keine Angabe",
+        availability: buddyData.availability || "keine Angabe",
 
         name: contactData.name,
         phone: contactData.phone,
@@ -290,11 +291,11 @@ export async function createAdStudyGroup(hubData, images) {
         title: hubData.title,
         date_created: Timestamp.fromDate(new Date()),
 
-        subject: hubData.subject,
+        subject: hubData.subject || "keine Angabe",
         members: hubData.members,
 
-        description: hubData.description,
-        activities: hubData.activities,
+        description: hubData.description || "keine Angabe",
+        activities: hubData.activities || "keine Angabe",
 
         joined: hubData.joined,
         category: "group",
