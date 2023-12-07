@@ -7,6 +7,7 @@
       :action="item.joined ? 'Beigetreten' : 'Beitreten'"
       :actionBackground="item.joined ? '#7C868DFF' : '#eb1b2a'"
       @action-clicked="joinGroup(item)"
+      :customClick="createShareLink"
       @editAdClicked="openDialogEditAd"
       @deleteAd="deleteThisAd"
   ></CustomCard>
@@ -51,6 +52,21 @@
       </v-btn>
     </template>
   </v-snackbar>
+  <v-snackbar v-model="snackbarShare" :timeout="timeout">
+    Ihr Inserat wurde erfolgreich geteilt!
+    <template v-slot:actions>
+      <v-btn
+          color="red"
+          variant="text"
+          float-right
+          size="small"
+          class="mr-1"
+          @click="closeSnackbar"
+      >
+        Schließen
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
 <script>
@@ -69,6 +85,7 @@ export default {
     return {
       snackbarCreate: false,
       snackbarDelete: false,
+      snackbarShare: false,
       timeout: 5000,
 
       showAll: false,
@@ -92,26 +109,16 @@ export default {
     };
   },
 
-  computed: {
-    basicInfos() {
-      return this.basicInfosKeywords.map((attribute) => ({
-        label: this.dictionary[attribute],
-        value: this.item[attribute],
-      }));
-    },
-
-    extraInfos() {
-      return this.extraInfosKeywords.map((attribute) => ({
-        label: this.dictionary[attribute],
-        value: this.item[attribute],
-      }));
-    },
-  },
-
   methods: {
+    createShareLink() {
+      const link = window.location.origin + '/studyhub' + '?card=' + this.item.id + "&selectedCategory=" + this.item.categories;
+      navigator.clipboard.writeText(link);
+      this.snackbarShare = true;
+    },
     closeSnackbar() {
       this.snackbarCreate = false;
       this.snackbarDelete = false;
+      this.snackbarShare = false;
     },
     async joinGroup(item) {
       const docRef = doc(db, "study-hub", item.id)
@@ -148,6 +155,22 @@ export default {
       this.snackbarDelete = true;
       this.$emit("itemsChanged")
     }
+  },
+
+  computed: {
+    basicInfos() {
+      return this.basicInfosKeywords.map((attribute) => ({
+        label: this.dictionary[attribute],
+        value: this.item[attribute],
+      }));
+    },
+
+    extraInfos() {
+      return this.extraInfosKeywords.map((attribute) => ({
+        label: this.dictionary[attribute],
+        value: this.item[attribute],
+      }));
+    },
   },
 };
 </script>

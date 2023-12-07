@@ -40,10 +40,15 @@
               xl="4"
               xxl="3"
           >
+            <div
+                :id="item.id"
+                class="rounded"
+                style="height: 100%;">
             <EventsPartiesCard
                 :item="item"
                 @itemChanged="refreshItems"
             ></EventsPartiesCard>
+            </div>
           </v-col>
         </v-row>
       </v-container>
@@ -156,21 +161,6 @@
         ></v-text-field>
       </v-card>
     </v-menu>
-    <v-snackbar v-model="snackbarVisible" :timeout="timeout">
-      Ihr Inserat wurde erfolgreich geteilt!
-      <template v-slot:actions>
-        <v-btn
-            color="red"
-            variant="text"
-            float-right
-            size="small"
-            class="mr-1"
-            @click="closeSnackbar"
-        >
-          Schließen
-        </v-btn>
-      </template>
-    </v-snackbar>
   </v-app>
 </template>
 
@@ -239,6 +229,7 @@ export default {
         this.$nextTick(() => {
           const element = document.getElementById(cardId)
           if (element) {
+            // zu ausgewählter Karte scrollen
             element.scrollIntoView({behavior: 'smooth'})
             // den Style zum hervorheben auswählen
             element.style.border = '5px solid red';
@@ -296,8 +287,9 @@ export default {
       this.advertisements = await fetchAdsEventsInfos();
     },
   },
-  mounted() {
-    this.refreshItems()
+  async mounted() {
+    await this.refreshItems()
+    this.scrollToCard()
   }
 }
 </script>
