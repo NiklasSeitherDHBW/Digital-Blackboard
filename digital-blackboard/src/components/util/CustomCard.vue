@@ -50,15 +50,15 @@
       </v-dialog>
     </v-carousel>
 
-    <v-card-title class="text-wrap">
+    <v-card-title class="text-wrap text-left">
       {{ item.title }}
     </v-card-title>
 
-    <v-card-subtitle>
+    <v-card-subtitle class="text-left">
       Erstelldatum: {{ item.date_created }}
     </v-card-subtitle>
 
-    <v-card-text class="ma-1 text-wrap">
+    <v-card-text class="ma-1 text-wrap text-left">
       <v-row
           v-for="(field, index) in basicInfos"
           :key="index"
@@ -224,25 +224,28 @@ export default {
     };
   },
   methods: {
+    /**
+     * The customClick accesses the individual link share function in Events and StudyHub,
+     * due to different categories within these Pages
+     * the link consists of the base URL, the adType, the items Id and their category within the adType
+     * The Link is copied to the User Clipboard
+     *
+     */
     handleClick() {
       // Check if a custom click function is provided by the parent
       if (this.customClick && typeof this.customClick === 'function') {
         // If yes, execute the custom click function provided via props
         this.customClick();
       } else {
-        if (this.item.adType === 'dualLiving') {
+        // If not, the adType is dualLiving we append the corresponding route to the Side followed by the individual Card Id
           const link = window.location.origin + '/dualliving' + '?card=' + this.item.id
           navigator.clipboard.writeText(link);
+          // The Snackbar is called in the Parent, where its Text is assigned
           this.snackbarVisible = true;
-        }
-        else
-        {
-          const link = window.location.origin + this.$route.path + '?card=' + this.item.id
-          navigator.clipboard.writeText(link);
-          this.snackbarVisible = true;
-        }
+
       }
     },
+    // funktion to close the snackbar manually
     closeSnackbar() {
       this.snackbarVisible = false;
     }
