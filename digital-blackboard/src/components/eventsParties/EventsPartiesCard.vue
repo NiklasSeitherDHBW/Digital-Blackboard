@@ -5,6 +5,7 @@
       :extraInfos="extraInfos"
       :action="item.joined ? 'Angefragt' : 'Mitmachen'"
       :actionBackground="item.joined ? '#7C868DFF' : '#eb1b2a'"
+      :showActionButton="item.category !== 'Infos' ? true : false"
       @action-clicked="joinEvent(item)"
       @editAdClicked="editAdClicked"
       @deleteAd="deleteAdClicked"
