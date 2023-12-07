@@ -6,7 +6,7 @@
 
   <v-app>
     <v-container
-        style="width: 85%;"
+        style="width: 90%;"
     >
 
       <v-tabs

@@ -1,6 +1,6 @@
 <template>
   <v-card
-      :style="{ 'min-width': '125px', 'height': showAll ? '100%' : 'auto', 'padding-bottom': showAll ? '50px' : '0px', 'box-shadow': '10px 10px 10px rgba(0, 0, 0, 0.3)'}"
+      :style="{ 'min-width': '125px', 'height': showAll ? '100%' : 'auto', 'padding-bottom': showAll ? '50px' : '0px', 'box-shadow': '10px 10px 20px rgba(0, 0, 0, 0.4)'}"
   >
     <v-carousel
         :height="item.images.length < 1 ? '0px' : '300px'"
@@ -259,5 +259,10 @@ export default {
 
 .text-wrap {
   white-space: normal;
+}
+@media screen and (max-width: 600px) {
+  .text-wrap {
+    white-space: normal;
+  }
 }
 </style>
