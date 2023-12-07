@@ -73,7 +73,7 @@
           ></v-textarea>
 
           <v-row>
-            <v-col>
+            <v-col :cols="mobile ? '12' : '6'">
               <v-text-field
                   label="Von *"
                   placeholder="TT.MM.JJJJ"
@@ -87,7 +87,7 @@
               >
               </v-text-field>
             </v-col>
-            <v-col>
+            <v-col :cols="mobile ? '12' : '6'">
               <v-text-field
                   label="Bis"
                   placeholder="TT.MM.JJJJ"
