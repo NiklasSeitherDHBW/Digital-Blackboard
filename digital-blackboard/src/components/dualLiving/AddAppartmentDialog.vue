@@ -73,7 +73,7 @@
           ></v-textarea>
 
           <v-row>
-            <v-col>
+            <v-col :cols="mobile ? '12' : '6'">
               <v-text-field
                   label="Von *"
                   placeholder="TT.MM.JJJJ"
@@ -87,7 +87,7 @@
               >
               </v-text-field>
             </v-col>
-            <v-col>
+            <v-col :cols="mobile ? '12' : '6'">
               <v-text-field
                   label="Bis"
                   placeholder="TT.MM.JJJJ"
@@ -167,15 +167,15 @@
               Schließen
             </v-btn>
             <v-spacer></v-spacer>
-          <v-btn
-              color="red"
-              class="mr-2 mb-2"
-              type="submit"
-              variant="outlined"
-              @click="validateDataForm()"
-          >
-            Nächste
-          </v-btn>
+            <v-btn
+                color="red"
+                class="mr-2 mb-2"
+                type="submit"
+                variant="outlined"
+                @click="validateDataForm()"
+            >
+              Nächste
+            </v-btn>
           </v-card-actions>
         </v-form>
       </v-window-item>
@@ -195,15 +195,15 @@
           </v-btn>
 
           <v-spacer></v-spacer>
-        <v-btn
-            color="red"
-            class="float right"
-            type="submit"
-            variant="outlined"
-            @click="step++"
-        >
-          Nächste
-        </v-btn>
+          <v-btn
+              color="red"
+              class="float right"
+              type="submit"
+              variant="outlined"
+              @click="step++"
+          >
+            Nächste
+          </v-btn>
         </v-card-actions>
       </v-window-item>
 
@@ -245,24 +245,24 @@
               Diese Daten werden Interessenten zur Verfügung gestellt um Kontakt aufzunehmen.
         </span>
           <v-card-actions>
-          <v-btn
-              variant="outlined"
-              @click="step--"
-          >
-            Zurück
-          </v-btn>
+            <v-btn
+                variant="outlined"
+                @click="step--"
+            >
+              Zurück
+            </v-btn>
 
-          <v-spacer></v-spacer>
-          <!--Nur sichtbar solange man sich auf der 3. Seite befindet, validiert den auf Seite 3 getätigten Input -->
-          <v-btn
-              color="red"
-              class="float right"
-              type="submit"
-              variant="outlined"
-              @click="validateContactForm()"
-          >
-            Zusammenfassung
-          </v-btn>
+            <v-spacer></v-spacer>
+            <!--Nur sichtbar solange man sich auf der 3. Seite befindet, validiert den auf Seite 3 getätigten Input -->
+            <v-btn
+                color="red"
+                class="float right"
+                type="submit"
+                variant="outlined"
+                @click="validateContactForm()"
+            >
+              Zusammenfassung
+            </v-btn>
           </v-card-actions>
         </v-form>
 
