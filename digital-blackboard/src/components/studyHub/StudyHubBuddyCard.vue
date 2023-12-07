@@ -18,7 +18,8 @@
             active-color="#eb1b2a"
             density="comfortable"
             class="pt-2"
-        >{{ item.liked }}
+            :model-value="item.rating"
+        >
         </v-rating>
       </div>
     </template>
