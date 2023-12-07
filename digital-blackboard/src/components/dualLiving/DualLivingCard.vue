@@ -7,7 +7,7 @@
       action="Kontaktieren"
       @action-clicked="showDialogContactInfo=true"
       @editAdClicked="openDialogEditAd"
-      @deleteAd="deleteAdClicked"
+      @deleteAd="showDialogConfirm=true"
   ></CustomCard>
 
   <v-dialog
