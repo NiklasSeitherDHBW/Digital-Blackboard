@@ -66,6 +66,12 @@
 
 <script>
 export default {
+  props: {
+    preloadImages: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     return {
       uploadedImages: [],
@@ -93,6 +99,27 @@ export default {
       this.imagePreviews.splice(index, 1);
     },
   },
+  mounted() {
+
+    if (this.preloadImages && !this.preloadImages[0].startsWith("http")) {
+      this.uploadedImages = this.preloadImages.map(base64String => {
+        // Convert base64 string to Blob
+        const byteCharacters = atob(base64String.split(',')[1]);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], {type: 'image/png'});
+
+        // Create a File object from Blob
+        const fileName = 'image.png';
+        return new File([blob], fileName, {type: 'image/png'});
+      });
+
+      this.previewImages();
+    }
+  }
 };
 </script>
 
