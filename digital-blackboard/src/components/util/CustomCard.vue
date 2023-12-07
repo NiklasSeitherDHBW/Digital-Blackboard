@@ -167,6 +167,7 @@
       >
       </v-btn>
       <v-btn
+          v-if="showActionButton"
           ref="btnAction"
           class="mr-2 mb-1"
           variant="outlined"
@@ -189,7 +190,11 @@ export default {
     action: String,
     actionBackground: {
       type: String,
-      default: "red" // TODO: Replace by DHBW red
+      default: "#eb1b2a"
+    },
+    showActionButton: {
+      type: Boolean,
+      default: true,
     },
 
     customClick: Function,
