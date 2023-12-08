@@ -138,7 +138,7 @@
               size="large"
               @click="this.$emit('deleteAd')"
           >
-            <v-icon color="red">mdi-trash-can-outline</v-icon>
+            <v-icon color="#eb1b2a">mdi-trash-can-outline</v-icon>
 
           </v-btn>
 
@@ -220,7 +220,7 @@
     <template v-slot:actions>
 
       <v-btn
-          color="red"
+          color="#eb1b2a"
           variant="text"
           float-right
           size="small"

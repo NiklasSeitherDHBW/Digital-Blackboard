@@ -101,7 +101,7 @@
     <template v-slot:actions>
 
       <v-btn
-          color="red"
+          color="#eb1b2a"
           variant="text"
           float-right
           size="small"
