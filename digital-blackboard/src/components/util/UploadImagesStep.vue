@@ -101,7 +101,7 @@ export default {
   },
   mounted() {
 
-    if (this.preloadImages && !this.preloadImages[0].startsWith("http")) {
+    if (this.preloadImages && this.preloadImages.length > 0 && !this.preloadImages[0].startsWith("http")) {
       this.uploadedImages = this.preloadImages.map(base64String => {
         // Convert base64 string to Blob
         const byteCharacters = atob(base64String.split(',')[1]);
