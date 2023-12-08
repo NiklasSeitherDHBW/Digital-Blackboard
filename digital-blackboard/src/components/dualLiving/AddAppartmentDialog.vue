@@ -160,15 +160,15 @@
               Schließen
             </v-btn>
             <v-spacer></v-spacer>
-          <v-btn
-              color="red"
-              class="mr-2 mb-2"
-              type="submit"
-              variant="outlined"
-              @click="validateDataForm()"
-          >
-            Nächste
-          </v-btn>
+            <v-btn
+                color="red"
+                class="mr-2 mb-2"
+                type="submit"
+                variant="outlined"
+                @click="validateDataForm()"
+            >
+              Nächste
+            </v-btn>
           </v-card-actions>
         </v-form>
       </v-window-item>
@@ -187,15 +187,15 @@
           </v-btn>
 
           <v-spacer></v-spacer>
-        <v-btn
-            color="red"
-            class="float right"
-            type="submit"
-            variant="outlined"
-            @click="step++"
-        >
-          Nächste
-        </v-btn>
+          <v-btn
+              color="red"
+              class="float right"
+              type="submit"
+              variant="outlined"
+              @click="step++"
+          >
+            Nächste
+          </v-btn>
         </v-card-actions>
       </v-window-item>
 
@@ -236,24 +236,24 @@
               Diese Daten werden Interessenten zur Verfügung gestellt um Kontakt aufzunehmen.
         </span>
           <v-card-actions>
-          <v-btn
-              variant="outlined"
-              @click="step--"
-          >
-            Zurück
-          </v-btn>
+            <v-btn
+                variant="outlined"
+                @click="step--"
+            >
+              Zurück
+            </v-btn>
 
-          <v-spacer></v-spacer>
-          <!--Nur sichtbar solange man sich auf der 3. Seite befindet, validiert den auf Seite 3 getätigten Input -->
-          <v-btn
-              color="red"
-              class="float right"
-              type="submit"
-              variant="outlined"
-              @click="validateContactForm()"
-          >
-            Zusammenfassung
-          </v-btn>
+            <v-spacer></v-spacer>
+            <!--Nur sichtbar solange man sich auf der 3. Seite befindet, validiert den auf Seite 3 getätigten Input -->
+            <v-btn
+                color="red"
+                class="float right"
+                type="submit"
+                variant="outlined"
+                @click="validateContactForm()"
+            >
+              Zusammenfassung
+            </v-btn>
           </v-card-actions>
         </v-form>
 
@@ -629,14 +629,13 @@ export default {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000; // z-index
-  background-color: white; // background color
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); // shadow
+  z-index: 1000;
+  background-color: white;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 
 }
 
-// Add padding to the content below the fixed header
 .v-stepper-window {
-  padding-top: 60px; // Adjust the value based on the height of fixed header
+  padding-top: 60px;
 }
 </style>
