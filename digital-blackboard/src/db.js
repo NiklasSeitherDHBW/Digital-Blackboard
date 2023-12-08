@@ -17,6 +17,7 @@ export {db};
 
 import {collection, getDocs, addDoc, deleteDoc, doc, Timestamp} from 'firebase/firestore'
 
+
 // All database operations regarding dual living page
 
 export async function fetchAdsDualLiving() {

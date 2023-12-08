@@ -377,7 +377,7 @@ export default {
       location: this.item.location,
       price: this.item.price,
       community: this.item.community,
-      maxParticipantsLimit: this.item.maxParticipantsLimit,
+      maxParticipantsLimit: this.item.max_participants_limit,
       images: this.item.images,
       date_created: this.item.date_created,
       userId: this.item.userId,
