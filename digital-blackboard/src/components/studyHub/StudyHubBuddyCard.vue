@@ -101,6 +101,7 @@
 <script setup>
 import CustomCard from "@/components/util/CustomCard.vue";
 import EditStudyBuddyDialog from "@/components/studyHub/EditStudyBuddyDialog.vue";
+import ContactCard from "@/components/util/ContactCard.vue"
 import ConfirmDialog from "@/components/util/ConfirmDialog.vue";
 
 import {useDisplay} from "vuetify";
