@@ -1,30 +1,54 @@
 <template>
+
   <v-app>
+
     <v-container>
+
       <v-row>
+
         <v-col>
+
           <v-card>
+
             <v-card-title> Botty euer Chatbot</v-card-title>
+
             <v-card-text>
+
               <v-list v-if="messages.length">
+
                 <v-list-item v-for="(message, index) in messages" :key="index" :class="{ 'user-message': message.isUser, 'bot-message': !message.isUser }">
+
                   <v-card-text>{{ message.text }}</v-card-text>
+
                 </v-list-item>
+
               </v-list>
+
             </v-card-text>
+
             <v-card-actions>
+
               <v-text-field v-model="userMessage" label="Ihre Frage" outlined></v-text-field>
+
               <v-btn @click="sendMessage" color="primary">Senden</v-btn>
+
             </v-card-actions>
+
           </v-card>
+
         </v-col>
+
       </v-row>
+
     </v-container>
+
   </v-app>
+
 </template>
 
 <script>
 export default {
+
   data() {
     return {
       userMessage: "",
@@ -63,15 +87,10 @@ export default {
         "Wie lange hat das Sekretariat auf?": "Die Öffnungszeiten des Sekretariats können je nach Studiengang variieren. Weitere Informationen findest du [hier](https://www.mannheim.dhbw.de/dhbw-mannheim/ansprechpersonen/alle/a-z/w).",
         "Wo befindet sich das Formular (Prüfungsrücktritt, Antrag auf Verlängerung, Krankmeldung, …)": "Das Formular findest du [hier](https://www.mannheim.dhbw.de/service/dokumente?tx_dhbwdownloadcenter_frontend%5BitemsPerPage%5D=10&tx_dhbwdownloadcenter_frontend%5BsearchRequest%5D%5BbaseCategory%5D=120&tx_dhbwdownloadcenter_frontend%5BsearchRequest%5D%5BchildCategory%5D=136&tx_dhbwdownloadcenter_frontend%5BsearchRequest%5D%5BsearchWord%5D=&tx_dhbwdownloadcenter_frontend%5BsearchRequest%5D%5BthirdCategory%5D=149&tx_dhbwdownloadcenter_frontend%5B__referrer%5D%5B%40action%5D=list&tx_dhbwdownloadcenter_frontend%5B__referrer%5D%5B%40controller%5D=DownloadcenterFrontend&tx_dhbwdownloadcenter_frontend%5B__referrer%5D%5B%40extension%5D=DhbwDownloadcenter&tx_dhbwdownloadcenter_frontend%5B__referrer%5D%5B%40request%5D=%7B%22%40extension%22%3A%22DhbwDownloadcenter%22%2C%22%40controller%22%3A%22DownloadcenterFrontend%22%2C%22%40action%22%3A%22list%22%7D935d0ad7269e19d7f0cf2eddd941216862b89f6f&tx_dhbwdownloadcenter_frontend%5B__referrer%5D%5Barguments%5D=YTozOntzOjk6IkB3aWRnZXRfMCI7YToxOntzOjExOiJjdXJyZW50UGFnZSI7czoxOiIzIjt9czoxMjoiaXRlbXNQZXJQYWdlIjtzOjI6Ij",
 
-
-
-
-
-
-
       }
     };
   },
+
   methods: {
     sendMessage() {
       if (this.userMessage.trim() === "") return;
@@ -97,10 +116,10 @@ export default {
   }
 };
 
-
 </script>
 
 <style scoped>
+
 .message {
   margin: 8px 0; /* Oberer und unterer Abstand zwischen den Nachrichten */
   padding: 8px;
