@@ -1,5 +1,5 @@
 import {initializeApp} from 'firebase/app'
-import {getFirestore} from 'firebase/firestore'
+import {getFirestore, setDoc} from 'firebase/firestore'
 
 const firebaseConfig = {
     apiKey: "AIzaSyBPCSF20BXJ_qysy7MRnYpfwa08Yplo6sw",
@@ -61,11 +61,10 @@ export async function fetchAdsDualLiving() {
     return transformedData;
 }
 
-export async function createAdDualLiving(formData, images, contactData) {
+export function createDualLivingAdItem(formData, images, contactData) {
     // Split date by every component to create a date object for firebase
     let fromParts = formData.availableFrom.split("-")
     let untilParts = formData.availableTill.split("-")
-
 
     // Create new document
     let new_item = {
@@ -94,8 +93,23 @@ export async function createAdDualLiving(formData, images, contactData) {
         userId: 1,
     }
 
+    return new_item;
+}
+
+
+export async function createAdDualLiving(formData, images, contactData) {
+    let new_item = createDualLivingAdItem(formData, images, contactData)
+
     // Store advertisement in database
     await addDoc(collection(db, "dual-living"), new_item);
+}
+
+export async function editAdDualLiving(id, formData, images, contactData) {
+    let new_item = createDualLivingAdItem(formData, images, contactData)
+
+    console.log(new_item)
+
+    await setDoc(doc(db, "dual-living", id), new_item)
 }
 
 
@@ -142,9 +156,8 @@ export async function fetchAdsEventsInfos() {
     return transformedData;
 }
 
-export async function createAdEvents(images, eventData) {
-    console.log(images, eventData)
-
+//// Events
+export function createEventsAdItem(images, eventData) {
     // Split date by every component to create a date object for firebase
     let dateParts = eventData.date.split("-")
 
@@ -170,10 +183,25 @@ export async function createAdEvents(images, eventData) {
         userId: 1,
     }
 
+    return new_item
+}
+
+export async function createAdEvents(images, eventData) {
+    let new_item = createEventsAdItem(images, eventData)
+
     await addDoc(collection(db, "events-parties"), new_item);
 }
 
-export async function createAdInfo(images, infoData) {
+export async function editAdEvents(id, images, eventData) {
+    console.info("editAdEvents aufgerufen2")
+    let new_item = createEventsAdItem(images, eventData)
+    console.log(new_item)
+    await setDoc(doc(db, "events-parties", id), new_item)
+}
+
+
+//// Infos
+export function createInfoAdItem(images, infoData) {
     let dateParts = infoData.date.split("-")
 
     let new_item = {
@@ -193,10 +221,40 @@ export async function createAdInfo(images, infoData) {
         userId: 1,
     }
 
+    return new_item
+}
+
+export async function createAdInfo(images, infoData) {
+    let new_item = createInfoAdItem(images, infoData)
+
     await addDoc(collection(db, "events-parties"), new_item);
 }
 
-export async function createAdSeminar(images, seminarData) {
+export async function editAdInfo(id, images, infoData) {
+    let dateParts = infoData.date.split(".") // TODO: Check why it needs to be splitted with '.'
+
+    let new_item = {
+        images: images,
+
+        title: infoData.title,
+        date_created: Timestamp.fromDate(new Date()),
+
+        date: Timestamp.fromDate(new Date(dateParts[2], dateParts[1] - 1, dateParts[0])), // parts[1] - 1 because JavaScript counts months from 0 (January - 1, Februaray - 2, etc.)
+        community: infoData.community || "keine Angabe",
+
+        description: infoData.description || "keine Angabe",
+        location: infoData.location || "keine Angabe",
+
+        category: infoData.category,
+
+        userId: 1,
+    }
+
+    await setDoc(doc(db, "events-parties", id), new_item)
+}
+
+/// Seminar
+export function createSeminarAdItem(images, seminarData) {
     let dateParts = seminarData.date.split("-")
 
     let new_item = {
@@ -221,7 +279,19 @@ export async function createAdSeminar(images, seminarData) {
         userId: 1
     }
 
+    return new_item;
+}
+
+export async function createAdSeminar(images, seminarData) {
+    let new_item = createSeminarAdItem(images, seminarData)
+
     await addDoc(collection(db, "events-parties"), new_item);
+}
+
+export async function editAdSeminar(id, images, seminarData) {
+    let new_item = createSeminarAdItem(images, seminarData)
+
+    await setDoc(doc(db, "events-parties", id), new_item)
 }
 
 
@@ -258,7 +328,8 @@ export async function fetchAdsStudyHub() {
     return transformedData
 }
 
-export async function createAdStudyBuddy(buddyData, images, contactData) {
+//// StudyBuddy
+export function createStudyBuddyAdItem(buddyData, images, contactData) {
     let new_item = {
         images: images,
 
@@ -281,10 +352,23 @@ export async function createAdStudyBuddy(buddyData, images, contactData) {
         userId: 1,
     }
 
+    return new_item
+}
+
+export async function createAdStudyBuddy(buddyData, images, contactData) {
+    let new_item = createStudyBuddyAdItem(buddyData, images, contactData)
+
     await addDoc(collection(db, "study-hub"), new_item);
 }
 
-export async function createAdStudyGroup(hubData, images) {
+export async function editAdStudyBuddy(id, buddyData, images, contactData) {
+    let new_item = createStudyBuddyAdItem(buddyData, images, contactData)
+
+    await setDoc(doc(db, "study-hub", id), new_item)
+}
+
+//// StudyGroup
+export function createStudyGroupItem(hubData, images) {
     let new_item = {
         images: images,
 
@@ -304,7 +388,19 @@ export async function createAdStudyGroup(hubData, images) {
         userId: 1,
     }
 
+    return new_item
+}
+
+export async function createAdStudyGroup(hubData, images) {
+    let new_item = createStudyGroupItem(hubData, images);
+
     await addDoc(collection(db, "study-hub"), new_item);
+}
+
+export async function editAdStudyGroup(id, hubData, images) {
+    let new_item = createStudyGroupItem(hubData, images);
+
+    await setDoc(doc(db, "study-hub", id), new_item)
 }
 
 
