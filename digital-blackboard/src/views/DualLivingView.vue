@@ -292,10 +292,12 @@ export default {
     closeSnackbar() {
       this.snackbarVisible = false;
     },
+
     openDialogImagesFullscreen(item) {
       this.selectedItem = item;
       this.showDialogImages = true;
     },
+
     async exitDialogAddAppartment() {
       this.showDialogAddApartment = false;
     },
