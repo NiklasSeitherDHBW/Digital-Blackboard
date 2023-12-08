@@ -388,9 +388,9 @@ export default {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000; // z-index
-  background-color: white; // background color
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); //shadow
+  z-index: 1000;
+  background-color: white;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .v-stepper-window {
