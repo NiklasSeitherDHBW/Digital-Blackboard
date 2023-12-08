@@ -1,8 +1,5 @@
 <template>
-  <v-stepper
-      v-model="step"
-      alt-labels
-  >
+  <v-stepper v-model="step" alt-labels>
     <v-stepper-header class="fixed-header">
       <v-stepper-item
           :title="mobile ? '' : 'Angaben zur Seminar'"
@@ -29,24 +26,14 @@
     </v-stepper-header>
 
     <v-stepper-window>
-      <v-card-title
-          class="text-h6 font-weight-regular justify-space-between pa-2"
-      >
-        <span>
-          {{ currentTitle }}
-        </span>
+      <v-card-title class="text-h6 font-weight-regular justify-space-between pa-2">
+        <span>{{ currentTitle }}</span>
       </v-card-title>
 
-      <v-window
-          v-model="step"
-      >
-        <v-window-item
-            :value="1"
-        >
-          <v-form
-              @submit.prevent>
-          <!-- Form für den Input des Users -> v-model, und Eingabehinweise -> prefix, rules, placeholder -->
-          <v-card-text>
+      <v-window v-model="step">
+        <v-window-item :value="1">
+          <v-form @submit.prevent>
+            <v-card-text>
             <v-text-field
                 label="Titel des Seminars *"
                 variant="outlined"
@@ -104,6 +91,7 @@
                 v-model="seminarData.maxParticipantsLimit"
             ></v-text-field>
           </v-card-text>
+
             <v-card-actions>
               <v-btn
                   color="red"
@@ -127,21 +115,13 @@
           </v-form>
         </v-window-item>
 
-        <v-window-item
-            :value="2"
-        >
-          <UploadImagesStep
-              ref="uploadImagesForm"
-          ></UploadImagesStep>
+        <v-window-item :value="2">
+          <UploadImagesStep ref="uploadImagesForm"></UploadImagesStep>
           <v-card-actions>
-            <v-btn
-                variant="outlined"
-                @click="step--"
-            >
-              Zurück
-            </v-btn>
+            <v-btn variant="outlined" @click="step--">Zurück</v-btn>
 
             <v-spacer></v-spacer>
+
             <v-btn
                 color="red"
                 class="float right"
@@ -155,9 +135,7 @@
         </v-window-item>
 
         <v-window-item :value="3">
-          <div
-              class="pa-4 text-center"
-          >
+          <div class="pa-4 text-center">
             <v-img
                 class="mb-4"
                 contain
@@ -199,16 +177,12 @@
                 </v-col>
               </v-row>
             </v-card-text>
+
             <v-card-actions>
-              <v-btn
-                  variant="outlined"
-                  @click="step--"
-              >
-                Zurück
-              </v-btn>
+              <v-btn variant="outlined" @click="step--">Zurück</v-btn>
 
               <v-spacer></v-spacer>
-              <!--Nur sichtbar solange man sich auf der letzten Seite befindet, übergibt die Inputdaten -->
+
               <v-btn
                   color="red"
                   class="float right"
@@ -234,21 +208,41 @@ const {mobile} = useDisplay()
 
 <script>
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
-
+/**
+ * Vue.js-component for creating seminar content
+ *
+ * @exports
+ * @component
+ */
 export default {
   components: {UploadImagesStep},
+  /**
+   * data objects of the component
+   *
+   * @type {function}
+   * @returns {object} - initialization data of the component
+   */
   data: () => ({
     step: 1,
     selectedImages: [],
 
+    // list of seminar information/formular fields
     infosEvent: [
       "title", "description", "date", "location", "price", "community"
     ],
-    // regel zum erzwingen von gewünschten Werten
+    // rule for forcing desired values
     titleRules: [
+      /**
+       * checks whether a value exists for the title
+       *
+       * @param {string} value - value to be checked
+       * @returns {boolean|string} - `true`, if the condition is fulfilled, otherwise the error message.
+       */
       (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
       (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
     ],
+
+    // more rules
     generalRules: [
       (value) => value ? true : 'Bitte gebe weitere Informationen an!'
     ],
@@ -260,6 +254,7 @@ export default {
       (value) => /\d+$/.test(value) ? true : 'Die angegebene Information darf nur Zahlen (0-9) beinhalten!',
     ],
 
+    // data objects for seminar information
     seminarData: {
       title: '',
       description: '',
@@ -284,8 +279,9 @@ export default {
   }),
 
   methods: {
+    // validates critical seminar information based on the rules
     validateDataForm() {
-      // kritische Eventdaten werden durch rules validiert, wenn alle felder richtig ausgefüllt werden kann die nächste seite erreich werden
+      // critical event data is validated by rules, if all fields are filled in correctly the next page can be reached
       const isValid = this.validateFields([
         { value: this.seminarData.title, rules: this.titleRules },
         { value: this.seminarData.location, rules: this.generalRules },
@@ -297,19 +293,25 @@ export default {
       }
     },
 
+    /**
+     * validates a list of fields based on the rules passed
+     *
+     * @param {object[]} fields - a list of field objects with value and rules
+     * @returns {boolean} - `true`, if all rules are fulfilled, otherwise `false`
+     */
     validateFields(fields) {
-      // Überprüfe jede Regel für jedes Feld
+      // check every rule on every field
       for (const field of fields) {
         for (const rule of field.rules) {
           const isValid = rule(field.value);
           if (isValid !== true) {
-            // Wenn die Regel nicht erfüllt ist, zeige die Fehlermeldung an
+            // if the rule is not fulfilled, display the error message
             console.error(isValid);
             return false;
           }
         }
       }
-      return true; // Alle Regeln wurden erfüllt => nächste Seite
+      return true; // ALL rules have been fulfilled? Yes - next page
     },
     onFileChange() {
       this.selectedImages = this.selectedImages.map((file) => ({
@@ -328,17 +330,22 @@ export default {
       });
     },
     exitDialog() {
-      // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
+      // the dialog window is ended, the exit-dialog event of the parent is executed, user data/images are transferred
       this.$emit("exit-dialog")
     },
     closeDialog() {
-      // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
+      // the dialog window is closed, the close dialog event of the parent is executed, user data/images are transferred
       this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.seminarData)
     }
   },
   computed: {
+    /**
+     * current title based on the current step
+     *
+     * @returns {string} - the title of the current tap step
+     */
     currentTitle () {
-      // einzelnen Schritte des Steppers
+      // steps of the steppers
       switch (this.step) {
         case 1: return 'Angaben zum Seminar';
         case 2: return 'Fotos';
@@ -346,8 +353,14 @@ export default {
         default: return 'Seminar wurde erfolgreich geteilt!';
       }
     },
+
+    /**
+     * information for the preview of the seminar
+     *
+     * @returns {object[]} - a list of objects with label and value for the preview
+     */
     eventInfos() {
-      // iteriert über alle seminarData Attribute und deren titel aus dictionary um diese als Preview anzuzeigen
+      // iterates over all seminarData attributes and their titles from dictionary to display them as a preview
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
         let value = this.seminarData[attribute];
@@ -364,14 +377,14 @@ export default {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000; /* Adjust the z-index as needed */
-  background-color: white; /* Adjust the background color as needed */
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
-  /* Additional styles as needed */
+  z-index: 1000; // z-index
+  background-color: white; // Adjust the background color
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); // shadow
+
 }
 
-/* Add padding to the content below the fixed header */
+
 .v-stepper-window {
-  padding-top: 60px; /* Adjust the value based on the height of your fixed header */
+  padding-top: 60px;
 }
 </style>
