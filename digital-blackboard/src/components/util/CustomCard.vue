@@ -1,4 +1,5 @@
 <template>
+
   <v-card
       :style="{ 'min-width': '125px', 'height': showAll ? '100%' : 'auto', 'padding-bottom': showAll ? '50px' : '0px', 'box-shadow': '10px 10px 20px rgba(0, 0, 0, 0.4)'}"
   >
@@ -22,7 +23,9 @@
           max-width="1200px"
       >
         <v-card :class="{ 'text-wrap' : showDialogImagesFullscreen}">
+
           <v-row class="d-flex align-center ma-3">
+
             <v-card-title>
               {{ item.title }}
             </v-card-title>
@@ -32,6 +35,7 @@
                 icon="mdi-close"
                 @click="showDialogImagesFullscreen=false"
             ></v-btn>
+
           </v-row>
 
           <v-divider></v-divider>
@@ -45,9 +49,13 @@
                 :key="index"
                 :src="image"
             ></v-carousel-item>
+
           </v-carousel>
+
         </v-card>
+
       </v-dialog>
+
     </v-carousel>
 
     <v-card-title class="text-wrap text-left">
@@ -59,6 +67,7 @@
     </v-card-subtitle>
 
     <v-card-text class="ma-1 text-wrap text-left">
+
       <v-row
           v-for="(field, index) in basicInfos"
           :key="index"
@@ -66,23 +75,31 @@
           class="mt-1"
       >
         <v-col>
+
           <h4>
             {{ field.label }}
           </h4>
+
         </v-col>
+
         <v-col>
+
           <p>
             {{ field.value }}
           </p>
+
         </v-col>
+
       </v-row>
 
       <slot name="bottomBasicInfos"></slot>
+
     </v-card-text>
 
     <v-divider></v-divider>
 
     <v-container>
+
       <v-row
           style="align-items: center;"
           class="my-0 mx-0"
@@ -98,6 +115,7 @@
         <p class="ml-3">Mehr Informationen</p>
 
         <div class="d-flex ml-auto">
+
           <v-btn
               v-if="item.editable"
               icon
@@ -107,6 +125,7 @@
               @click="this.$emit('editAdClicked', item)"
           >
             <v-icon>mdi-pencil-outline</v-icon>
+
           </v-btn>
 
           <p class="mx-1"></p>
@@ -120,9 +139,13 @@
               @click="this.$emit('deleteAd')"
           >
             <v-icon color="red">mdi-trash-can-outline</v-icon>
+
           </v-btn>
+
         </div>
+
       </v-row>
+
     </v-container>
 
     <v-divider></v-divider>
@@ -132,6 +155,7 @@
           v-if="showAll"
       >
         <v-card-text class="ma-1">
+
           <v-row
               v-for="(field, index) in extraInfos"
               :key="index"
@@ -139,17 +163,25 @@
               class="mt-1"
           >
             <v-col>
+
               <h4>
                 {{ field.label }}
               </h4>
+
             </v-col>
+
             <v-col>
+
               <p>
                 {{ field.value }}
               </p>
+
             </v-col>
+
           </v-row>
+
         </v-card-text>
+
       </div>
 
     </v-expand-transition>
@@ -166,6 +198,7 @@
           @click="handleClick"
       >
       </v-btn>
+
       <v-btn
           v-if="showActionButton"
           ref="btnAction"
@@ -176,11 +209,16 @@
       >
         {{ action }}
       </v-btn>
+
     </v-card-actions>
+
   </v-card>
+
   <v-snackbar v-model="snackbarVisible" :timeout="timeout">
     Der Link wurde in deine Zwischenablage kopiert!
+
     <template v-slot:actions>
+
       <v-btn
           color="red"
           variant="text"
@@ -191,8 +229,11 @@
       >
         Schließen
       </v-btn>
+
     </template>
+
   </v-snackbar>
+
 </template>
 
 <script>
@@ -207,6 +248,7 @@ export default {
       type: String,
       default: "#eb1b2a"
     },
+
     showActionButton: {
       type: Boolean,
       default: true,
@@ -214,6 +256,7 @@ export default {
 
     customClick: Function,
   },
+
   data() {
     return {
       timeout: 3000,
@@ -223,13 +266,15 @@ export default {
       showDialogImagesFullscreen: false,
     };
   },
+
   methods: {
     /**
-     * The customClick accesses the individual link share function in Events and StudyHub,
-     * due to different categories within these Pages
-     * the link consists of the base URL, the adType, the items Id and their category within the adType
-     * The Link is copied to the User Clipboard
+     * Handles the click event on the component.
+     * If a custom click function is provided by the parent, it is executed instead.
+     * Otherwise, for adType 'dualLiving' (only adType without custom Click), a link is created,
+     * copied to the clipboard, and the Snackbar is to display a success message.
      *
+     * @method
      */
     handleClick() {
       // Check if a custom click function is provided by the parent
@@ -245,7 +290,11 @@ export default {
 
       }
     },
-    // funktion to close the snackbar manually
+    /**
+     * Function to close the Snackbar manually.
+     *
+     * @method
+     */
     closeSnackbar() {
       this.snackbarVisible = false;
     }
@@ -263,6 +312,7 @@ export default {
 .text-wrap {
   white-space: normal;
 }
+
 @media screen and (max-width: 600px) {
   .text-wrap {
     white-space: normal;

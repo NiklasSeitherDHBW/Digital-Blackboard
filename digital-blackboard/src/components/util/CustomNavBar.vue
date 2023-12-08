@@ -1,4 +1,5 @@
 <template>
+
   <v-bottom-navigation
       v-if="mobile"
       :grow=true
@@ -14,7 +15,9 @@
       >
         {{ item.icon }}
       </v-icon>
+
     </v-btn>
+
   </v-bottom-navigation>
 
   <v-navigation-drawer
@@ -41,8 +44,11 @@
           :prepend-icon="item.icon"
           :title="item.title"
       ></v-list-item>
+
     </v-list>
+
   </v-navigation-drawer>
+
 </template>
 
 <script setup>
@@ -53,24 +59,49 @@ const {mobile} = useDisplay()
 
 <script>
 export default {
+
   data() {
     return {
+
       menuItems: [
-        {icon: 'mdi-bulletin-board', title: 'Blackboard', value: '/'},
-        {icon: 'mdi-domain', title: 'Dual Living', value: 'dualliving'},
-        {icon: 'mdi-calendar-clock', title: 'Events', value: 'events'},
-        {icon: 'mdi-school', title: 'StudyHub', value: 'studyhub'},
-        {icon: 'mdi-account', title: 'Account', value: 'account'},
-        {icon: 'mdi-chat', title: 'Chat', value: 'chat'},
+        {
+          icon: 'mdi-bulletin-board', title: 'Blackboard', value: '/'
+        },
+        {
+          icon: 'mdi-domain', title: 'Dual Living', value: 'dualliving'
+        },
+        {
+          icon: 'mdi-calendar-clock', title: 'Events', value: 'events'
+        },
+        {
+          icon: 'mdi-school', title: 'StudyHub', value: 'studyhub'
+        },
+        {
+          icon: 'mdi-account', title: 'Account', value: 'account'
+        },
+        {
+          icon: 'mdi-chat', title: 'Chat', value: 'chat'
+        },
       ],
+
     };
+
   },
   methods: {
+    /**
+     * Navigates to a specified route using Vue Router.
+     *
+     * @method
+     * @param {string} itemValue - The path of the route to navigate to.
+     */
     navigateTo(itemValue) {
+      // Check if itemValue is provided
       if (itemValue) {
-        this.$router.push({path: itemValue});
+        // Use Vue Router to navigate to the specified route
+        this.$router.push({ path: itemValue });
       }
     },
+
   },
 };
 </script>
