@@ -82,6 +82,10 @@ import CustomCard from "@/components/util/CustomCard.vue"
 import ContactCard from "@/components/util/ContactCard.vue";
 import EditAppartmentDialog from "@/components/dualLiving/EditAppartmentDialog.vue";
 import ConfirmDialog from "@/components/util/ConfirmDialog.vue";
+
+import {useDisplay} from "vuetify";
+
+const {mobile} = useDisplay()
 </script>
 
 <script>
