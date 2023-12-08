@@ -47,11 +47,27 @@
       max-width="1200px"
   >
     <EditEventDialog
+        v-if="item.category === 'Events'"
         :item="item"
         @exit-dialog="exitDialogEditAd"
         @close-dialog="closeDialogEditAd"
     ></EditEventDialog>
+
+    <EditInfoDialog
+        v-if="item.category === 'Infos'"
+        :item="item"
+        @exit-dialog="exitDialogEditAd"
+        @close-dialog="closeDialogEditAd"
+    ></EditInfoDialog>
+
+    <EditSeminarDialog
+        v-if="item.category === 'Seminare'"
+        :item="item"
+        @exit-dialog="exitDialogEditAd"
+        @close-dialog="closeDialogEditAd"
+    ></EditSeminarDialog>
   </v-dialog>
+
   <v-snackbar v-model="snackbarCreate" :timeout="timeout">
     Ihr Inserat wurde erfolgreich geteilt!
     <template v-slot:actions>
@@ -102,6 +118,8 @@
 <script setup>
 import CustomCard from "@/components/util/CustomCard.vue"
 import EditEventDialog from "@/components/eventsParties/EditEventDialog.vue";
+import EditInfoDialog from "@/components/eventsParties/EditInfoDialog.vue";
+import EditSeminarDialog from "@/components/eventsParties/EditSeminarDialog.vue";
 </script>
 
 <script>
@@ -181,15 +199,14 @@ export default {
       this.$emit("itemChanged")
     },
 
-    editAdClicked(item) {
-      console.log(item)
+    editAdClicked() {
       this.showDialogEditAd = true
     },
     async exitDialogEditAd() {
       this.showDialogEditAd = false
     },
-    async closeDialogEditAd() {
-      this.showDialogEditAd = false
+    closeDialogEditAd() {
+      this.showDialogEditAd = false;
       this.snackbarCreate = true;
     },
 
