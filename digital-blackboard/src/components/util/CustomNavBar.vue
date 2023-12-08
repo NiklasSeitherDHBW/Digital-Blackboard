@@ -71,16 +71,13 @@ export default {
           icon: 'mdi-domain', title: 'Dual Living', value: 'dualliving'
         },
         {
-          icon: 'mdi-calendar-clock', title: 'Events', value: 'events'
+          icon: 'mdi-calendar-clock', title: 'Events & Infos', value: 'events'
         },
         {
           icon: 'mdi-school', title: 'StudyHub', value: 'studyhub'
         },
         {
           icon: 'mdi-account', title: 'Account', value: 'account'
-        },
-        {
-          icon: 'mdi-chat', title: 'Chat', value: 'chat'
         },
       ],
 
