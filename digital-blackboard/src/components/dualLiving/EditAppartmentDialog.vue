@@ -51,7 +51,8 @@
           :value="1"
       >
         <v-form
-            @submit.prevent>
+            @submit.prevent
+        >
           <!-- Form für den Input des Users -> v-model, und Eingabehinweise -> prefix, rules, placeholder -->
           <v-text-field
               class="mt-2"
