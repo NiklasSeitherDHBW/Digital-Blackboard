@@ -19,7 +19,7 @@
       <v-spacer></v-spacer>
 
       <v-btn
-          color="red"
+          color="#eb1b2a"
           variant="outlined"
           @click="deleteAdClicked"
       >Löschen</v-btn>

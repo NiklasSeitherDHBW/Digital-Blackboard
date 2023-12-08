@@ -69,7 +69,7 @@
           </v-card-text>
             <v-card-actions>
               <v-btn
-                  color="red"
+                  color="#eb1b2a"
                   class="mr-2 mb-2"
                   variant="outlined"
                   @click="exitDialog()"
@@ -78,7 +78,7 @@
               </v-btn>
               <v-spacer></v-spacer>
               <v-btn
-                  color="red"
+                  color="#eb1b2a"
                   class="mr-2 mb-2"
                   type="submit"
                   variant="outlined"
@@ -97,7 +97,7 @@
 
             <v-spacer></v-spacer>
             <v-btn
-                color="red"
+                color="#eb1b2a"
                 class="float right"
                 type="submit"
                 variant="outlined"
@@ -162,7 +162,7 @@
 
             <v-spacer></v-spacer>
             <v-btn
-                color="red"
+                color="#eb1b2a"
                 class="float right"
                 variant="outlined"
                 type="submit"
