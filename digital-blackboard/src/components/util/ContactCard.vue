@@ -1,5 +1,7 @@
 <template>
+
   <v-card>
+
     <v-row
         class="d-flex align-center ma-3"
     >
@@ -12,6 +14,7 @@
           icon="mdi-close"
           @click="$emit('close-dialog')"
       ></v-btn>
+
     </v-row>
 
     <v-divider></v-divider>
@@ -22,6 +25,7 @@
         variant="flat"
     >
       <template v-slot:prepend>
+
         <v-avatar
             size="120"
         >
@@ -30,7 +34,9 @@
               alt="Avatar"
               cover
           ></v-img>
+
         </v-avatar>
+
       </template>
 
       <v-card-text
@@ -53,7 +59,9 @@
             <p>
               {{ phone }}
             </p>
+
           </v-col>
+
         </v-row>
 
         <v-row
@@ -73,15 +81,22 @@
             <p>
               {{ email }}
             </p>
+
           </v-col>
+
         </v-row>
+
       </v-card-text>
+
     </v-card>
+
   </v-card>
+
 </template>
 
 <script>
 export default {
+
   props: {
     name: String,
     course: String,

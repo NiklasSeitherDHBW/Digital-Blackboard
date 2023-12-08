@@ -77,6 +77,7 @@
         @exit-dialog="exitDialogEditAd"
         @close-dialog="closeDialogEditAd"
     ></EditSeminarDialog>
+
   </v-dialog>
 
   <v-dialog
@@ -96,7 +97,9 @@
 
   <v-snackbar v-model="snackbar" :timeout="timeout">
     {{ snackbarText }}
+
     <template v-slot:actions>
+
       <v-btn
           color="red"
           variant="text"
@@ -120,7 +123,6 @@ import EditEventDialog from "@/components/eventsParties/EditEventDialog.vue";
 import EditInfoDialog from "@/components/eventsParties/EditInfoDialog.vue";
 import EditSeminarDialog from "@/components/eventsParties/EditSeminarDialog.vue";
 import ConfirmDialog from "@/components/util/ConfirmDialog.vue";
-
 </script>
 
 <script>
@@ -156,71 +158,149 @@ export default {
 
   methods: {
     /**
-     * The custom link share function for events, due to different categories
-     * the link consists of the base URL, the adType, the item Id and their category within the adType
-     * The Link is copied to the User Clipboard
+     * Creates a shareable link for the current item and copies it to the clipboard.
+     * Also displays a Snackbar with a success message.
+     *
      */
     createShareLink() {
-      const link = window.location.origin + '/events' + '?card=' + this.item.id + "&selectedCategory=" + this.item.category;
+      // Constructing the shareable link based on the current item's properties.
+      const link =
+          window.location.origin +
+          '/events' +
+          '?card=' +
+          this.item.id +
+          '&selectedCategory=' +
+          this.item.category;
+
+      // Copying the link to the clipboard.
       navigator.clipboard.writeText(link);
-      // The Snackbar is assigned a special Text and then called
-      this.snackbarText = "Ihr Inserat wurde erfolgreich geteilt!"
+
+      // Assigning a success message to be displayed in the Snackbar.
+      this.snackbarText = "Ihr Inserat wurde erfolgreich geteilt!";
+
+      // Showing the Snackbar.
       this.snackbar = true;
     },
 
+    /**
+     * Closes the Snackbar.
+     *
+     */
     closeSnackbar() {
+      // Hiding the Snackbar.
       this.snackbar = false;
     },
 
+    /**
+     * Asynchronously joins or leaves an event.
+     *
+     * @param {Object} item - The event item to join or leave.
+     * @property {string} item.id - The unique identifier of the event.
+     *
+     * @returns {Promise<void>} - A promise that resolves when the operation is complete.
+     */
     async joinEvent(item) {
-      const docRef = doc(db, "events-parties", item.id)
-      const docSnap = await getDoc(docRef)
+      // Creating a reference to the document in the "events-parties" collection with the provided item's ID.
+      const docRef = doc(db, "events-parties", item.id);
 
-      const data = docSnap.data()
-      data["joined"] = !data["joined"]
+      // Retrieving the document snapshot asynchronously.
+      const docSnap = await getDoc(docRef);
+
+      // Extracting data from the document snapshot.
+      const data = docSnap.data();
+
+      // Toggling the "joined" property in the data.
+      data["joined"] = !data["joined"];
+
+      // Adjusting the "members" count based on whether the user joined or left the event.
       if (data["joined"]) {
-        data["members"] = data["members"] + 1
+        data["members"] = data["members"] + 1;
       } else {
-        data["members"] = data["members"] - 1
+        data["members"] = data["members"] - 1;
       }
 
-      await setDoc(docRef, data, {merge: true});
+      // Overwriting the current value of the document with the updated data.
+      await setDoc(docRef, data, { merge: true });
+
+      // Emitting an event to trigger the items to reload after change.
       this.$emit("itemChanged");
     },
 
+    /**
+     * Asynchronously toggles the like status of an event and updates the database.
+     *
+     * @param {Object} item - The event item to like or unlike.
+     * @property {string} item.id - The unique identifier of the event.
+     *
+     * @returns {Promise<void>} - A promise that resolves when the operation is complete.
+     * @method
+     */
     async likeEvent(item) {
-      const docRef = doc(db, "events-parties", item.id)
-      const docSnap = await getDoc(docRef)
+      // Creating a reference to the document in the "events-parties" collection with the provided item's ID.
+      const docRef = doc(db, "events-parties", item.id);
 
-      const data = docSnap.data()
-      data["liked"] = !data["liked"]
+      // Retrieving the document snapshot asynchronously.
+      const docSnap = await getDoc(docRef);
+
+      // Extracting data from the document snapshot.
+      const data = docSnap.data();
+
+      // Toggling the "liked" property in the data.
+      data["liked"] = !data["liked"];
+
+      // Adjusting the "likes" count based on whether the user liked or unliked the event.
       if (data["liked"]) {
-        data["likes"] = data["likes"] + 1
+        data["likes"] = data["likes"] + 1;
       } else {
-        data["likes"] = data["likes"] - 1
+        data["likes"] = data["likes"] - 1;
       }
 
-      await setDoc(docRef, data, {merge: true})
-      this.$emit("itemChanged")
+      // Overwriting the current value of the document with the updated data.
+      await setDoc(docRef, data, { merge: true });
+
+      // Emitting an event to trigger the items to reload after change.
+      this.$emit("itemChanged");
     },
 
+    /**
+     * Displays the edit ad dialog by setting the showDialogEditAd flag to true.
+     * @method
+     */
     editAdClicked() {
       this.showDialogEditAd = true
     },
 
+    /**
+     * Exits the edit ad dialog by setting the showDialogEditAd flag to false.
+     * @method
+     */
     async exitDialogEditAd() {
       this.showDialogEditAd = false
     },
+
+    /**
+     * Closes the edit ad dialog, displays a success message in a Snackbar, and sets the Snackbar to confirm completion.
+     * @method
+     */
     async closeDialogEditAd() {
       this.showDialogEditAd = false;
       this.snackbarText = "Ihr Inserat wurde erfolgreich erstellt!"
       this.snackbar = true;
     },
 
+    /**
+     * Exits the confirm dialog by setting the showDialogConfirm flag to false.
+     * @method
+     */
     async exitDialogConfirm() {
       this.showDialogConfirm = false;
     },
 
+    /**
+     * Deletes the ad, hides the confirm dialog, displays a success message in a Snackbar,
+     * and emits an event to trigger the items to reload after change.
+     * @method
+     */
     async deleteAdClicked() {
       this.showDialogConfirm = false;
       await deleteAd("events-parties", this.item.id);
@@ -231,6 +311,12 @@ export default {
   },
 
   computed: {
+    /**
+     * Computes an array of basic information keywords based on the item's category.
+     *
+     * @returns {string[]} - An array of the basic information keywords.
+     * @computed
+     */
     basicInfosKeywords() {
       if (this.item.category === "Events") {
         return ["date", "price", "community"]
@@ -243,6 +329,12 @@ export default {
       return []
     },
 
+    /**
+     * Computes an array of extra information keywords based on the item's category.
+     *
+     * @returns {string[]} - An array of the extra information keywords.
+     * @computed
+     */
     extraInfosKeywords() {
       if (this.item.category === "Events") {
         return ["description", "location", "availability"]
@@ -255,6 +347,12 @@ export default {
       return []
     },
 
+    /**
+     * Computes an array of basic information objects for display.
+     *
+     * @returns {Object[]} - An array of basic information objects with label and value properties.
+     * @computed
+     */
     basicInfos() {
       return this.basicInfosKeywords.map((attribute) => ({
         label: this.dictionary[attribute],
@@ -262,6 +360,12 @@ export default {
       }));
     },
 
+    /**
+     * Computes an array of extra information objects for display.
+     *
+     * @returns {Object[]} - An array of extra information objects with label and value properties.
+     * @computed
+     */
     extraInfos() {
       return this.extraInfosKeywords.map((attribute) => ({
         label: this.dictionary[attribute],

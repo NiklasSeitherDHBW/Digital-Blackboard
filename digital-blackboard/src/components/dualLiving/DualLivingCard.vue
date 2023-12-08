@@ -1,4 +1,5 @@
 <template>
+
   <CustomCard
       :item="item"
       :basicInfos="basicInfos"
@@ -23,6 +24,7 @@
         :email="item.email"
         @close-dialog="showDialogContactInfo=false"
     ></ContactCard>
+
   </v-dialog>
 
   <v-dialog
@@ -36,6 +38,7 @@
         @exit-dialog="exitDialogEditAd"
         @close-dialog="closeDialogEditAd"
     ></EditAppartmentDialog>
+
   </v-dialog>
 
   <v-dialog
@@ -49,11 +52,14 @@
         @confirmedDeletion="deleteAdClicked"
         @cancelDeletion="exitDialogConfirm"
     ></ConfirmDialog>
+
   </v-dialog>
 
   <v-snackbar v-model="snackbar" :timeout="timeout">
     {{ snackbarText }}
+
     <template v-slot:actions>
+
       <v-btn
           color="red"
           variant="text"
@@ -64,8 +70,11 @@
       >
         Schließen
       </v-btn>
+
     </template>
+
   </v-snackbar>
+
 </template>
 
 <script setup>
@@ -78,9 +87,11 @@ import ConfirmDialog from "@/components/util/ConfirmDialog.vue";
 <script>
 import {deleteAd} from "@/db.js"
 export default {
+
   props: {
     item: Object,
   },
+
   data() {
     return {
       snackbarText: "",
@@ -112,34 +123,40 @@ export default {
     };
   },
 
-  computed: {
-    basicInfos() {
-      return this.basicInfosKeywords.map((attribute) => ({
-        label: this.dictionary[attribute],
-        value: this.item[attribute],
-      }));
-    },
-
-    extraInfos() {
-      return this.extraInfosKeywords.map((attribute) => ({
-        label: this.dictionary[attribute],
-        value: this.item[attribute],
-      }));
-    },
-  },
-
   methods: {
+    /**
+     * Method to close the Snackbar.
+     *
+     * @method
+     */
     closeSnackbar() {
       this.snackbar = false;
     },
 
+    /**
+     * Method to open the edit ad dialog for dual Housing.
+     *
+     * @method
+     */
     openDialogEditAd() {
       this.showDialogEditAd = true;
     },
 
+    /**
+     * Asynchronously exits the edit ad dialog.
+     *
+     * @method
+     */
     async exitDialogEditAd() {
       this.showDialogEditAd = false;
     },
+
+    /**
+     * Asynchronously closes the edit ad dialog, displays a success message in a Snackbar,
+     * and emits an event to trigger the items to reload after change.
+     *
+     * @method
+     */
     async closeDialogEditAd() {
       this.showDialogEditAd = false;
       this.snackbarText = "Ihr Inserat wurde erfolgreich erstellt!";
@@ -147,6 +164,11 @@ export default {
       this.$emit("itemsChanged")
     },
 
+    /**
+     * Asynchronously exits the confirm dialog.
+     *
+     * @method
+     */
     async exitDialogConfirm() {
       this.showDialogConfirm = false;
     },
@@ -159,7 +181,34 @@ export default {
       this.$emit("itemsChanged")
 
     }
-  }
+  },
+  computed: {
+    /**
+     * Computed property that generates an array of basic information objects for display.
+     *
+     * @computed
+     * @returns {Object[]} - An array of basic information objects with label and value properties.
+     */
+    basicInfos() {
+      return this.basicInfosKeywords.map((attribute) => ({
+        label: this.dictionary[attribute],
+        value: this.item[attribute],
+      }));
+    },
+
+    /**
+     * Computed property that generates an array of extra information objects for display.
+     *
+     * @computed
+     * @returns {Object[]} - An array of extra information objects with label and value properties.
+     */
+    extraInfos() {
+      return this.extraInfosKeywords.map((attribute) => ({
+        label: this.dictionary[attribute],
+        value: this.item[attribute],
+      }));
+    },
+  },
 };
 </script>
 

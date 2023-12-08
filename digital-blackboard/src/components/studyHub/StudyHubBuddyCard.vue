@@ -1,4 +1,5 @@
 <template>
+
   <CustomCard
       class="text-left"
       :item="item"
@@ -12,7 +13,9 @@
 
   >
     <template v-slot:bottomBasicInfos>
+
       <div v-if="item.category !== 'group'">
+
         <v-rating
             readonly
             color="#7C868DFF"
@@ -22,8 +25,11 @@
             :model-value="item.rating"
         >
         </v-rating>
+
       </div>
+
     </template>
+
   </CustomCard>
 
   <v-dialog
@@ -39,6 +45,7 @@
         :email="item.email"
         @close-dialog="showDialogContactInfo=false"
     ></ContactCard>
+
   </v-dialog>
 
   <v-dialog
@@ -51,6 +58,7 @@
         @exit-dialog="exitDialogEditAd"
         @close-dialog="closeDialogEditAd"
     ></EditStudyBuddyDialog>
+
   </v-dialog>
 
   <v-dialog
@@ -64,11 +72,14 @@
         @confirmedDeletion="deleteAdClicked"
         @cancelDeletion="exitDialogConfirm"
     ></ConfirmDialog>
+
   </v-dialog>
 
   <v-snackbar v-model="snackbar" :timeout="timeout">
     {{ snackbarText }}
+
     <template v-slot:actions>
+
       <v-btn
           color="red"
           variant="text"
@@ -79,8 +90,11 @@
       >
         Schließen
       </v-btn>
+
     </template>
+
   </v-snackbar>
+
 </template>
 
 <script setup>
@@ -92,10 +106,12 @@ import ConfirmDialog from "@/components/util/ConfirmDialog.vue";
 <script>
 import {deleteAd} from "@/db";
 export default {
+
   props: {
     item: Object,
     action: String,
   },
+
   data() {
     return {
       snackbarText: "",
@@ -111,6 +127,7 @@ export default {
       basicInfosKeywords: [
         "price", "subject"
       ],
+
       extraInfosKeywords: [
         "description", "availability",
       ],
@@ -125,31 +142,54 @@ export default {
   },
   methods: {
     /**
-     * Is the custom link share function for StudyHub, do to different categories
-     * the link consists of the base URL, the adType, the items Id and their category within the adType
-     * The Link is copied to the User Clipboard
+     * Is the custom link share function for StudyHub. Due to different categories,
+     * the link consists of the base URL, the adType, the item's Id, and their category within the adType.
+     * The link is copied to the user's clipboard.
      *
+     * @method
      */
     createShareLink() {
       const link = window.location.origin + '/studyhub' + '?card=' + this.item.id + "&selectedCategory=" + this.item.categories;
+      // Copy the link to the clipboard
       navigator.clipboard.writeText(link);
       // The Snackbar is assigned a special Text and then called
       this.snackbarText = "Ihr Inserat wurde erfolgreich geteilt!"
       this.snackbar = true;
     },
 
+    /**
+     * Method to close the Snackbar.
+     *
+     * @method
+     */
     closeSnackbar() {
       this.snackbar = false;
     },
 
+    /**
+     * Method to open the edit ad dialog.
+     *
+     * @method
+     */
     openDialogEditAd() {
-      this.showDialogEditAd = true
+      this.showDialogEditAd = true;
     },
 
+    /**
+     * Asynchronously exits the edit ad dialog.
+     *
+     * @method
+     */
     async exitDialogEditAd() {
       this.showDialogEditAd = false;
     },
 
+    /**
+     * Asynchronously closes the edit ad dialog, displays a success message in a Snackbar,
+     * and emits an event to trigger the items to reload after change.
+     *
+     * @method
+     */
     async closeDialogEditAd() {
       this.showDialogAddStudyBuddy = false;
       this.snackbarText = "Ihr Inserat wurde erfolgreich erstellt!"
@@ -157,10 +197,21 @@ export default {
       this.$emit("itemsChanged")
     },
 
+    /**
+     * Asynchronously exits the confirm dialog.
+     *
+     * @method
+     */
     async exitDialogConfirm() {
       this.showDialogConfirm = false;
     },
 
+    /**
+     * Asynchronously deletes the ad, hides the confirm dialog, displays a success message in a Snackbar,
+     * and emits an event to trigger the items to reload after change..
+     *
+     * @method
+     */
     async deleteAdClicked() {
       this.showDialogConfirm = false;
       await deleteAd("study-hub", this.item.id)
@@ -171,12 +222,25 @@ export default {
   },
 
   computed: {
+    /**
+     * Computed property that generates an array of basic information objects for display.
+     *
+     * @computed
+     * @returns {Object[]} - An array of basic information objects with label and value properties.
+     */
     basicInfos() {
       return this.basicInfosKeywords.map((attribute) => ({
         label: this.dictionary[attribute],
         value: this.item[attribute],
       }));
     },
+
+    /**
+     * Computed property that generates an array of extra information objects for display.
+     *
+     * @computed
+     * @returns {Object[]} - An array of extra information objects with label and value properties.
+     */
     extraInfos() {
       return this.extraInfosKeywords.map((attribute) => ({
         label: this.dictionary[attribute],
@@ -187,5 +251,6 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+
 </style>
