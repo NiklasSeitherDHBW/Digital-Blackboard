@@ -18,6 +18,8 @@
       v-model="showDialogEditAd"
       transition="dialog-bottom-transition"
       class="justify-center"
+      :style="{ maxWidth: mobile ? '100%' : '60%' }"
+
   >
     <EditStudyHubDialog
         :item="item"
@@ -67,6 +69,10 @@
 import CustomCard from "@/components/util/CustomCard.vue";
 import EditStudyHubDialog from "@/components/studyHub/EditStudyHubGroup.vue";
 import ConfirmDialog from "@/components/util/ConfirmDialog.vue";
+
+import {useDisplay} from "vuetify";
+
+const {mobile} = useDisplay()
 </script>
 
 <script>
