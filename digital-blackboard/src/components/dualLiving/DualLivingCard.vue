@@ -141,14 +141,6 @@ export default {
       this.showDialogEditAd = false;
     },
     async closeDialogEditAd() {
-      this.showDialogEditAd = false
-
-
-
-      this.snackbarCreate = true;
-     },
-
-    async closeDialogEditAd() {
       this.showDialogEditAd = false;
       this.snackbarText = "Ihr Inserat wurde erfolgreich erstellt!";
       this.snackbar = true;
