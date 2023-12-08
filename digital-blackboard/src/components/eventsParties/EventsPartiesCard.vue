@@ -16,9 +16,9 @@
            class="d-flex pt-2"
       >
         <v-btn
-          variant="text"
-          icon
-          @click="likeEvent(item)"
+            variant="text"
+            icon
+            @click="likeEvent(item)"
         >
           <v-icon
               v-if="item.liked"
@@ -189,8 +189,7 @@ export default {
       data["liked"] = !data["liked"]
       if (data["liked"]) {
         data["likes"] = data["likes"] + 1
-      }
-      else {
+      } else {
         data["likes"] = data["likes"] - 1
       }
 
