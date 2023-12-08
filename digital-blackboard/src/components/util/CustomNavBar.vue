@@ -79,9 +79,6 @@ export default {
         {
           icon: 'mdi-account', title: 'Account', value: 'account'
         },
-        {
-          icon: 'mdi-chat', title: 'Chat', value: 'chat'
-        },
       ],
 
     };
