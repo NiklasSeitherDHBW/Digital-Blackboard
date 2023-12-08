@@ -61,21 +61,21 @@
         v-if="item.category === 'Events'"
         :item="item"
         @exit-dialog="exitDialogEditAd"
-        @close-dialog="closeDialogEditAd"
+        @close-dialog="closeDialogEditEvent"
     ></EditEventDialog>
 
     <EditInfoDialog
         v-if="item.category === 'Infos'"
         :item="item"
         @exit-dialog="exitDialogEditAd"
-        @close-dialog="closeDialogEditAd"
+        @close-dialog="closeDialogEditInfo"
     ></EditInfoDialog>
 
     <EditSeminarDialog
         v-if="item.category === 'Seminare'"
         :item="item"
         @exit-dialog="exitDialogEditAd"
-        @close-dialog="closeDialogEditAd"
+        @close-dialog="closeDialogEditSeminar"
     ></EditSeminarDialog>
   </v-dialog>
 
@@ -125,7 +125,7 @@ import ConfirmDialog from "@/components/util/ConfirmDialog.vue";
 
 <script>
 import {doc, getDoc, setDoc} from "firebase/firestore"
-import {db, deleteAd} from "@/db"
+import {db, deleteAd, editAdEvents, editAdInfo, editAdSeminar} from "@/db"
 
 export default {
 
@@ -208,13 +208,47 @@ export default {
       this.showDialogEditAd = true
     },
 
-    async exitDialogEditAd() {
+    exitDialogEditAd() {
       this.showDialogEditAd = false
     },
-    async closeDialogEditAd() {
+
+    async closeDialogEditEvent(images, eventData) {
       this.showDialogEditAd = false;
-      this.snackbarText = "Ihr Inserat wurde erfolgreich erstellt!"
+
+      eventData["category"] = this.item.category;
+
+      await editAdEvents(this.item.id, images, eventData)
+
+      this.snackbarText = "Ihr Inserat wurde erfolgreich geändert!"
       this.snackbar = true;
+
+      this.$emit("itemsChanged")
+    },
+    async closeDialogEditInfo(images, infoData) {
+      this.showDialogEditAd = false;
+      console.log(images)
+      console.log(infoData)
+      infoData["category"] = this.item.category;
+      infoData["date"] = this.item.date;
+
+      await editAdInfo(this.item.id, images, infoData)
+
+      this.snackbarText = "Ihr Inserat wurde erfolgreich geändert!"
+      this.snackbar = true;
+
+      this.$emit("itemsChanged")
+    },
+    async closeDialogEditSeminar(images, seminarData) {
+      this.showDialogEditAd = false;
+
+      seminarData["category"] = this.item.category;
+
+      await editAdSeminar(this.item.id, seminarData)
+
+      this.snackbarText = "Ihr Inserat wurde erfolgreich ändert!"
+      this.snackbar = true;
+
+      this.$emit("itemsChanged")
     },
 
     async exitDialogConfirm() {
@@ -222,10 +256,13 @@ export default {
     },
 
     async deleteAdClicked() {
+
       this.showDialogConfirm = false;
       await deleteAd("events-parties", this.item.id);
+
       this.snackbarText = "Ihr Inserat wurde erfolgreich gelöscht!"
       this.snackbar = true;
+
       this.$emit("itemsChanged")
     }
   },

@@ -90,7 +90,7 @@ import ConfirmDialog from "@/components/util/ConfirmDialog.vue";
 </script>
 
 <script>
-import {deleteAd} from "@/db";
+import {deleteAd, editAdStudyBuddy} from "@/db";
 export default {
   props: {
     item: Object,
@@ -150,9 +150,15 @@ export default {
       this.showDialogEditAd = false;
     },
 
-    async closeDialogEditAd() {
-      this.showDialogAddStudyBuddy = false;
-      this.snackbarText = "Ihr Inserat wurde erfolgreich erstellt!"
+    async closeDialogEditAd(buddyData, images, contactData) {
+      this.showDialogEditAd = false;
+
+      buddyData["category"] = this.item.category;
+
+
+      await editAdStudyBuddy(this.item.id, buddyData, images, contactData)
+
+      this.snackbarText = "Ihr Inserat wurde erfolgreich geändert!"
       this.snackbar = true;
       this.$emit("itemsChanged")
     },
@@ -163,7 +169,9 @@ export default {
 
     async deleteAdClicked() {
       this.showDialogConfirm = false;
+
       await deleteAd("study-hub", this.item.id)
+
       this.snackbarText = "Ihr Inserat wurde erfolgreich gelöscht!"
       this.snackbar = true;
       this.$emit("itemsChanged")

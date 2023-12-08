@@ -61,7 +61,7 @@ import ConfirmDialog from "@/components/util/ConfirmDialog.vue";
 </script>
 
 <script>
-import {db, deleteAd} from "@/db";
+import {db, deleteAd, editAdStudyGroup} from "@/db";
 import {doc, getDoc, setDoc} from "firebase/firestore";
 export default {
   props: {
@@ -141,9 +141,15 @@ export default {
       this.showDialogEditAd = false;
     },
 
-    async closeDialogEditAd() {
-      this.showDialogAddStudyHub = false;
-      this.snackbarText = "Ihr Inserat wurde erfolgreich erstellt!"
+    async closeDialogEditAd(images, hubData) {
+      this.showDialogEditAd = false;
+
+      hubData["joined"] = this.item.joined;
+      hubData["members"] = this.item.members;
+
+      await editAdStudyGroup(this.item.id, hubData, images)
+
+      this.snackbarText = "Ihr Inserat wurde erfolgreich geändert!"
       this.snackbar = true;
       this.$emit("itemsChanged")
     },

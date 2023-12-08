@@ -339,7 +339,7 @@ export default {
       });
     },
     exitDialog() {
-      // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
+      // der das Dialogfenster wird geschlossen, das exit-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
       this.$emit("exit-dialog")
     },
     // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben

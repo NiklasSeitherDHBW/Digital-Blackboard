@@ -76,7 +76,8 @@ import ConfirmDialog from "@/components/util/ConfirmDialog.vue";
 </script>
 
 <script>
-import {deleteAd} from "@/db.js"
+import {deleteAd, editAdDualLiving} from "@/db.js"
+
 export default {
   props: {
     item: Object,
@@ -140,10 +141,14 @@ export default {
     async exitDialogEditAd() {
       this.showDialogEditAd = false;
     },
-    async closeDialogEditAd() {
+    async closeDialogEditAd(formData, images, contactData) {
       this.showDialogEditAd = false;
-      this.snackbarText = "Ihr Inserat wurde erfolgreich erstellt!";
+
+      await editAdDualLiving(this.item.id, formData, images, contactData)
+
+      this.snackbarText = "Ihr Inserat wurde erfolgreich geändert!";
       this.snackbar = true;
+
       this.$emit("itemsChanged")
     },
 
@@ -154,8 +159,10 @@ export default {
     async deleteAdClicked() {
       this.showDialogConfirm = false;
       await deleteAd("dual-living", this.item.id);
+
       this.snackbarText = "Ihr Inserat wurde erfolgreich gelöscht!";
       this.snackbar = true;
+
       this.$emit("itemsChanged")
 
     }
