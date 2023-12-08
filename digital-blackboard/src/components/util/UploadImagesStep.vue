@@ -152,21 +152,29 @@ export default {
      *
      * @method
      */
-      // Check if preloadImages is provided and not empty (so that default pictures are not displayed), and the first item is not a URL
-      if (this.preloadImages && this.preloadImages.length > 0 && !this.preloadImages[0].startsWith("http")) {
+    // Check if preloadImages is provided and not empty (so that default pictures are not displayed), and the first item is not a URL
+    if (this.preloadImages && this.preloadImages.length > 0 && !this.preloadImages[0].startsWith("http")) {
 
-        // Convert base64 strings to Blob and create File objects
+      // Convert each character in the base64 string to its Unicode character code
       this.uploadedImages = this.preloadImages.map(base64String => {
+        // Decode base64 encoded string
         const byteCharacters = atob(base64String.split(',')[1]);
         const byteNumbers = new Array(byteCharacters.length);
+
+        // Convert each character to its Unicode character code
         for (let i = 0; i < byteCharacters.length; i++) {
           byteNumbers[i] = byteCharacters.charCodeAt(i);
         }
+
+        // Create a Uint8Array from the array of character codes
         const byteArray = new Uint8Array(byteNumbers);
+
+        // Create a Blob (Binary large object) from the Uint8Array
         const blob = new Blob([byteArray], {type: 'image/png'});
 
-        // Create a File object from Blob
+        // Set a default file name for the image
         const fileName = 'image.png';
+
         return new File([blob], fileName, {type: 'image/png'});
       });
 
