@@ -66,7 +66,7 @@
               ></v-text-field>
 
               <v-text-field
-                  label="Thema"
+                  label="Thema *"
                   variant="outlined"
                   v-model="hubData.subject"
                   :rules="generalRules"
