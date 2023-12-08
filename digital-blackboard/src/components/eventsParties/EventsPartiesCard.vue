@@ -79,11 +79,6 @@
     ></EditSeminarDialog>
   </v-dialog>
 
-  <v-snackbar v-model="snackbarShare" :timeout="timeout">
-    Ihr Inserat wurde erfolgreich geteilt!
-
-  </v-dialog>
-
   <v-dialog
       v-model="showDialogConfirm"
       transition="dialog-bottom-transition"
