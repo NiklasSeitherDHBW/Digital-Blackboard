@@ -54,7 +54,7 @@
       v-model="showDialogEditAd"
       transition="dialog-bottom-transition"
       class="justify-center"
-      max-width="1200px"
+      :style="{ maxWidth: mobile ? '100%' : '60%' }"
   >
 
     <EditEventDialog
@@ -123,6 +123,10 @@ import EditEventDialog from "@/components/eventsParties/EditEventDialog.vue";
 import EditInfoDialog from "@/components/eventsParties/EditInfoDialog.vue";
 import EditSeminarDialog from "@/components/eventsParties/EditSeminarDialog.vue";
 import ConfirmDialog from "@/components/util/ConfirmDialog.vue";
+
+import {useDisplay} from "vuetify";
+
+const {mobile} = useDisplay()
 </script>
 
 <script>

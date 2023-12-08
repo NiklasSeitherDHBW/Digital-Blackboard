@@ -31,7 +31,7 @@
       v-model="showDialogEditAd"
       transition="dialog-bottom-transition"
       class="justify-center"
-      max-width="1200px"
+      :style="{ maxWidth: mobile ? '100%' : '60%' }"
   >
     <EditAppartmentDialog
         :item="item"
