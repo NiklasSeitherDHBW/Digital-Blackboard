@@ -140,6 +140,13 @@ export default {
     async exitDialogEditAd() {
       this.showDialogEditAd = false;
     },
+    async closeDialogEditAd() {
+      this.showDialogEditAd = false
+
+
+
+      this.snackbarCreate = true;
+     },
 
     async closeDialogEditAd() {
       this.showDialogEditAd = false;

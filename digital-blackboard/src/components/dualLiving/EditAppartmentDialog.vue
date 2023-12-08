@@ -184,6 +184,7 @@
       >
         <UploadImagesStep
             ref="uploadImagesForm"
+            :preloadImages="item.images"
         ></UploadImagesStep>
         <v-card-actions>
           <v-btn
@@ -211,7 +212,6 @@
       >
         <v-form
             @submit.prevent>
-          <!-- Form für den Input der User Kontaktdaten -> v-model, und Eingabehinweise -> prefix, rules, placeholder -->
           <v-text-field
               label="Vor-/Nachname *"
               placeholder="Maxime Musterfrau"
@@ -252,7 +252,7 @@
             </v-btn>
 
             <v-spacer></v-spacer>
-            <!--Nur sichtbar solange man sich auf der 3. Seite befindet, validiert den auf Seite 3 getätigten Input -->
+
             <v-btn
                 color="red"
                 class="float right"
@@ -361,7 +361,7 @@
           </v-btn>
 
           <v-spacer></v-spacer>
-          <!--Nur sichtbar solange man sich auf der letzten Seite befindet, übergibt die Inputdaten -->
+
           <v-btn
               color="red"
               class="float right"

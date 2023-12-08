@@ -132,6 +132,7 @@
         >
           <UploadImagesStep
               ref="uploadImagesForm"
+              :preloadImages="item.images"
           ></UploadImagesStep>
           <v-card-actions>
             <v-btn
@@ -239,9 +240,11 @@ export default {
   props: {
     item: Object,
   },
+
   components: {
     UploadImagesStep
   },
+
   data: () => ({
     step: 1,
     selectedImages: [],
@@ -249,17 +252,21 @@ export default {
     infosEvent: [
       "title", "description", "date", "location", "price", "community"
     ],
+
     // regel zum erzwingen von gewünschten Werten
     titleRules: [
       (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
       (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
     ],
+
     generalRules: [
       (value) => value ? true : 'Bitte gebe weitere Informationen an!'
     ],
+
     dateRules: [
       (value) => value ? true : 'Bitte wähle ein Datum aus!'
     ],
+
     numRules: [
       (value) => value ? true : 'Bitte gebe weitere Informationen an!',
       (value) => /\d+$/.test(value) ? true : 'Die angegebene Information darf nur Zahlen (0-9) beinhalten!',
@@ -289,6 +296,7 @@ export default {
   }),
 
   methods: {
+
     validateDataForm() {
       // kritische Eventdaten werden durch rules validiert, wenn alle felder richtig ausgefüllt werden kann die nächste seite erreich werden
       const isValid = this.validateFields([
@@ -316,15 +324,18 @@ export default {
       }
       return true; // Alle Regeln wurden erfüllt => nächste Seite
     },
+
     onFileChange() {
       this.selectedImages = this.selectedImages.map((file) => ({
         file,
         url: URL.createObjectURL(file),
       }));
     },
+
     deleteImage(index) {
       this.selectedImages.splice(index, 1);
     },
+
     uploadImages() {
       this.selectedImages.forEach((image) => {
         if (image.file instanceof Blob) {
@@ -332,15 +343,18 @@ export default {
         }
       });
     },
+
     exitDialog() {
       // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
       this.$emit("exit-dialog")
     },
+
     closeDialog() {
       // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
       this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.seminarData)
     }
   },
+
   computed: {
     currentTitle () {
       // einzelnen Schritte des Steppers
@@ -351,6 +365,7 @@ export default {
         default: return 'Seminar wurde erfolgreich geteilt!';
       }
     },
+
     eventInfos() {
       // iteriert über alle seminarData Attribute und deren titel aus dictionary um diese als Preview anzuzeigen
       let eventInfos = [];
@@ -361,6 +376,7 @@ export default {
       return eventInfos;
     },
   },
+
   mounted() {
     let partsFrom = this.item.date.split(".")
 
@@ -370,6 +386,7 @@ export default {
       date: partsFrom[2] + "-" + partsFrom[1] + "-" + partsFrom[0],
       location: this.item.location,
       price: this.item.price,
+      community: this.item.community,
       maxParticipantsLimit: this.item.maxParticipantsLimit,
       images: this.item.images,
       date_created: this.item.date_created,
