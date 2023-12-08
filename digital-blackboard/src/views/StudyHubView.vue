@@ -157,6 +157,20 @@
 </template>
 
 <script setup>
+/**
+ * Diese Sektion wird verwendet, um erforderliche Komponenten und Funktionen zu importieren und zu nutzen.
+ * @component
+ * @import AppBar from "@/components/util/CustomAppBar.vue";
+ * @import AddStudyHubDialog from "@/components/studyHub/AddStudyHubDialog.vue";
+ * @import AddStudyBuddyDialog from "@/components/studyHub/AddStudyBuddyDialog.vue";
+ * @import StudyHubBuddyCard from "@/components/studyHub/StudyHubBuddyCard.vue";
+ * @import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
+ * @import { useDisplay } from "vuetify";
+ * @const {Object} display - Objekt, das Funktionen von Vuetify für das Anpassen des Displays enthält.
+ * @const {boolean} mobile - Boolescher Wert, der angibt, ob das Display mobil ist oder nicht.
+ */
+
+// Import components und functions
 import AppBar from "@/components/util/CustomAppBar.vue";
 import AddStudyHubDialog from "@/components/studyHub/AddStudyHubDialog.vue";
 import AddStudyBuddyDialog from "@/components/studyHub/AddStudyBuddyDialog.vue";
@@ -164,11 +178,31 @@ import StudyHubBuddyCard from "@/components/studyHub/StudyHubBuddyCard.vue";
 import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
 
 import {useDisplay} from "vuetify";
-
+// Use `useDisplay`- from Vuetify
 const {mobile} = useDisplay()
 </script>
 
 <script>
+/**
+ * Diese Sektion enthält den Hauptcode für die Komponente.
+ * @module
+ * @import { createAdStudyBuddy, createAdStudyGroup, fetchAdsStudyHub } from '@/db'
+ * @exports default - Standardexport für die Vue-Komponente.
+ * @vueProp {Object} data - Datenobjekt, das verschiedene Komponentenvariablen enthält.
+ * @vueProp {boolean} snackbarVisible - Zeigt an, ob die Snackbar sichtbar ist oder nicht.
+ * @vueProp {number} timeout - Zeitlimit für die Snackbar-Anzeige.
+ * @vueProp {boolean} showDialogAddStudyHub - Zeigt an, ob das Dialogfeld zum Hinzufügen von Lernhubs sichtbar ist.
+ * @vueProp {boolean} showDialogAddStudyBuddy - Zeigt an, ob das Dialogfeld zum Hinzufügen von Lernbuddys sichtbar ist.
+ * @vueProp {boolean} showDialogImages - Zeigt an, ob das Dialogfeld für Bilder sichtbar ist.
+ * @vueProp {Array} studyhubCategories - Array von verfügbaren Lernhub-Kategorien.
+ * @vueProp {string} selectedCategory - Ausgewählte Lernhub-Kategorie.
+ * @vueProp {string} selectedItem - Ausgewähltes Element.
+ * @vueProp {Array} advertisements - Array von Anzeigen.
+ * @vueProp {Array} advertisements_old - Array von vordefinierten Anzeigen.
+ */
+
+
+// Import the function  '@/db'
 import {createAdStudyBuddy, createAdStudyGroup, fetchAdsStudyHub} from '@/db'
 
 export default {
@@ -281,7 +315,7 @@ export default {
         categories: "Gruppe",
         category: "group"
       },
-    ], // TODO: Remove
+    ],
     search: "",
   }),
   computed : {
@@ -327,20 +361,25 @@ export default {
         });
       }
     },
+    // Closes the snackbar by setting the visibility variable to false.
     closeSnackbar() {
       this.snackbarVisible = false;
     },
+    // Opens the fullscreen image dialog by setting the selected item and the visibility variable.
     openDialogImagesFullscreen(item) {
       this.selectedItem = item;
       this.showDialogImages = true;
     },
+    // Exits the add study buddy dialog by setting the visibility variable to false.
     async exitDialogAddStudyBuddy() {
       this.showDialogAddStudyBuddy = false;
     },
-
+// Closes the add study buddy dialog, sets the snackbar, and asynchronously calls the createAdStudyBuddy function.
+// Then updates the ads with itemChanged.
     async closeDialogAddStudyBuddy(images, buddyData, contactData) {
       this.showDialogAddStudyBuddy = false;
       this.snackbarVisible = true;
+// Exits the add study hub dialog by setting the visibility variable to false.
 
       await createAdStudyBuddy(buddyData, images, contactData)
 
@@ -350,6 +389,8 @@ export default {
     async exitDialogAddStudyHub() {
       this.showDialogAddStudyHub = false;
     },
+    // Closes the add study hub dialog, sets the snackbar, and asynchronously calls the createAdStudyGroup function.
+// Then updates the ads with itemChanged.
     async closeDialogAddStudyHub(images, hubData) {
       this.showDialogAddStudyHub = false;
       this.snackbarVisible = true;
@@ -358,11 +399,12 @@ export default {
 
       await this.itemChanged()
     },
-
+// Updates the ads by asynchronously fetching ads for study hubs.
     async itemChanged() {
       this.advertisements = await fetchAdsStudyHub()
     }
   },
+  // After the component is mounted, fetches ads for study hubs and scrolls to the card area.
   async mounted() {
     this.advertisements = await fetchAdsStudyHub()
     this.scrollToCard()

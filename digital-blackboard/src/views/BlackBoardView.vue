@@ -81,22 +81,26 @@
   </template>
 
   <script setup>
+  // Importing necessary components for the template setup.
     import AppBar from "@/components/util/CustomAppBar.vue";
     import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue";
     import DualLivingCard from "@/components/dualLiving/DualLivingCard.vue";
     import StudyHubBuddyCard from "@/components/studyHub/StudyHubBuddyCard.vue";
     import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
+  // Importing the useDisplay function from Vuetify to check the display status, specifically the mobile attribute.
 
     import {useDisplay} from "vuetify";
-
+  // Destructuring the result of useDisplay to get the 'mobile' attribute.
     const {mobile} = useDisplay()
   </script>
 
   <script>
+  // Importing functions needed for fetching data from the database.
     import {fetchAdsDualLiving, fetchAdsEventsInfos, fetchAdsStudyHub} from '@/db'
 
     export default {
       data: () => ({
+        // Data properties for the component.
         selectedAdType: null,
         advertisements: [],
         search: "",
@@ -106,7 +110,13 @@
           'studyHub': 'mdi-school',
         },
       }),
+      /**
+       * Vue.js computed properties for the component.
+       * @type {Object}
+       * @property {Array} filteredAdvertisements - Computed property to filter advertisements based on date and search term.
+       */
       computed: {
+        // Computed property to filter advertisements based on date and search term.
         filteredAdvertisements() {
           const now = new Date();
           const fourteenDaysAgo = new Date(now);
@@ -142,6 +152,7 @@
         },
       },
       async mounted() {
+        // Fetching ads from different categories and concatenating them.
         let test = await fetchAdsDualLiving();
         let test2 = await fetchAdsEventsInfos();
         let test3 = await fetchAdsStudyHub();

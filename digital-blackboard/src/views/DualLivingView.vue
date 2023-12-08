@@ -99,20 +99,32 @@
 </template>
 
 <script setup>
+// Importing necessary components for the template setup.
 import AppBar from "@/components/util/CustomAppBar.vue";
 import AddApartment from "@/components/dualLiving/AddAppartmentDialog.vue";
 import DualLivingCard from "@/components/dualLiving/DualLivingCard.vue";
-
+// Importing the useDisplay function from Vuetify to check the display status, specifically the mobile attribute.
 import {useDisplay} from "vuetify";
-
+// Destructuring the result of useDisplay to get the 'mobile' attribute.
 const {mobile} = useDisplay()
 </script>
 
 <script>
+// Importing functions needed for creating and fetching dual living ads from the database.
 import {createAdDualLiving, fetchAdsDualLiving} from '@/db'
+/**
+ * Vue component definition for the dual living ads component.
+ * @typedef {Object} DualLivingAdsComponent
+ * @property {function} data - Data function returning initial component state.
+ * @property {Object} computed - Computed properties for the component.
+ * @property {function} methods - Methods for the component.
+ * @property {function} mounted - Lifecycle hook called after the component is mounted.
+ */
+
 
 export default {
   data: () => ({
+    // Data properties for the component.
     snackbarVisible: false,
     timeout: 3000,
 
@@ -251,11 +263,17 @@ export default {
         phone: "0137 09509274",
         email: "info@polsterwerkstatt.de"
       },
-    ], // TODO: Add to firebase database and delete here
+    ],
 
-    search: "",
+    search: "",// Search term for filtering advertisements.
+    /**
+     * Vue.js computed properties for the component.
+     * @type {Object}
+     * @property {Array} filteredAdvertisements - Computed property to filter advertisements based on the search term.
+     */
   }),
   computed: {
+    // Computed property to filter advertisements based on the search term.
     filteredAdvertisements() {
       return this.advertisements.filter(p => {
         let keys = Object.keys(p);
@@ -271,16 +289,27 @@ export default {
       });
     }
   },
+  /**
+   * Vue.js methods for the component.
+   * @type {Object}
+   * @property {function} scrollToCard - Method to scroll to a specific card on component load.
+   * @property {function} closeSnackbar - Method to close the snackbar.
+   * @property {function} openDialogImagesFullscreen - Method to open the dialog for displaying images in fullscreen.
+   * @property {function} exitDialogAddAppartment - Method to exit the add apartment dialog.
+   * @property {function} closeDialogAddAppartment - Method to close the add apartment dialog and trigger ad creation.
+   * @property {function} fetchAds - Method to fetch dual living ads.
+   */
   methods: {
+    // Method to scroll to a specific card on component load.
     scrollToCard() {
       const cardId = this.$route.query.card
       if (cardId) {
         const element = document.getElementById(cardId)
         if (element) {
           element.scrollIntoView({behavior: 'smooth'})
-          // den Style zum hervorheben auswählen
+          // Select the style for highlighting
           element.style.border = '5px solid red';
-          // Timeout um das HErvorheben umzukehren
+          // Timeout to reverse the highlighting.
           setTimeout(() => {
             element.style.transition = 'border-width 0.5s ease, opacity 0.5s ease'; // Verzögerter Übergang in Originalzustand für Fade Effekt
             element.style.border = '5px solid red';
@@ -289,19 +318,20 @@ export default {
         }
       }
     },
+    // Method to close the snackbar.
     closeSnackbar() {
       this.snackbarVisible = false;
     },
-
+// Method to open the dialog for displaying images in fullscreen.
     openDialogImagesFullscreen(item) {
       this.selectedItem = item;
       this.showDialogImages = true;
     },
-
+// Method to exit the add apartment dialog.
     async exitDialogAddAppartment() {
       this.showDialogAddApartment = false;
     },
-
+// Method to close the add apartment dialog and trigger ad creation
     async closeDialogAddAppartment(formData, images, contactData) {
       this.showDialogAddApartment = false;
       this.snackbarVisible = true;
@@ -310,10 +340,12 @@ export default {
 
       await this.fetchAds();
     },
+    // Method to fetch dual living ads.
     async fetchAds() {
       this.advertisements = await fetchAdsDualLiving();
     },
   },
+  // Lifecycle hook to execute logic after the component is mounted
   async mounted() {
     await this.fetchAds();
     this.scrollToCard();

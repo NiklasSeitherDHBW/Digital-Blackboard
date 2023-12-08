@@ -180,6 +180,7 @@
 </template>
 
 <script setup>
+// Importing necessary components and utilities
 import CustomAppBar from "@/components/util/CustomAppBar.vue";
 import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue";
 import AddEventDialog from "@/components/eventsParties/AddEventDialog.vue";
@@ -187,34 +188,50 @@ import AddInfoDialog from "@/components/eventsParties/AddInfoDialog.vue";
 import AddSeminarDialog from "@/components/eventsParties/AddSeminarDialog.vue";
 
 import {useDisplay} from "vuetify";
-
+// Destructuring the 'mobile' property from the useDisplay utility
 const {mobile} = useDisplay()
 </script>
 
 <script>
+// Importing functions from the database module
 import {createAdEvents, createAdInfo, createAdSeminar, fetchAdsEventsInfos} from "@/db";
+/**
+ * Vue component definition for the events and parties component.
+ * @typedef {Object} EventsPartiesComponent
+ * @property {function} data - Data function returning initial component state.
+ * @property {Object} computed - Computed properties for the component.
+ * @property {function} methods - Methods for the component.
+ * @property {function} mounted - Lifecycle hook called after the component is mounted.
+ */
 
 export default {
+  // Component's data properties
   data() {
     return {
       snackbarVisible: false,
       timeout: 3000,
-
+// Dialog visibility properties
       showDialogAddEvent: false,
       showDialogAddInfo: false,
       showDialogAddSeminar: false,
-
+// Event categories and selected category
       eventCategories: [
         "Events", "Infos", "Seminare"
       ],
       selectedCategory: null,
-
+// Advertisement data
       advertisements: [],
-
+// Search term
       search: "",
     }
   },
+  /**
+   * Vue.js computed properties for the component.
+   * @type {Object}
+   * @property {Array} filteredAdvertisements - Computed property to filter advertisements based on the selected category and search term.
+   */
   computed: {
+    // Filtering advertisements based on selected category and search term
     filteredAdvertisements() {
       return this.advertisements.filter(ad => {
         if (ad.category !== this.selectedCategory) {
@@ -234,6 +251,19 @@ export default {
       });
     },
   },
+  /**
+   * Vue.js methods for the component.
+   * @type {Object}
+   * @property {function} scrollToCard - Method to scroll to a specific card on component load.
+   * @property {function} closeSnackbar - Method to close the snackbar.
+   * @property {function} exitDialogAddEvent - Method to handle exiting the 'Add Event' dialog.
+   * @property {function} closeDialogAddEvent - Method to handle submission and closing of the 'Add Event' dialog.
+   * @property {function} exitDialogAddInfo - Method to handle exiting the 'Add Info' dialog.
+   * @property {function} closeDialogAddInfo - Method to handle submission and closing of the 'Add Info' dialog.
+   * @property {function} exitDialogAddSeminar - Method to handle exiting the 'Add Seminar' dialog.
+   * @property {function} closeDialogAddSeminar - Method to handle submission and closing of the 'Add Seminar' dialog.
+   * @property {function} refreshItems - Method to refresh displayed items by fetching from the database.
+   */
   methods: {
     scrollToCard() {
       const cardCategory = this.$route.query.selectedCategory
@@ -244,11 +274,11 @@ export default {
         this.$nextTick(() => {
           const element = document.getElementById(cardId)
           if (element) {
-            // zu ausgewählter Karte scrollen
+            // Wait until the DOM has loaded all elements
             element.scrollIntoView({behavior: 'smooth'})
-            // den Style zum hervorheben auswählen
+            // Scroll to the selected card
             element.style.border = '5px solid red';
-            // Timeout um das HErvorheben umzukehren
+            // Timeout to reverse the highlighting.
             setTimeout(() => {
               element.style.transition = 'border-width 0.5s ease, opacity 0.5s ease'; // Verzögerter Übergang in Originalzustand für Fade Effekt
               element.style.border = '5px solid red';
@@ -258,6 +288,7 @@ export default {
         });
       }
     },
+    // Close the snackbar
     closeSnackbar() {
       this.snackbarVisible = false;
     },
@@ -265,6 +296,7 @@ export default {
     async exitDialogAddEvent() {
       this.showDialogAddEvent = false;
     },
+    // Handle closing of the 'Add Event' dialo
     async closeDialogAddEvent(images, eventData) {
       this.showDialogAddEvent = false;
       this.snackbarVisible = true;
@@ -273,35 +305,37 @@ export default {
 
       this.refreshItems();
     },
-
+// Handle submission and closing of the 'Add Event' dialog
     async exitDialogAddInfo() {
       this.showDialogAddInfo = false;
     },
     async closeDialogAddInfo(images, infoData) {
       this.showDialogAddInfo = false;
       this.snackbarVisible = true;
-
+// Create event advertisement in the database
       await createAdInfo(images, infoData);
-
+// Refresh the displayed items
       await this.refreshItems();
     },
-
+    // Handle closing of the 'Add Info' dialog
     async exitDialogAddSeminar() {
       this.showDialogAddSeminar = false;
     },
+    // Handle submission and closing of the 'Add Info' dialog
     async closeDialogAddSeminar(images, seminarData) {
       this.showDialogAddSeminar = false;
       this.snackbarVisible = true;
-
+// Create info advertisement in the database
       await createAdSeminar(images, seminarData);
-
+// Refresh the displayed items
       await this.refreshItems();
     },
-
+// Refresh the displayed items by fetching from the database
     async refreshItems() {
       this.advertisements = await fetchAdsEventsInfos();
     },
   },
+  // Fetch advertisements when the component is mounted
   async mounted() {
     await this.refreshItems()
     this.scrollToCard()

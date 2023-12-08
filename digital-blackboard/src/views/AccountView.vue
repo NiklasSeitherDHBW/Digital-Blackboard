@@ -114,6 +114,8 @@
 </template>
 
 <script setup>
+// Importing components to be used in the template.
+// The useDisplay function from Vuetify is used to check the display status, specifically the mobile attribute.
 import AppBar from "@/components/util/CustomAppBar.vue";
 import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue";
 import DualLivingCard from "@/components/dualLiving/DualLivingCard.vue";
@@ -126,8 +128,16 @@ const {mobile} = useDisplay()
 </script>
 
 <script>
+// Importing functions needed for fetching data from the database.
 import {fetchAdsDualLiving, fetchAdsEventsInfos, fetchAdsStudyHub} from '@/db'
-
+/**
+ * Vue component definition.
+ * @typedef {Object} VueComponent
+ * @property {function} data - Data function returning initial component state.
+ * @property {Object} computed - Computed properties for the component.
+ * @property {function} methods - Methods for the component.
+ * @property {function} mounted - Lifecycle hook called after the component is mounted.
+ */
 export default {
   data: () => ({
     selectedAdType: null,
@@ -139,7 +149,13 @@ export default {
       'studyHub': 'mdi-school',
     },
   }),
+  /**
+   * Vue.js computed properties for the component.
+   * @type {Object}
+   * @property {Array} filteredAdvertisements - Computed property to display filtered ads based on various criteria.
+   */
   computed: {
+    // Defining a computed property to display filtered ads based on various criteria.
     filteredAdvertisements() {
       let filteredAds = this.advertisements.filter(ad => {
         if (ad.userId !== 1) {
@@ -162,6 +178,7 @@ export default {
         return showItem;
       });
 
+
       filteredAds.forEach((ad) => {
         ad["editable"] = true;
       })
@@ -169,7 +186,14 @@ export default {
       return filteredAds
     },
   },
+  /**
+   * Vue.js methods for the component.
+   * @type {Object}
+   * @property {function} scrollToCard - Method to scroll to a specific card and highlight it.
+   * @property {function} fetchAds - Method to fetch ads from the database.
+   */
   methods: {
+    // Defining a method to scroll to a specific card and highlight it.
     scrollToCard() {
       const cardId = this.$route.query.card
       console.log(cardId)
@@ -178,9 +202,9 @@ export default {
         console.log(element)
         if (element) {
           element.scrollIntoView({behavior: 'smooth'})
-          // den Style zum hervorheben auswählen
+
           element.style.border = '5px solid red';
-          // Timeout um das HErvorheben umzukehren
+
           setTimeout(() => {
             element.style.transition = 'border-width 0.5s ease, opacity 0.5s ease'; // Verzögerter Übergang in Originalzustand für Fade Effekt
             element.style.border = '5px solid red';
@@ -189,6 +213,7 @@ export default {
         }
       }
     },
+    // Defining a method to fetch ads from the database.
     async fetchAds() {
       console.log("fetchAds aufgerufen")
       let adsDualLiving = await fetchAdsDualLiving();
@@ -198,6 +223,7 @@ export default {
       this.advertisements = adsDualLiving.concat(adsEventsInfos).concat(adsStudyHub)
     }
   },
+  // The 'mounted' lifecycle hook is used to fetch ads and scroll to the correct card after the component is loaded.
   async mounted() {
     await this.fetchAds();
     this.scrollToCard()
