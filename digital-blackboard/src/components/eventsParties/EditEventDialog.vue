@@ -381,6 +381,7 @@ export default {
       images: this.item.images,
       date_created: this.item.date_created,
       userId: this.item.userId,
+      likes: this.item.likes,
     }
   },
 };
