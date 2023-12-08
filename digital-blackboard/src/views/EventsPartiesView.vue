@@ -162,6 +162,21 @@
       </v-card>
     </v-menu>
   </v-app>
+  <v-snackbar v-model="snackbarVisible" :timeout="timeout">
+      Ihr Inserat wurde erfolgreich geteilt!
+      <template v-slot:actions>
+        <v-btn
+            color="red"
+            variant="text"
+            float-right
+            size="small"
+            class="mr-1"
+            @click="closeSnackbar"
+        >
+          Schließen
+        </v-btn>
+      </template>
+    </v-snackbar>
 </template>
 
 <script setup>
@@ -183,7 +198,7 @@ export default {
   data() {
     return {
       snackbarVisible: false,
-      timeout: 5000,
+      timeout: 3000,
 
       showDialogAddEvent: false,
       showDialogAddInfo: false,
