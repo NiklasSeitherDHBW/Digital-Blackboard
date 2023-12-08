@@ -154,7 +154,7 @@
       <div
           v-if="showAll"
       >
-        <v-card-text class="ma-1">
+        <v-card-text class="ma-1 text-left">
 
           <v-row
               v-for="(field, index) in extraInfos"
