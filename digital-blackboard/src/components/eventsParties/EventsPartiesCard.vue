@@ -167,11 +167,12 @@ export default {
       this.snackbarText = "Ihr Inserat wurde erfolgreich geteilt!"
       this.snackbar = true;
     },
-
+    // Button to close the Snackbar Manually
     closeSnackbar() {
       this.snackbar = false;
     },
-
+    /**
+     */
     async joinEvent(item) {
       const docRef = doc(db, "events-parties", item.id)
       const docSnap = await getDoc(docRef)
