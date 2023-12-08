@@ -1,8 +1,5 @@
 <template>
-  <v-stepper
-      v-model="step"
-      alt-labels
-  >
+  <v-stepper v-model="step" alt-labels>
     <v-stepper-header class="fixed-header">
       <v-stepper-item
           :title="mobile ? '' : 'Angaben zur Gruppe'"
@@ -29,22 +26,13 @@
     </v-stepper-header>
 
     <v-stepper-window>
-      <v-card-title
-          class="text-h6 font-weight-regular justify-space-between pa-2"
-      >
-        <span>
-          {{ currentTitle }}
-        </span>
+      <v-card-title class="text-h6 font-weight-regular justify-space-between pa-2">
+        <span>{{ currentTitle }}</span>
       </v-card-title>
 
-      <v-window
-          v-model="step"
-      >
-        <v-window-item
-            :value="1"
-        >
-          <v-form
-              @submit.prevent>
+      <v-window v-model="step">
+        <v-window-item :value="1">
+          <v-form @submit.prevent>
           <v-card-text>
             <v-text-field
                 label="Titel der Gruppe *"
@@ -102,19 +90,10 @@
           </v-form>
         </v-window-item>
 
-        <v-window-item
-            :value="2"
-        >
-          <UploadImagesStep
-              ref="uploadImagesForm"
-          ></UploadImagesStep>
+        <v-window-item :value="2">
+          <UploadImagesStep ref="uploadImagesForm"></UploadImagesStep>
           <v-card-actions>
-            <v-btn
-                variant="outlined"
-                @click="step--"
-            >
-              Zurück
-            </v-btn>
+            <v-btn variant="outlined" @click="step--">Zurück</v-btn>
 
             <v-spacer></v-spacer>
             <v-btn
@@ -130,9 +109,7 @@
         </v-window-item>
 
         <v-window-item :value="3">
-          <div
-              class="pa-4 text-center"
-          >
+          <div class="pa-4 text-center">
             <v-img
                 class="mb-4"
                 contain
@@ -184,7 +161,6 @@
             </v-btn>
 
             <v-spacer></v-spacer>
-            <!--Nur sichtbar solange man sich auf der letzten Seite befindet, übergibt die Inputdaten -->
             <v-btn
                 color="red"
                 class="float right"
@@ -202,26 +178,59 @@
 </template>
 
 <script setup>
+/**
+ * stepper component for creating the group Hub with form validation and image upload
+ * @component
+ * @example
+ */
 import {useDisplay} from "vuetify";
 
+/**
+ * Display configuration object with mobile property
+ * @type {Object}
+ * @property {boolean} mobile - indicates if the display is in mobile mode
+ */
 const {mobile} = useDisplay()
 </script>
 
 <script>
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
 
+/**
+ * exported Vue component definition.
+ * @typedef {Object} VueComponent
+ * @property {Object} components - child components used in the template
+ * @property {Object} data - reactive data properties for the component
+ * @property {Object} methods - methods to handle component logic
+ * @property {Object} computed - computed properties for dynamic content.
+ * @property {Object} dictionary - mapping of data attribute names to display labels
+ */
 export default {
   components: {UploadImagesStep},
   data: () => ({
+    /**
+     * Current step in the creation process
+     * @type {number}
+     */
     step: 1,
     selectedImages: [],
 
     infosEvent: [
       "title", "description", "subject", "activities"
     ],
-    // regeln zum validieren des Inputs
+    // rules to validate the input
     titleRules: [
+      /**
+       * check if a value is provided for the title
+       * @param {string} value - input value
+       * @returns {(boolean|string)} - validation result or error message
+       */
       (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
+      /**
+       * check if the title has a minimum length of 3 characters
+       * @param {string} value - input value
+       * @returns {(boolean|string)} - validation result or error message
+       */
       (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
     ],
     generalRules: [
@@ -235,6 +244,7 @@ export default {
       (value) => /\d+$/.test(value) ? true : 'Die angegebene Information darf nur Zahlen (0-9) beinhalten!',
     ],
 
+     // data object for storing Hub information
     hubData: {
       title: '',
       description: '',
@@ -247,6 +257,7 @@ export default {
 
     },
 
+    // mapping of data attribute names to display labels
     dictionary: {
       "title": "Titel:",
       "description": "Beschreibung:",
@@ -255,9 +266,10 @@ export default {
     },
   }),
 
+  // validate and proceed to the next step in the creation process
   methods: {
     validateDataForm() {
-      // kritische Daten werden durch rules validiert, wenn alle felder richtig ausgefüllt werden kann die nächste seite erreich werden
+      // critical data is validated by rules, if all fields are filled in correctly the next page can be reached
       const isValid = this.validateFields([
         { value: this.hubData.title, rules: this.titleRules },
         { value: this.hubData.subject, rules: this.generalRules },
@@ -267,30 +279,45 @@ export default {
       }
     },
 
+    /**
+     * validate form fields against specified rules
+     * @method
+     * @param {Array} fields - form fields to validate
+     * @returns {boolean} - validation result
+     */
     validateFields(fields) {
-      // Überprüfe jede Regel für jedes Feld
+      // check each rule for each field
       for (const field of fields) {
         for (const rule of field.rules) {
           const isValid = rule(field.value);
           if (isValid !== true) {
-            // Wenn die Regel nicht erfüllt ist, zeige die Fehlermeldung an
+            // if the rule is not fulfilled, display the error message
             console.error(isValid);
             return false;
           }
         }
       }
-      return true; // Alle Regeln wurden erfüllt => nächste Seite
+      return true; // ALL rules have been fulfilled? Yes - next page
     },
+
     onFileChange() {
+      // handle file change event and update selected images
       this.selectedImages = this.selectedImages.map((file) => ({
         file,
         url: URL.createObjectURL(file),
       }));
     },
+
+    /**
+     * delete an image from selected array
+     * @method
+     * @param {number} index - index of the image to delete
+     */
     deleteImage(index) {
       this.selectedImages.splice(index, 1);
     },
     uploadImages() {
+      // upload selected images
       this.selectedImages.forEach((image) => {
         if (image.file instanceof Blob) {
           console.log('Uploading:', image.url);
@@ -298,15 +325,20 @@ export default {
       });
     },
     exitDialog() {
-      // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
+      // the dialog window is ended, the exit-dialog event of the parent is executed, user data/images are transferred
       this.$emit("exit-dialog")
     },
     closeDialog() {
-      // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
+      // the dialog window is closed, the close dialog event of the parent is executed, user data/images are transferred
       this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.hubData)
     }
   },
   computed: {
+    /**
+     * get the current title on the current step
+     * @method
+     * @returns {string} - current step title
+     */
     currentTitle () {
       switch (this.step) {
         case 1: return 'Angaben zur Gruppe';
@@ -315,8 +347,14 @@ export default {
         default: return 'Gruppe wurde erfolgreich erstellt!';
       }
     },
+
+    /**
+     * get event information for preview based on data attributes and dictionary
+     * @method
+     * @returns {Array} - array of event information objects
+     */
     eventInfos() {
-      // iteriert über alle formData Attribute und deren Titel aus dictionary um diese als Preview anzuzeigen
+      // iterates over all formData attributes and their titles from dictionary to display them as a preview
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
         let value = this.hubData[attribute];
@@ -333,14 +371,14 @@ export default {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000; /* Adjust the z-index as needed */
-  background-color: white; /* Adjust the background color as needed */
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
-  /* Additional styles as needed */
+  z-index: 1000; // z-index
+  background-color: white; // background color
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); // shadow
+
 }
 
-/* Add padding to the content below the fixed header */
+
 .v-stepper-window {
-  padding-top: 60px; /* Adjust the value based on the height of your fixed header */
+  padding-top: 60px;
 }
 </style>

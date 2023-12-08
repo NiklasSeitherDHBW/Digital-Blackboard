@@ -1,9 +1,5 @@
 <template>
-  <v-stepper
-      v-model="step"
-      alt-labels
-
-  >
+  <v-stepper v-model="step" alt-labels>
     <v-stepper-header class="fixed-header">
       <v-stepper-item
           :title="mobile ? '' : 'Angaben zur Information'"
@@ -30,23 +26,13 @@
     </v-stepper-header>
 
     <v-stepper-window>
-      <v-card-title
-          class="text-h6 font-weight-regular justify-space-between pa-2"
-      >
-        <span>
-          {{ currentTitle }}
-        </span>
+      <v-card-title class="text-h6 font-weight-regular justify-space-between pa-2">
+        <span>{{ currentTitle }}</span>
       </v-card-title>
 
-      <v-window
-          v-model="step"
-      >
-        <v-window-item
-            :value="1"
-        >
-          <v-form
-              @submit.prevent>
-          <!-- Form für den Input des Users -> v-model, und Eingabehinweise -> prefix, rules, placeholder -->
+      <v-window v-model="step">
+        <v-window-item :value="1">
+          <v-form @submit.prevent>
           <v-card-text>
             <v-text-field
                 label="Titel der Information *"
@@ -115,12 +101,8 @@
           </v-form>
         </v-window-item>
 
-        <v-window-item
-            :value="2"
-        >
-          <UploadImagesStep
-              ref="uploadImagesForm"
-          ></UploadImagesStep>
+        <v-window-item :value="2">
+          <UploadImagesStep ref="uploadImagesForm"></UploadImagesStep>
           <v-card-actions>
             <v-btn
                 variant="outlined"
@@ -196,7 +178,6 @@
               </v-btn>
 
               <v-spacer></v-spacer>
-              <!--Nur sichtbar solange man sich auf der letzten Seite befindet, übergibt die Inputdaten -->
               <v-btn
                   color="red"
                   class="float right"
@@ -226,7 +207,18 @@ const {mobile} = useDisplay()
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
 
 export default {
+  /**
+   * list of imported components
+   *
+   * @type {object}
+   */
   components: {UploadImagesStep},
+  /**
+   * data object of the component
+   *
+   * @type {function}
+   * @returns {object} - initialization data of the component
+   */
   data: () => ({
     step: 1,
     selectedImages: [],
@@ -236,6 +228,12 @@ export default {
     ],
 
     titleRules: [
+      /**
+       * checks whether a value exists for the title
+       *
+       * @param {string} value - the value to be checked
+       * @returns {boolean|string} - `true`, if the condition is fulfilled, otherwise the error message
+       */
       (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
       (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
     ],
@@ -270,7 +268,12 @@ export default {
   }),
 
   methods: {
-    // kritische Eventdaten werden durch rules validiert, wenn alle felder richtig ausgefüllt werden kann die nächste seite erreich werden
+    /**
+     * validates critical information for the information content
+     *
+     * @returns {number|undefined} - the next step in the stepper or 'undefined' for invalid data
+     */
+    // critical event data is validated by rules, if all fields are filled in correctly the next page can be reached
     validateDataForm() {
       const isValid = this.validateFields([
         { value: this.infoData.title, rules: this.titleRules },
@@ -284,18 +287,24 @@ export default {
       }
     },
 
+    /**
+     * validates a list of fields based on the rules passed
+     *
+     * @param {object[]} fields - a list of field objects with value and rules
+     * @returns {boolean} - `true`, if all rules are fulfilled, otherwise `false`.
+     */
     validateFields(fields) {
-      // Überprüfe jede Regel für jedes Feld
+      // check every rule on every field
       for (const field of fields) {
         for (const rule of field.rules) {
           const isValid = rule(field.value);
           if (isValid !== true) {
-            // Wenn die Regel nicht erfüllt ist, zeige die Fehlermeldung an
+            // if the rule is not fulfilled, display the error message
             return false;
           }
         }
       }
-      return true; // Alle Regeln wurden erfüllt => nächste Seite
+      return true; // ALL rules have been fulfilled? Yes - next page
     },
     onFileChange() {
       this.selectedImages = this.selectedImages.map((file) => ({
@@ -314,17 +323,22 @@ export default {
       });
     },
     exitDialog() {
-      // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
+      // the dialog window is ended, the exit-dialog event of the parent is executed, user data/images are transferred
       this.$emit("exit-dialog")
     },
-    // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
+    // the dialog window is closed, the close dialog event of the parent is executed, user data/images are transferred
     closeDialog() {
       this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.infoData)
     }
   },
   computed: {
+    /**
+     * current title based on the current step
+     *
+     * @returns {string} - the title of the current tap step
+     */
     currentTitle () {
-      // einzelnen Schritte des Steppers
+      // steps of steppers
       switch (this.step) {
         case 1: return 'Angaben zur Information';
         case 2: return 'Fotos';
@@ -332,8 +346,14 @@ export default {
         default: return 'Information wurde erfolgreich geteilt!';
       }
     },
+
+    /**
+     * information for the preview of the information content
+     *
+     * @returns {object[]} - a list of objects with label and value for the preview
+     */
     eventInfos() {
-      // iteriert über alle infoData Attribute und deren titel aus dictionary um diese als Preview anzuzeigen
+      // iterates over all infoData attributes and their titles from dictionary to display them as a preview
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
         let value = this.infoData[attribute];
@@ -350,14 +370,14 @@ export default {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000; /* Adjust the z-index as needed */
-  background-color: white; /* Adjust the background color as needed */
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
-  /* Additional styles as needed */
+  z-index: 1000; // z-index
+  background-color: white; // background color
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); // shadow
+
 }
 
-/* Add padding to the content below the fixed header */
+
 .v-stepper-window {
-  padding-top: 60px; /* Adjust the value based on the height of your fixed header */
+  padding-top: 60px;
 }
 </style>
