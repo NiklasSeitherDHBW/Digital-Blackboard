@@ -1,9 +1,8 @@
 <template>
-  <v-stepper
-      v-model="step"
-      alt-labels
-  >
+  <v-stepper v-model="step" alt-labels>
+    <!-- header of stepper with step descriptions -->
     <v-stepper-header class="fixed-header">
+      <!-- step indicators for each section -->
       <v-stepper-item
           :title="mobile ? '' : 'Angaben zu der Wohnung'"
           :icon="mobile ? 'mdi-text-box-outline' : ''"
@@ -36,23 +35,17 @@
       ></v-stepper-item>
     </v-stepper-header>
 
-    <v-stepper-window
-        v-model="step"
-    >
-      <v-card-title
-          class="text-h6"
-      >
-        <span>
-          {{ currentTitle }}
-        </span>
+    <!-- main window of stepper with different views  -->
+    <v-stepper-window v-model="step">
+      <!-- step 1: details of the apartment -->
+      <v-card-title class="text-h6">
+        <span>{{ currentTitle }}</span>
       </v-card-title>
 
-      <v-window-item
-          :value="1"
-      >
-        <v-form
-            @submit.prevent>
-          <!-- Form für den Input des Users -> v-model, und Eingabehinweise -> prefix, rules, placeholder -->
+      <v-window-item :value="1">
+        <v-form @submit.prevent>
+          <!-- form for real estate information -->
+          <!-- ... form fields for title, description, etc. ... -->
           <v-text-field
               class="mt-2"
               label="Titel des Inserats *"
@@ -180,12 +173,11 @@
         </v-form>
       </v-window-item>
 
-      <v-window-item
-          :value="2"
-      >
-        <UploadImagesStep
-            ref="uploadImagesForm"
-        ></UploadImagesStep>
+      <!-- step 2: photos of the object -->
+      <v-window-item :value="2">
+        <!-- component for uploading images -->
+        <UploadImagesStep ref="uploadImagesForm"></UploadImagesStep>
+        <!-- navigations-buttons -->
         <v-card-actions>
           <v-btn
               variant="outlined"
@@ -207,12 +199,11 @@
         </v-card-actions>
       </v-window-item>
 
-      <v-window-item
-          :value="3"
-      >
-        <v-form
-            @submit.prevent>
-          <!-- Form für den Input der User Kontaktdaten -> v-model, und Eingabehinweise -> prefix, rules, placeholder -->
+      <!-- step 3: contact data -->
+      <v-window-item :value="3">
+        <v-form @submit.prevent>
+          <!-- form for contact details -->
+          <!-- form fields for name, telephone, e-mail -->
           <v-text-field
               label="Vor-/Nachname *"
               placeholder="Maxime Musterfrau"
@@ -268,12 +259,11 @@
 
       </v-window-item>
 
-      <v-window-item
-          :value="4"
-      >
-        <v-container
-            class="pa-4 text-center"
-        >
+      <!-- step 4: summary -->
+      <v-window-item :value="4">
+        <v-container class="pa-4 text-center">
+          <!-- summary of the data entered -->
+          <!-- display of real estate details and contact data -->
           <v-img
               class="mb-4"
               contain
@@ -290,12 +280,9 @@
           </span>
         </v-container>
 
-        <v-card
-            class="ma-1"
-            variant="outlined"
-        >
+        <!-- navigations-buttons -->
+        <v-card class="ma-1" variant="outlined">
           <v-card-title>Immobilienangaben</v-card-title>
-
           <v-card-text>
             <v-row
                 v-for="item in basicInfos"
@@ -326,9 +313,7 @@
             </v-row>
           </v-card-text>
 
-          <v-divider
-              style="width: 85%; margin: 10px;"
-          ></v-divider>
+          <v-divider style="width: 85%; margin: 10px;"></v-divider>
 
           <v-card-title>Kontaktdaten</v-card-title>
 
@@ -353,23 +338,12 @@
             </v-row>
           </v-card-text>
         </v-card>
-        <v-card-actions>
-          <v-btn
-              variant="outlined"
-              @click="step--"
-          >
-            Zurück
-          </v-btn>
 
+        <v-card-actions>
+          <v-btn variant="outlined" @click="step--">Zurück</v-btn>
           <v-spacer></v-spacer>
-          <!--Nur sichtbar solange man sich auf der letzten Seite befindet, übergibt die Inputdaten -->
-          <v-btn
-              color="red"
-              class="float right"
-              variant="outlined"
-              type="submit"
-              @click="closeDialog"
-          >
+          <!-- only visible as long as you are on the last page, transfers the input data -->
+          <v-btn color="red" class="float right" variant="outlined" type="submit" @click="closeDialog">
             Inserat teilen
           </v-btn>
         </v-card-actions>
@@ -379,13 +353,50 @@
 </template>
 
 <script setup>
-import {useDisplay} from "vuetify";
+import { useDisplay } from "vuetify";
 
-const {mobile} = useDisplay()
+const { mobile } = useDisplay()
 </script>
 
 <script>
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
+
+/**
+ * components to show and update advertisements
+ * @typedef {Object} FormData - all components to create advertisements
+ * @property {string} title - title of the advertisement
+ * @property {string} description - description of the advertisement
+ * @property {string} availableFrom - available from
+ * @property {string} availableTill - available until
+ * @property {string} location - location of the advertisement
+ * @property {string} price - monthly rent
+ * @property {string} area - living space
+ * @property {boolean} furniture - furnished
+ * @property {boolean} community - shared room
+ * @property {string} rooms - number of rooms
+ * @property {string} selectedGender - if shared room = preferred gender
+ * @property {string[]} images - uploaded pictures
+ * @property {string} date_created - creation date
+ * @property {number} userId - User-ID
+ */
+
+/**
+ * @typedef {Object} ContactData - contact data of the advertisement
+ * @property {string} name - first and last name of the contact
+ * @property {string} phone - contact telephone number
+ * @property {string} email - e-mail address of the contact
+ */
+
+/**
+ * @typedef {Object} InfoItem - information
+ * @property {string} label - label for information
+ * @property {string|boolean} value - value of Information
+ */
+
+/**
+ * component for creating a real estate advertisement.
+ * @component
+ */
 
 export default {
   components: {
@@ -393,18 +404,20 @@ export default {
   },
   data() {
     return {
+      // initialization of data for the stepper and the form data
       step: 1,
       selectedGender: null,
       isCommunityLiving: false,
       selectedDate: null,
-
+      // list of real estate information
       infosAppartment: [
         "title", "description", "availableFrom", "availableTill", "location", "price", "rooms", "area", "furniture", "community", "selectedGender",
       ],
+      // list of contact data
       infosContact: [
         "name", "phone", "email"
       ],
-      // regeln zum validieren des Inputs
+      // rules for validation the formular fields
       titleRules: [
         (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
         (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
@@ -417,7 +430,7 @@ export default {
       ],
       numRules: [
         (value) => value ? true : 'Bitte gebe weitere Informationen an!',
-        // regel zum erzwingen von numerischen Werten
+        // rule for forcing numerical values
         (value) => /\d+$/.test(value) ? true : 'Die angegebene Information darf nur Zahlen (0-9) beinhalten!',
       ],
 
@@ -427,16 +440,17 @@ export default {
       ],
       phoneRules: [
         (value) => value ? true : 'Bitte gebe eine Telefonnummer an!',
-        // regel zum erzwingen von + und numerischen Werten
+        // rule for forcing numerical values and '+'
         (value) => /^\+?\d+$/.test(value) ? true : 'Die Telefonnummer darf nur Zahlen und das Pluszeichen enthalten!',
         (value) => value.length >= 5 ? true : 'Die Telefonnummer muss mindestens 5 Zeichen lang sein!',
       ],
       emailRules: [
         (value) => value ? true : 'Bitte gebe eine E-Mail-Adresse an!',
-        // regel zum erzwingen einer validen E-mail Adresse: aaa@bbb.ccc
+        // rule for forcing a  valid e-mail address: aaa@bbb.ccc
         (value) => /\S+@\S+\.\S+/.test(value) ? true : 'Die E-Mail-Adresse ist ungültig!',
       ],
 
+      // data structure for real estate information
       formData: {
         title: '',
         description: '',
@@ -454,12 +468,14 @@ export default {
         userId: 1,
       },
 
+      // data structure for contact data
       contactData: {
         name: '',
         phone: '',
         email: '',
       },
 
+      // definition of formular elements
       dictionary: {
         "title": "Titel:",
         "availableFrom": "Von:",
@@ -480,6 +496,10 @@ export default {
     };
   },
   methods: {
+    /**
+     * validates the form fields for real estate information and navigation in the stepper
+     * @returns {void}
+     */
     validateDataForm() {
       let validation_list = [
         {value: this.formData.title, rules: this.titleRules},
@@ -495,15 +515,19 @@ export default {
         validation_list.push({value: this.formData.selectedGender, rules: this.generalRules});
       }
 
-      // kritische Daten werden durch rules validiert,
-      // wenn alle felder richtig ausgefüllt werden kann die nächste seite erreich werden
+      // critical values are validated and checked by rules
+      // if all fields are filled in correctly, the next page can be reached
       const isValid = this.validateFields(validation_list);
 
       if (isValid) {
-        // Zu nächster Seite gehen wenn alle Felder valide sind
+        // going to the next page if all fields are correctly filled
         return this.step++
       }
     },
+    /**
+     * validates the form fields for contact data.
+     * @returns {void}
+     */
     validateContactForm() {
       const isValid = this.validateFields([
         {value: this.contactData.name, rules: this.nameRules},
@@ -513,34 +537,51 @@ export default {
         return this.step++
       }
     },
+    /**
+     * validates a list of form fields based on rules
+     * @param {Object[]} fields - list of fields to be validated
+     * @param {string} fields[].value - value of formular field
+     * @param {function} fields[].rules - validation rules for the field
+     * @returns {boolean} - `true`if all fields are valid, otherwise  `false`
+     */
     validateFields(fields) {
-      // Überprüfe jede Regel für jedes Feld
+      // check every rule on every field
       for (const field of fields) {
         for (const rule of field.rules) {
           const isValid = rule(field.value);
           if (isValid !== true) {
-            // Wenn die Regel nicht erfüllt ist, zeige die Fehlermeldung an
+            // if rule is not fulfilled, display the error message
             console.error(isValid);
             return false;
           }
         }
       }
-      return true; // Alle Regeln wurden erfüllt => nächste Seite
+      return true; // ALL rules have been fulfilled? Yes - go to the next page
     },
+    /**
+     * ends the dialog and returns the entered data
+     * @returns {void}
+     */
 
     exitDialog() {
-      // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
+      // dialog window is ended, the exit-dialog event of the parent is executed, user data/images are transferred
       this.$emit("exit-dialog")
     },
 
+    /**
+     * closes the dialog and returns the entered data
+     * @returns {void}
+     */
+
     closeDialog() {
-      // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
+      // // dialog window is closed, the close-dialog event of the parent is executed, user data/images are already transferred
       this.$emit("close-dialog", this.formData, this.$refs.uploadImagesForm.imagePreviews, this.contactData)
     },
   },
   computed: {
+    // calculated properties for dynamic display in the stepper
     currentTitle() {
-      // einzelnen Schritte des Steppers
+      // steps of the stepper
       switch (this.step) {
         case 1:
           return "Angaben zu der Wohnung";
@@ -553,7 +594,7 @@ export default {
       }
     },
     basicInfos() {
-      // iteriert über alle formData Attribute und deren titel aus dictionary um diese als Preview anzuzeigen
+      // iterates over all formData attributes and their titles from dictionary to display them as a preview
       let basicInfos = [];
       for (const attribute of this.infosAppartment) {
         let value = this.formData[attribute];
@@ -562,7 +603,7 @@ export default {
       return basicInfos;
     },
     extraInfos() {
-      // iteriert über alle contactData Attribute und deren titel aus dictionary um diese als Preview anzuzeigen
+      // iterates over all contactData attributes and their titles from dictionary to display them as a preview
       let extraInfos = [];
       for (const attribute of this.infosContact) {
         let value = this.contactData[attribute];
@@ -572,8 +613,9 @@ export default {
     },
   },
   watch: {
+    // monitoring changes in isCommunityLiving
     isCommunityLiving(value) {
-      // Clear the selection if the community living checkbox is unchecked
+      // clear the selection if the community living checkbox is unchecked
       if (!value) {
         this.formData.selectedGender = "";
       }
@@ -587,14 +629,14 @@ export default {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000; /* Adjust the z-index as needed */
-  background-color: white; /* Adjust the background color as needed */
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
-  /* Additional styles as needed */
+  z-index: 1000; // z-index
+  background-color: white; // background color
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); // shadow
+
 }
 
-/* Add padding to the content below the fixed header */
+// Add padding to the content below the fixed header
 .v-stepper-window {
-  padding-top: 60px; /* Adjust the value based on the height of your fixed header */
+  padding-top: 60px; // Adjust the value based on the height of fixed header
 }
 </style>

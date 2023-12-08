@@ -1,8 +1,5 @@
 <template>
-  <v-stepper
-      v-model="step"
-      alt-labels
-  >
+  <v-stepper v-model="step" alt-labels>
     <v-stepper-header class="fixed-header">
       <v-stepper-item
           :title="mobile ? '' : 'Angaben zum Buddy'"
@@ -37,22 +34,13 @@
     </v-stepper-header>
 
     <v-stepper-window>
-      <v-card-title
-          class="text-h6 font-weight-regular justify-space-between pa-2"
-      >
-        <span>
-          {{ currentTitle }}
-        </span>
+      <v-card-title class="text-h6 font-weight-regular justify-space-between pa-2">
+        <span>{{ currentTitle }}</span>
       </v-card-title>
 
-      <v-window
-          v-model="step"
-      >
-        <v-window-item
-            :value="1"
-        >
-          <v-form
-              @submit.prevent>
+      <v-window v-model="step">
+        <v-window-item :value="1">
+          <v-form @submit.prevent>
           <v-card-text>
             <v-text-field
                 label="Titel des Buddys *"
@@ -119,21 +107,15 @@
           </v-form>
         </v-window-item>
 
-        <v-window-item
-            :value="2"
-        >
+        <v-window-item :value="2">
           <UploadImagesStep
               ref="uploadImagesForm"
           ></UploadImagesStep>
           <v-card-actions>
-            <v-btn
-                variant="outlined"
-                @click="step--"
-            >
-              Zurück
-            </v-btn>
+            <v-btn variant="outlined" @click="step--">Zurück</v-btn>
 
             <v-spacer></v-spacer>
+
             <v-btn
                 color="red"
                 class="float right"
@@ -146,11 +128,8 @@
           </v-card-actions>
         </v-window-item>
 
-        <v-window-item
-            :value="3"
-        >
-          <v-form
-            @submit.prevent>
+        <v-window-item :value="3">
+          <v-form @submit.prevent>
           <v-text-field
               label="Vor-/Nachname *"
               placeholder="Maxime Musterfrau"
@@ -177,21 +156,14 @@
               :rules="emailRules"
               v-model="contactData.email"
           ></v-text-field>
-          <span
-              class="text-caption text-grey-darken-1"
-          >
+          <span class="text-caption text-grey-darken-1">
               Diese Daten werden Interessenten zur Verfügung gestellt um Kontakt aufzunehmen.
         </span>
           <v-card-actions>
-            <v-btn
-                variant="outlined"
-                @click="step--"
-            >
-              Zurück
-            </v-btn>
+            <v-btn variant="outlined" @click="step--">Zurück</v-btn>
 
             <v-spacer></v-spacer>
-            <!--Nur sichtbar solange man sich auf der 3. Seite befindet, validiert den auf Seite 3 getätigten Input -->
+            <!-- only visible as long as you are on the 3rd page, validates the input made on page 3 -->
             <v-btn
                 color="red"
                 class="float right"
@@ -251,9 +223,7 @@
               </v-row>
             </v-card-text>
 
-            <v-divider
-                style="width: 85%; margin: 10px;"
-            ></v-divider>
+            <v-divider style="width: 85%; margin: 10px;"></v-divider>
 
             <v-card-title>Kontaktdaten</v-card-title>
 
@@ -278,16 +248,11 @@
               </v-row>
             </v-card-text>
           </v-card>
+
           <v-card-actions>
-            <v-btn
-                variant="outlined"
-                @click="step--"
-            >
-              Zurück
-            </v-btn>
+            <v-btn variant="outlined" @click="step--">Zurück</v-btn>
 
             <v-spacer></v-spacer>
-            <!--Nur sichtbar solange man sich auf der letzten Seite befindet, übergibt die Inputdaten -->
             <v-btn
                 color="red"
                 class="float right"
@@ -305,16 +270,39 @@
 </template>
 
 <script setup>
+/**
+ * JavaScript code to control the buddy ad form.
+ * @module UseDisplay
+ * @type {Object}
+ * @script setup
+ */
 import {useDisplay} from "vuetify";
 
 const {mobile} = useDisplay()
 </script>
 
 <script>
+/**
+ * This section imports the `UploadImagesStep` component
+ * @module UploadImagesStep
+ * @type {Object}
+ */
+
+// component that is responsible for uploading image
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
 
+/**
+ * the exported Vue.js component that controls the behavior and display of the buddy creation.
+ * @namespace BuddyErstellung
+ * @type {Object}
+ * @property {Object} components - a collection of components that are used in this component.
+ * @property {Object} data - a function that provides the initial data for the component.
+ * @property {Object} methods - a collection of methods used by the component.
+ * @property {Object} computed - calculated properties based on the state of the data.
+ */
 export default {
   components: {UploadImagesStep},
+  // the initial data for the component is defined, including the current step in the stepper, the selected images and information about the "Buddy" event.
   data: () => ({
     step: 1,
     selectedImages: [],
@@ -326,7 +314,7 @@ export default {
     infosContact: [
       "name", "phone", "email"
     ],
-    // regeln zum validieren des Inputs
+    // rules to validate the input
     titleRules: [
       (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
       (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
@@ -348,16 +336,17 @@ export default {
     ],
     phoneRules : [
       (value) => value ? true : 'Bitte gebe eine Telefonnummer an!',
-      // regel zum erzwingen von + und numerischen Werten von mindestlänge 5
+      // rule for forcing '+' and numeric values of minimum length 5
       (value) => /^\+?\d+$/.test(value) ? true : 'Die Telefonnummer darf nur Zahlen und das Pluszeichen enthalten!',
       (value) => value.length >= 5 ? true : 'Die Telefonnummer muss mindestens 5 Zeichen lang sein!',
     ],
     emailRules : [
       (value) => value ? true : 'Bitte gebe eine E-Mail-Adresse an!',
-      // regel zum erzwingen einer validen E-mail Adresse: aaa@bbb.ccc
+      // rule to force a valid e-mail address: aaa@bbb.ccc
       (value) => /\S+@\S+\.\S+/.test(value) ? true : 'Die E-Mail-Adresse ist ungültig!',
     ],
 
+    // data structures are also defined for event information (buddyData) and contact information (contactData)
     buddyData: {
       title: '',
       description: '',
@@ -387,9 +376,15 @@ export default {
     },
   }),
 
+  // There are various methods for validating form data, for uploading images and for the stepper controls
   methods: {
+    /**
+     * validates the data in the buddy form and switches to the next page of the stepper if the data is valid.
+     * @function
+     * @memberOf BuddyErstellung.methods
+     */
     validateDataForm() {
-      // kritische Daten werden durch rules validiert, wenn alle felder richtig ausgefüllt werden kann die nächste seite erreich werden
+      // critical data is validated by rules, if all fields are filled in correctly the next page can be reached
       const isValid = this.validateFields([
         { value: this.buddyData.title, rules: this.titleRules },
         { value: this.buddyData.subject, rules: this.generalRules },
@@ -400,6 +395,11 @@ export default {
       }
     },
 
+    /**
+     * validates the contact data in the form and switches to the next page of the stepper if the data is valid.
+     * @function
+     * @memberOf BuddyErstellung.methods
+     */
     validateContactForm() {
       const isValid = this.validateFields([
         { value: this.contactData.name, rules: this.nameRules },
@@ -409,29 +409,56 @@ export default {
         return this.step++
       }
     },
+
+    /**
+     * validates the fields based on the specified rules.
+     * @function
+     * @memberOf BuddyErstellung.methods
+     * @param {Object[]} fields - an array of objects with the values and rules for validation.
+     * @returns {boolean} - returns `true` if all fields pass the validation, otherwise `false`.
+     */
     validateFields(fields) {
-      // Überprüfe jede Regel für jedes Feld
+      // check every rule on every field
       for (const field of fields) {
         for (const rule of field.rules) {
           const isValid = rule(field.value);
           if (isValid !== true) {
-            // Wenn die Regel nicht erfüllt ist, zeige die Fehlermeldung an
+            // if the rule is not fulfilled, display the error message
             console.error(isValid);
             return false;
           }
         }
       }
-      return true; // Alle Regeln wurden erfüllt => nächste Seite
+      return true; // ALL rules have been fulfilled? Yes - next page
     },
+
+    /**
+     * handles the file change in the upload form and creates thumbnails for selected images.
+     * @function
+     * @memberOf BuddyErstellung.methods
+     */
     onFileChange() {
       this.selectedImages = this.selectedImages.map((file) => ({
         file,
         url: URL.createObjectURL(file),
       }));
     },
+
+    /**
+     * deletes the selected image based on the index.
+     * @function
+     * @memberOf BuddyErstellung.methods
+     * @param {number} index - the index of the image to be deleted.
+     */
     deleteImage(index) {
       this.selectedImages.splice(index, 1);
     },
+
+    /**
+     * uploads the selected images.
+     * @function
+     * @memberOf BuddyErstellung.methods
+     */
     uploadImages() {
       this.selectedImages.forEach((image) => {
         if (image.file instanceof Blob) {
@@ -439,18 +466,36 @@ export default {
         }
       });
     },
+
+    /**
+     * ends the dialog box and transfers user data and images to the parent element.
+     * @function
+     * @memberOf BuddyErstellung.methods
+     */
     exitDialog() {
-      // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
+      // the dialog window is ended, the exit-dialog event of the parent is executed, user data/images are transferred
       this.$emit("exit-dialog")
     },
+
+    /**
+     * closes the dialog box and transfers user data, images and contact data to the parent element.
+     * @function
+     * @memberOf BuddyErstellung.methods
+     */
     closeDialog() {
-      // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
+      // the dialog window is closed, the close-dialog event of the parent is executed, user data/images are transferred
       this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.buddyData, this.contactData)
     }
   },
   computed: {
+    /**
+     * returns the current title for the step of the stepper. There are calculated properties that are used for the dynamic display in the stepper
+     * @function
+     * @memberOf BuddyErstellung.computed
+     * @returns {string} - the current title for the tap step.
+     */
     currentTitle () {
-      // einzelnen Schritte des Steppers
+      // steps of the steppers
       switch (this.step) {
         case 1: return 'Informationsangaben';
         case 2: return 'Fotos';
@@ -459,8 +504,15 @@ export default {
         default: return 'Information wurde erfolgreich geteilt!';
       }
     },
+
+    /**
+     * returns a list of event information that is used for the preview.
+     * @function
+     * @memberOf BuddyErstellung.computed
+     * @returns {Object[]} - Eine Liste von Objekten mit Label- und Wert-Paaren für Ereignisinformationen.
+     */
     eventInfos() {
-      // iteriert über alle buddyData Attribute und deren titel aus dictionary um diese als Preview anzuzeigen
+      // iterates over all buddyData attributes and their titles from dictionary to display them as a preview
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
         let value = this.buddyData[attribute];
@@ -468,8 +520,15 @@ export default {
       }
       return eventInfos;
     },
+
+    /**
+     * returns a list of additional contact information used for the preview.
+     * @function
+     * @memberOf BuddyErstellung.computed
+     * @returns {Object[]} - a list of objects with label and value pairs for contact information.
+     */
     extraInfos() {
-      // iteriert über alle contactData Attribute und deren titel aus dictionary um diese als Preview anzuzeigen
+      // iterates over all contactData attributes and their titles from dictionary to display them as a preview
       let extraInfos = [];
       for (const attribute of this.infosContact) {
         let value = this.contactData[attribute];
@@ -486,14 +545,14 @@ export default {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000; /* Adjust the z-index as needed */
-  background-color: white; /* Adjust the background color as needed */
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
-  /* Additional styles as needed */
+  z-index: 1000; // z-index
+  background-color: white; // background color
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); // shadow
+
 }
 
-/* Add padding to the content below the fixed header */
+
 .v-stepper-window {
-  padding-top: 60px; /* Adjust the value based on the height of your fixed header */
+  padding-top: 60px;
 }
 </style>
