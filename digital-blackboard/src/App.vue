@@ -11,11 +11,7 @@
 import CustomNavBar from "@/components/util/CustomNavBar.vue";
 </script>
 
-<script>
-export default {
-  name: 'App',
-}
-</script>
-
 <style>
+
 </style>
+
