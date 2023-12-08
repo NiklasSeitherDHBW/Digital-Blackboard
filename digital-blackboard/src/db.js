@@ -105,9 +105,36 @@ export async function createAdDualLiving(formData, images, contactData) {
 }
 
 export async function editAdDualLiving(id, formData, images, contactData) {
-    let new_item = createDualLivingAdItem(formData, images, contactData)
+    // Split date by every component to create a date object for firebase
+    let fromParts = formData.availableFrom.split("-")
+    let untilParts = formData.availableTill.split("-")
 
-    console.log(new_item)
+    // Create new document
+    let new_item = {
+        title: formData.title,
+        date_created: Timestamp.fromDate(new Date()),
+
+        available_from: Timestamp.fromDate(new Date(fromParts[0], fromParts[1] - 1, fromParts[2])), // parts[1] - 1 because JavaScript counts months from 0 (January - 1, Februaray - 2, etc.)
+        available_until: Timestamp.fromDate(new Date(untilParts[0], untilParts[1] - 1, untilParts[2])),
+
+        area: formData.area,
+        rooms: formData.rooms,
+        price: formData.price,
+
+        description: formData.description,
+        location: formData.location,
+        furniture: formData.furniture,
+        community: formData.community,
+        community_type: formData.community ? formData.selectedGender : "",
+
+        images: images,
+
+        name: contactData.name,
+        phone: contactData.phone,
+        email: contactData.email,
+
+        userId: 1,
+    }
 
     await setDoc(doc(db, "dual-living", id), new_item)
 }
@@ -193,9 +220,32 @@ export async function createAdEvents(images, eventData) {
 }
 
 export async function editAdEvents(id, images, eventData) {
-    console.info("editAdEvents aufgerufen2")
-    let new_item = createEventsAdItem(images, eventData)
-    console.log(new_item)
+    // Split date by every component to create a date object for firebase
+    let dateParts = eventData.date.split("-")
+
+    let new_item = {
+        images: images,
+
+        title: eventData.title,
+        date_created: Timestamp.fromDate(new Date()),
+
+        date: Timestamp.fromDate(new Date(dateParts[0], dateParts[1] - 1, dateParts[2])), // parts[1] - 1 because JavaScript counts months from 0 (January - 1, Februaray - 2, etc.)
+        price: eventData.price,
+        community: eventData.community,
+
+        description: eventData.description,
+        location: eventData.location,
+        members: eventData.members,
+        max_participants_limit: eventData.maxParticipantsLimit,
+
+        category: eventData.category,
+
+        likes: eventData.likes,
+        liked: eventData.liked,
+
+        userId: 1,
+    }
+
     await setDoc(doc(db, "events-parties", id), new_item)
 }
 
@@ -231,7 +281,7 @@ export async function createAdInfo(images, infoData) {
 }
 
 export async function editAdInfo(id, images, infoData) {
-    let dateParts = infoData.date.split(".") // TODO: Check why it needs to be splitted with '.'
+    let dateParts = infoData.date.split(".")
 
     let new_item = {
         images: images,
@@ -239,11 +289,11 @@ export async function editAdInfo(id, images, infoData) {
         title: infoData.title,
         date_created: Timestamp.fromDate(new Date()),
 
-        date: Timestamp.fromDate(new Date(dateParts[2], dateParts[1] - 1, dateParts[0])), // parts[1] - 1 because JavaScript counts months from 0 (January - 1, Februaray - 2, etc.)
-        community: infoData.community || "keine Angabe",
+        date: Timestamp.fromDate(new Date(dateParts[0], dateParts[1] - 1, dateParts[2])), // parts[1] - 1 because JavaScript counts months from 0 (January - 1, Februaray - 2, etc.)
+        community: infoData.community,
 
-        description: infoData.description || "keine Angabe",
-        location: infoData.location || "keine Angabe",
+        description: infoData.description ,
+        location: infoData.location,
 
         category: infoData.category,
 
@@ -289,7 +339,33 @@ export async function createAdSeminar(images, seminarData) {
 }
 
 export async function editAdSeminar(id, images, seminarData) {
-    let new_item = createSeminarAdItem(images, seminarData)
+    console.log(seminarData)
+
+    let dateParts = seminarData.date.split("-")
+
+    let new_item = {
+        images: images,
+
+        title: seminarData.title,
+        date_created: Timestamp.fromDate(new Date()),
+
+        date: Timestamp.fromDate(new Date(dateParts[0], dateParts[1] - 1, dateParts[2])), // parts[1] - 1 because JavaScript counts months from 0 (January - 1, Februaray - 2, etc.)
+        price: seminarData.price || "keine Angabe",
+        community: seminarData.community || "keine Angabe",
+
+        description: seminarData.description || "keine Angabe",
+        location: seminarData.location || "keine Angabe",
+
+        members: seminarData.members,
+        max_participants_limit: seminarData.maxParticipantsLimit,
+
+        category: seminarData.category,
+
+        likes: seminarData.likes,
+        liked: seminarData.liked,
+
+        userId: 1
+    }
 
     await setDoc(doc(db, "events-parties", id), new_item)
 }
@@ -362,7 +438,29 @@ export async function createAdStudyBuddy(buddyData, images, contactData) {
 }
 
 export async function editAdStudyBuddy(id, buddyData, images, contactData) {
-    let new_item = createStudyBuddyAdItem(buddyData, images, contactData)
+    let new_item = {
+        images: images,
+
+        title: buddyData.title,
+        date_created: Timestamp.fromDate(new Date()),
+
+        price: buddyData.price,
+        subject: buddyData.subject,
+
+        description: buddyData.description,
+        availability: buddyData.availability,
+
+        name: contactData.name,
+        phone: contactData.phone,
+        email: contactData.email,
+
+        category: buddyData.category,
+        categories: "Nachhilfe",
+
+        rating: buddyData.rating,
+
+        userId: 1,
+    }
 
     await setDoc(doc(db, "study-hub", id), new_item)
 }
@@ -398,7 +496,24 @@ export async function createAdStudyGroup(hubData, images) {
 }
 
 export async function editAdStudyGroup(id, hubData, images) {
-    let new_item = createStudyGroupItem(hubData, images);
+    let new_item = {
+        images: images,
+
+        title: hubData.title,
+        date_created: Timestamp.fromDate(new Date()),
+
+        subject: hubData.subject,
+        members: hubData.members,
+
+        description: hubData.description,
+        activities: hubData.activities,
+
+        joined: hubData.joined,
+        category: "group",
+        categories: "Gruppe",
+
+        userId: 1,
+    }
 
     await setDoc(doc(db, "study-hub", id), new_item)
 }

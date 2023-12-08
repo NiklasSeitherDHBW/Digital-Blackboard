@@ -194,11 +194,12 @@ export default {
       this.showDialogEditAd = false;
 
       buddyData["category"] = this.item.category;
+      buddyData["rating"] = this.item.rating;
 
       await editAdStudyBuddy(this.item.id, buddyData, images, contactData)
 
       this.snackbarText = "Ihr Inserat wurde erfolgreich geändert!"
-      
+
       this.snackbar = true;
       this.$emit("itemsChanged")
     },

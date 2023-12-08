@@ -267,8 +267,8 @@ export default {
     editAdClicked() {
       this.showDialogEditAd = true
     },
-    
-     /**
+
+    /**
      * Exits the edit ad dialog by setting the showDialogEditAd flag to false.
      * @method
      */
@@ -280,6 +280,10 @@ export default {
       this.showDialogEditAd = false;
 
       eventData["category"] = this.item.category;
+      eventData["likes"] = this.item.likes;
+      eventData["liked"] = this.item.liked;
+      eventData["joined"] = this.item.joined;
+      eventData["members"] = this.item.members;
 
       await editAdEvents(this.item.id, images, eventData)
 
@@ -290,8 +294,7 @@ export default {
     },
     async closeDialogEditInfo(images, infoData) {
       this.showDialogEditAd = false;
-      console.log(images)
-      console.log(infoData)
+
       infoData["category"] = this.item.category;
       infoData["date"] = this.item.date;
 
@@ -302,18 +305,21 @@ export default {
 
       this.$emit("itemsChanged")
     },
-  
-     /**
+
+    /**
      * Closes the edit ad dialog, displays a success message in a Snackbar, and sets the Snackbar to confirm completion.
      * @method
      */
     async closeDialogEditSeminar(images, seminarData) {
-    
       this.showDialogEditAd = false;
 
       seminarData["category"] = this.item.category;
+      seminarData["likes"] = this.item.likes;
+      seminarData["liked"] = this.item.liked;
+      seminarData["joined"] = this.item.joined;
+      seminarData["members"] = this.item.members;
 
-      await editAdSeminar(this.item.id, seminarData)
+      await editAdSeminar(this.item.id, images, seminarData)
 
       this.snackbarText = "Ihr Inserat wurde erfolgreich ändert!"
       this.snackbar = true;
