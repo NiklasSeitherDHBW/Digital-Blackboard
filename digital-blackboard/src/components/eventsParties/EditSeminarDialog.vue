@@ -132,6 +132,7 @@
         >
           <UploadImagesStep
               ref="uploadImagesForm"
+              :preloadImages="item.images"
           ></UploadImagesStep>
           <v-card-actions>
             <v-btn
