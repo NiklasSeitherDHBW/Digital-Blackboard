@@ -451,7 +451,7 @@ export default {
     },
     closeDialog() {
       // der das Dialogfenster wird geschlossen, das close-Dialog Event des Parent wird ausgeführt, Nutzerdaten/ -bilder werden übergeben
-      this.$emit("close-dialog", this.$refs.uploadImagesForm.imagePreviews, this.buddyData, this.contactData)
+      this.$emit("close-dialog", this.buddyData, this.$refs.uploadImagesForm.imagePreviews, this.contactData)
     }
   },
   computed: {

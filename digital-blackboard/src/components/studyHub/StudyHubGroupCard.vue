@@ -70,7 +70,7 @@ import ConfirmDialog from "@/components/util/ConfirmDialog.vue";
 </script>
 
 <script>
-import {db, deleteAd} from "@/db";
+import {db, deleteAd, editAdStudyGroup} from "@/db";
 import {doc, getDoc, setDoc} from "firebase/firestore";
 export default {
 
@@ -185,15 +185,21 @@ export default {
       this.showDialogEditAd = false;
     },
 
-    /**
+     /**
      * Asynchronously closes the edit ad dialog, displays a success message in a Snackbar,
      * and emits an event to trigger the items to reload after change.
      *
      * @method
      */
-    async closeDialogEditAd() {
-      this.showDialogAddStudyHub = false;
-      this.snackbarText = "Ihr Inserat wurde erfolgreich erstellt!"
+    async closeDialogEditAd(images, hubData) {
+      this.showDialogEditAd = false;
+
+      hubData["joined"] = this.item.joined;
+      hubData["members"] = this.item.members;
+
+      await editAdStudyGroup(this.item.id, hubData, images)
+
+      this.snackbarText = "Ihr Inserat wurde erfolgreich geändert!"
       this.snackbar = true;
 
       this.$emit("itemsChanged")

@@ -13,7 +13,7 @@
       <v-divider></v-divider>
     </div>
 
-    <p>Name: Vorname Nachname</p>
+    <p>Name: Rebekka Weitkamp</p>
     <p>Username: User1</p>
     <p>Weiter Infos...</p>
 
