@@ -80,8 +80,8 @@ export function createDualLivingAdItem(formData, images, contactData) {
 
         description: formData.description || "keine Angabe",
         location: formData.location || "keine Angabe",
-        furniture: formData.furniture ? "Ja" : "Nein",
-        community: formData.community ? "Ja" + formData.community_type : "Nein",
+        furniture: formData.furniture,
+        community: formData.community,
         community_type: formData.selectedGender,
 
         images: images,
