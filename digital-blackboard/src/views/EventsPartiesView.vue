@@ -222,6 +222,7 @@ export default {
       if(!this.$route.query){
         return
       }
+      console.log(this.selectedCategory)
       if (this.$route.query.card && this.$route.query.selectedCategory) {
       const cardCategory = this.$route.query.selectedCategory
       const cardId = this.$route.query.card
@@ -300,6 +301,7 @@ export default {
 
   computed: {
     filteredAdvertisements() {
+      console.log(this.selectedCategory)
       return this.advertisements.filter(ad => {
         if(!ad.category || !this.selectedCategory ) {
           return
