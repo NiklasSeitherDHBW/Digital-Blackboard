@@ -1,9 +1,9 @@
 <template>
 
-  <AppBar
+  <CustomAppBar
       titleRed="Study"
       titleGrey="Hub"
-  ></AppBar>
+  ></CustomAppBar>
 
   <v-app>
 
@@ -202,9 +202,10 @@ import StudyHubBuddyCard from "@/components/studyHub/StudyHubBuddyCard.vue";
 import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
 import AddStudyBuddyDialog from "@/components/studyHub/AddStudyBuddyDialog.vue";
 import AddStudyHubDialog from "@/components/studyHub/AddStudyHubDialog.vue";
+import CustomAppBar from "@/components/util/CustomAppBar.vue";
 
 export default {
-  components: {AddStudyHubDialog, AddStudyBuddyDialog, StudyHubGroupCard, StudyHubBuddyCard},
+  components: {AddStudyHubDialog, AddStudyBuddyDialog, StudyHubGroupCard, StudyHubBuddyCard, CustomAppBar},
   data: () => ({
     snackbarVisible: false,
     timeout: 3000,
