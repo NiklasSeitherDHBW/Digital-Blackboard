@@ -200,7 +200,6 @@ export default {
     return {
       snackbarVisible: false,
       timeout: 3000,
-
       showDialogAddEvent: false,
       showDialogAddInfo: false,
       showDialogAddSeminar: false,
@@ -208,6 +207,7 @@ export default {
       eventCategories: [
         "Events", "Infos", "Seminare"
       ],
+
       selectedCategory: "Events",
 
       advertisements: [],
@@ -219,11 +219,17 @@ export default {
   methods: {
 
     scrollToCard() {
-      if(!this.$route.query){
+      console.log(this.$route.query.card)
+      let query = this.$route.query
+      if (Object.keys(query).length === 0) {
+        console.log("query")
         return
       }
-      if (this.$route.query.card && this.$route.query.selectedCategory) {
-      const cardCategory = this.$route.query.selectedCategory
+
+      if (query.card && query.selectedCategory) {
+        console.log("triggered")
+        console.log(this.$route.query.card)
+        const cardCategory = this.$route.query.selectedCategory
       const cardId = this.$route.query.card
         this.selectedCategory = cardCategory
         // Warten bis die DOM alle Elemente fertig geladen hat
