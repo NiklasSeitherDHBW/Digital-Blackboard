@@ -10,8 +10,7 @@
     >
 
       <v-tabs
-          v-if="this.selectedCategory"
-          v-model="this.selectedCategory"
+          v-if="this.selectedCategory" v-model="this.selectedCategory"
           bg-color="transparent"
           color="#E0001BFF"
           grow
@@ -225,7 +224,7 @@ export default {
         console.log("query")
         return
       }
-
+      console.log("What")
       if (query.card && query.selectedCategory) {
         console.log("triggered")
         console.log(this.$route.query.card)
@@ -300,8 +299,9 @@ export default {
   },
 
   async mounted() {
-    await this.refreshItems()
-    this.scrollToCard()
+    await this.refreshItems().then(() => {
+      this.scrollToCard()
+    })
   },
 
   computed: {
