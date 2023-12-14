@@ -184,7 +184,7 @@ export default {
         "Nachhilfe", "Gruppe"
     ],
     selectedCategory: "Nachhilfe",
-    selectedItem: null,
+    selectedItem: "",
     advertisements: [],
     advertisements_old: [
       {
