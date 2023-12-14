@@ -10,8 +10,7 @@
     >
 
       <v-tabs
-          v-if="this.selectedCategory"
-          v-model="this.selectedCategory"
+          v-if="this.selectedCategory" v-model="this.selectedCategory"
           bg-color="transparent"
           color="#E0001BFF"
           grow
@@ -253,7 +252,9 @@ export default {
         return
       }
 
+
       // Check if both 'card' and 'selectedCategory' parameters are present in the query
+
       if (query.card && query.selectedCategory) {
         console.log("triggered")
         console.log(this.$route.query.card)
@@ -346,6 +347,9 @@ export default {
     // Scroll to a specific card on component load
     this.scrollToCard()
 
+    await this.refreshItems().then(() => {
+      this.scrollToCard()
+    })
   },
 // Computed property for filtering advertisements based on category and search
 
