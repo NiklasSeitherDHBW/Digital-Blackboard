@@ -207,7 +207,7 @@ export default {
       eventCategories: [
         "Events", "Infos", "Seminare"
       ],
-      selectedCategory: null,
+      selectedCategory: "Events",
 
       advertisements: [],
 

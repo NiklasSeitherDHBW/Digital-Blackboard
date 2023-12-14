@@ -183,7 +183,7 @@ export default {
     studyhubCategories: [
         "Nachhilfe", "Gruppe"
     ],
-    selectedCategory: null,
+    selectedCategory: "Nachhilfe",
     selectedItem: null,
     advertisements: [],
     advertisements_old: [
