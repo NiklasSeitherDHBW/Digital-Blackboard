@@ -8,14 +8,14 @@
         v-for="item in menuItems"
         :key="item.value"
         :value="item.value"
-        @click="navigateTo(item.value)"
     >
+      <router-link :to="item.value" style="color:black">
       <v-icon
           class="navbar-icon"
       >
         {{ item.icon }}
       </v-icon>
-
+      </router-link>
     </v-btn>
 
   </v-bottom-navigation>
@@ -84,22 +84,7 @@ export default {
     };
 
   },
-  methods: {
-    /**
-     * Navigates to a specified route using Vue Router.
-     *
-     * @method
-     * @param {string} itemValue - The path of the route to navigate to.
-     */
-    navigateTo(itemValue) {
-      // Check if itemValue is provided
-      if (itemValue) {
-        // Use Vue Router to navigate to the specified route
-        this.$router.push({ path: itemValue });
-      }
-    },
-
-  },
+  methods: {}
 };
 </script>
 
