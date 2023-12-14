@@ -1,4 +1,5 @@
 <template>
+
     <AppBar
       titleRed="Digital"
       titleGrey="Blackboard"
@@ -13,6 +14,7 @@
           :fluid=true
       >
         <v-row>
+
           <v-col
               v-for="(item, index) in filteredAdvertisements"
               :key="index"
@@ -45,10 +47,15 @@
                   v-if="item.adType === 'studyHub' && item.category === 'group'"
                   :item="item"
               ></StudyHubGroupCard>
+
             </div>
+
           </v-col>
+
         </v-row>
+
       </v-container>
+
     </v-container>
 
     <v-menu
@@ -57,6 +64,7 @@
         :close-on-content-click="false"
     >
       <template v-slot:activator="{ props }">
+
         <v-btn
             style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
             v-bind="props"
@@ -65,10 +73,13 @@
             icon="mdi-magnify"
         >
           <v-icon>mdi-magnify</v-icon>
+
         </v-btn>
+
       </template>
 
-      <v-card min-width="300" >
+      <v-card min-width="300">
+
         <v-text-field
             v-model="search"
             hide-details
@@ -76,8 +87,11 @@
             class="search-bar my-5 mx-auto"
             placeholder="Suche..."
         ></v-text-field>
+
       </v-card>
+
     </v-menu>
+
   </template>
 
   <script setup>
@@ -106,11 +120,13 @@
           'studyHub': 'mdi-school',
         },
       }),
+
       computed: {
+
         filteredAdvertisements() {
           const now = new Date();
           const fourteenDaysAgo = new Date(now);
-          fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 3);
+          fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 7);
 
           return this.advertisements.filter(ad => {
 
@@ -141,6 +157,7 @@
           });
         },
       },
+
       async mounted() {
         let test = await fetchAdsDualLiving();
         let test2 = await fetchAdsEventsInfos();
