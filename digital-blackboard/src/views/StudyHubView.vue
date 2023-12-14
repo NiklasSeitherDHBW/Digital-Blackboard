@@ -81,7 +81,7 @@
           <v-btn
               v-bind="activatorProps"
               style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
-              :style="{ bottom: mobile ? '65px' : '15px' }"
+              :style="{ bottom: this.mobile ? '65px' : '15px' }"
               icon="mdi-plus"
               text="+"
           >
@@ -114,7 +114,7 @@
       <v-dialog
           transition="dialog-bottom-transition"
           v-model="showDialogAddStudyBuddy"
-          :style="{ maxWidth: mobile ? '100%' : '60%' }"
+          :style="{ maxWidth: this.mobile ? '100%' : '60%' }"
       >
         <AddStudyBuddyDialog
             @close-dialog="closeDialogAddStudyBuddy"
@@ -126,7 +126,7 @@
       <v-dialog
           transition="dialog-bottom-transition"
           v-model="showDialogAddStudyHub"
-          :style="{ maxWidth: mobile ? '100%' : '60%' }"
+          :style="{ maxWidth: this.mobile ? '100%' : '60%' }"
       >
         <AddStudyHubDialog
             @close-dialog="closeDialogAddStudyHub"
@@ -147,7 +147,7 @@
         <v-btn
             style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
             v-bind="props"
-            :style="{ bottom: mobile ? '75px' : '20px' }"
+            :style="{ bottom: this.mobile ? '75px' : '20px' }"
             text="Suche"
             icon="mdi-magnify"
         >
@@ -194,26 +194,21 @@
 
 </template>
 
-<script setup>
-import AppBar from "@/components/util/CustomAppBar.vue";
-import AddStudyHubDialog from "@/components/studyHub/AddStudyHubDialog.vue";
-import AddStudyBuddyDialog from "@/components/studyHub/AddStudyBuddyDialog.vue";
-import StudyHubBuddyCard from "@/components/studyHub/StudyHubBuddyCard.vue";
-import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
-
-import {useDisplay} from "vuetify";
-
-const {mobile} = useDisplay()
-</script>
 
 <script>
 import {createAdStudyBuddy, createAdStudyGroup, fetchAdsStudyHub} from '@/db'
+import {useDisplay} from "vuetify";
+import StudyHubBuddyCard from "@/components/studyHub/StudyHubBuddyCard.vue";
+import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
+import AddStudyBuddyDialog from "@/components/studyHub/AddStudyBuddyDialog.vue";
+import AddStudyHubDialog from "@/components/studyHub/AddStudyHubDialog.vue";
 
 export default {
+  components: {AddStudyHubDialog, AddStudyBuddyDialog, StudyHubGroupCard, StudyHubBuddyCard},
   data: () => ({
     snackbarVisible: false,
     timeout: 3000,
-
+    mobile: useDisplay(),
     showDialogAddStudyHub: false,
     showDialogAddStudyBuddy: false,
     showDialogImages: false,

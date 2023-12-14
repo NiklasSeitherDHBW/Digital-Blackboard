@@ -44,10 +44,10 @@
                 :id="item.id"
                 class="rounded"
                 style="height: 100%;">
-            <EventsPartiesCard
-                :item="item"
-                @itemChanged="refreshItems"
-            ></EventsPartiesCard>
+              <EventsPartiesCard
+                  :item="item"
+                  @itemChanged="refreshItems"
+              ></EventsPartiesCard>
             </div>
           </v-col>
         </v-row>
@@ -64,7 +64,7 @@
           <v-btn
               v-bind="activatorProps"
               style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
-              :style="{ bottom: mobile ? '65px' : '15px' }"
+              :style="{ bottom: this.mobile ? '65px' : '15px' }"
               icon="mdi-plus"
               text="+"
           >
@@ -104,7 +104,7 @@
       <v-dialog
           transition="dialog-bottom-transition"
           v-model="showDialogAddEvent"
-          :style="{ maxWidth: mobile ? '100%' : '60%' }"
+          :style="{ maxWidth: this.mobile ? '100%' : '60%' }"
       >
         <AddEventDialog
             @exit-dialog="exitDialogAddEvent"
@@ -115,7 +115,7 @@
       <v-dialog
           transition="dialog-bottom-transition"
           v-model="showDialogAddInfo"
-          :style="{ maxWidth: mobile ? '100%' : '60%' }"
+          :style="{ maxWidth: this.mobile ? '100%' : '60%' }"
       >
         <AddInfoDialog
             @exit-dialog="exitDialogAddInfo"
@@ -126,7 +126,7 @@
       <v-dialog
           transition="dialog-bottom-transition"
           v-model="showDialogAddSeminar"
-          :style="{ maxWidth: mobile ? '100%' : '60%' }"
+          :style="{ maxWidth: this.mobile ? '100%' : '60%' }"
       >
         <AddSeminarDialog
             @exit-dialog="exitDialogAddSeminar"
@@ -144,7 +144,7 @@
         <v-btn
             style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
             v-bind="props"
-            :style="{ bottom: mobile ? '75px' : '20px' }"
+            :style="{ bottom: this.mobile ? '75px' : '20px' }"
             text="Suche"
             icon="mdi-magnify"
         >
@@ -163,84 +163,116 @@
     </v-menu>
   </v-app>
   <v-snackbar v-model="snackbarVisible" :timeout="timeout">
-      Ihr Inserat wurde erfolgreich geteilt!
-      <template v-slot:actions>
-        <v-btn
-            color="#eb1b2a"
-            variant="text"
-            float-right
-            size="small"
-            class="mr-1"
-            @click="closeSnackbar"
-        >
-          Schließen
-        </v-btn>
-      </template>
-    </v-snackbar>
+    Ihr Inserat wurde erfolgreich geteilt!
+    <template v-slot:actions>
+      <v-btn
+          color="#eb1b2a"
+          variant="text"
+          float-right
+          size="small"
+          class="mr-1"
+          @click="closeSnackbar"
+      >
+        Schließen
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
-<script setup>
+<script>
+// Importing functions
 import CustomAppBar from "@/components/util/CustomAppBar.vue";
-import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue";
-import AddEventDialog from "@/components/eventsParties/AddEventDialog.vue";
+import {useDisplay} from "vuetify"
+
+// Importing functions from the database module
+import {createAdEvents, createAdInfo, createAdSeminar, fetchAdsEventsInfos} from "@/db";
 import AddInfoDialog from "@/components/eventsParties/AddInfoDialog.vue";
 import AddSeminarDialog from "@/components/eventsParties/AddSeminarDialog.vue";
-
-import {useDisplay} from "vuetify";
-
-const {mobile} = useDisplay()
-</script>
-
-<script>
-import {createAdEvents, createAdInfo, createAdSeminar, fetchAdsEventsInfos} from "@/db";
-
+import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue";
+/**
+ * Vue component definition for the events and parties component.
+ * @typedef {Object} EventsPartiesComponent
+ * @property {function} data - Data function returning initial component state.
+ * @property {Object} computed - Computed properties for the component.
+ * @property {function} methods - Methods for the component.
+ * @property {function} mounted - Lifecycle hook called after the component is mounted.
+ */
 export default {
+  components: {EventsPartiesCard, AddSeminarDialog, AddInfoDialog, CustomAppBar},
+  // Component's data properties
   data() {
     return {
       snackbarVisible: false,
       timeout: 3000,
+      // Dialog visibility properties
       showDialogAddEvent: false,
       showDialogAddInfo: false,
       showDialogAddSeminar: false,
-
+// Event categories and selected category
+      mobile: useDisplay(),
       eventCategories: [
         "Events", "Infos", "Seminare"
       ],
+// Advertisement data
 
       selectedCategory: "Events",
 
       advertisements: [],
-
+// Search term
       search: "",
     }
   },
-
+  /**
+   * Vue.js methods for the component.
+   * @type {Object}
+   * @property {function} scrollToCard - Method to scroll to a specific card on component load.
+   * @property {function} closeSnackbar - Method to close the snackbar.
+   * @property {function} exitDialogAddEvent - Method to handle exiting the 'Add Event' dialog.
+   * @property {function} closeDialogAddEvent - Method to handle submission and closing of the 'Add Event' dialog.
+   * @property {function} exitDialogAddInfo - Method to handle exiting the 'Add Info' dialog.
+   * @property {function} closeDialogAddInfo - Method to handle submission and closing of the 'Add Info' dialog.
+   * @property {function} exitDialogAddSeminar - Method to handle exiting the 'Add Seminar' dialog.
+   * @property {function} closeDialogAddSeminar - Method to handle submission and closing of the 'Add Seminar' dialog.
+   * @property {function} refreshItems - Method to refresh displayed items by fetching from the database.
+   */
   methods: {
-
+    // Method to scroll to a specific card on component load
     scrollToCard() {
+      // Log the value of the 'card' parameter in the route query
       console.log(this.$route.query.card)
       let query = this.$route.query
+      // Check if there are no parameters in the query
       if (Object.keys(query).length === 0) {
         console.log("query")
         return
       }
-      console.log("What")
+
+
+      // Check if both 'card' and 'selectedCategory' parameters are present in the query
+
       if (query.card && query.selectedCategory) {
         console.log("triggered")
         console.log(this.$route.query.card)
         const cardCategory = this.$route.query.selectedCategory
-      const cardId = this.$route.query.card
+        const cardId = this.$route.query.card
+        // Set the component's 'selectedCategory' to the value from the query
         this.selectedCategory = cardCategory
-        // Warten bis die DOM alle Elemente fertig geladen hat
+
+        // Wait for the DOM to finish loading all elements
         this.$nextTick(() => {
+          // Get the DOM element with the specified 'cardId'
           const element = document.getElementById(cardId)
+          // Check if the element exists
           if (element) {
-            // zu ausgewählter Karte scrollen
-            element.scrollIntoView({behavior: 'smooth'})
-            // den Style zum hervorheben auswählen
+            // Scroll to the selected card with a smooth behavior
+            element.scrollIntoView({ behavior: 'smooth' })
+
+            // Apply a red border to highlight the selected card
             element.style.border = '5px solid red';
-            // Timeout um das HErvorheben umzukehren
+
+            // Timeout to revert the highlighting effect after 6 seconds
             setTimeout(() => {
+              // Apply transition for a fade effect when reverting the border
               element.style.transition = 'border-width 0.5s ease, opacity 0.5s ease'; // Verzögerter Übergang in Originalzustand für Fade Effekt
               element.style.border = '5px solid red';
               element.style.borderWidth = '0';
@@ -249,28 +281,28 @@ export default {
         });
       }
     },
-
+// Method to close the snackbar
     closeSnackbar() {
       this.snackbarVisible = false;
     },
-
+// Method to handle exiting the 'Add Event' dialog
     async exitDialogAddEvent() {
       this.showDialogAddEvent = false;
     },
-
+// Method to handle submission and closing of the 'Add Event' dialog
     async closeDialogAddEvent(images, eventData) {
       this.showDialogAddEvent = false;
       this.snackbarVisible = true;
-
+      // Call the createAdEvents function to add the event data to the database
       await createAdEvents(images, eventData);
-
+// Refresh the displayed items by fetching from the database
       this.refreshItems();
     },
-
+// Method to handle exiting the 'Add Info' dialog
     async exitDialogAddInfo() {
       this.showDialogAddInfo = false;
     },
-
+    // Method to handle submission and closing of the 'Add Info' dialog
     async closeDialogAddInfo(images, infoData) {
       this.showDialogAddInfo = false;
       this.snackbarVisible = true;
@@ -280,29 +312,41 @@ export default {
       await this.refreshItems();
     },
 
+    // Method to handle exiting the 'Add Seminar' dialog
     async exitDialogAddSeminar() {
       this.showDialogAddSeminar = false;
     },
 
+    // Method to handle submission and closing of the 'Add Seminar' dialog
     async closeDialogAddSeminar(images, seminarData) {
       this.showDialogAddSeminar = false;
       this.snackbarVisible = true;
 
+      // Call the createAdSeminar function to add the seminar data to the database
       await createAdSeminar(images, seminarData);
 
+      // Refresh the displayed items by fetching from the database
       await this.refreshItems();
     },
 
+    // Method to refresh displayed items by fetching from the database
     async refreshItems() {
       this.advertisements = await fetchAdsEventsInfos();
     },
   },
 
+  // Lifecycle hook called after the component is mounted
   async mounted() {
+    // Refresh displayed items by fetching from the database
+    await this.refreshItems()
+    // Scroll to a specific card on component load
+    this.scrollToCard()
+
     await this.refreshItems().then(() => {
       this.scrollToCard()
     })
   },
+// Computed property for filtering advertisements based on category and search
 
   computed: {
     filteredAdvertisements() {
@@ -330,7 +374,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .search-bar {
   width: 85%;
   border-radius: 5px;
