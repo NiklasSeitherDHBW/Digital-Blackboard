@@ -108,7 +108,30 @@
 
   <script>
     import {fetchAdsDualLiving, fetchAdsEventsInfos, fetchAdsStudyHub} from '@/db'
+    /**
+     * @typedef {Object} Advertisement
+     * @property {number} id - The unique identifier of the advertisement.
+     * @property {string} adType - The type of advertisement (dualLiving, events, studyHub).
+     * @property {string} category - The category of the studyHub advertisement (buddy, group).
+     * @property {string} date_created - The creation date of the advertisement (in the format dd.mm.yyyy).
+     * @property {number} userId - The user ID associated with the advertisement.
+     * @property {string} [additionalProperty] - Additional properties of the advertisement.
+     */
 
+    /**
+     * @typedef {Object} Icons
+     * @property {string} dualLiving - The icon for dualLiving advertisements.
+     * @property {string} events - The icon for events advertisements.
+     * @property {string} studyHub - The icon for studyHub advertisements.
+     */
+
+    /**
+     * Vue.js component for displaying advertisements.
+     * @property {string | null} selectedAdType - The selected type of advertisement.
+     * @property {Advertisement[]} advertisements - The list of fetched advertisements.
+     * @property {string} search - The search term used for filtering advertisements.
+     * @property {Icons} icons - Icons corresponding to different advertisement types.
+     */
     export default {
       data: () => ({
         selectedAdType: null,

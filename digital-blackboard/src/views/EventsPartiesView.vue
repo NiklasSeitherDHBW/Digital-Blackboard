@@ -208,12 +208,11 @@ export default {
       showDialogAddEvent: false,
       showDialogAddInfo: false,
       showDialogAddSeminar: false,
-// Event categories and selected category
       mobile: useDisplay(),
+      // Event categories and selected category
       eventCategories: [
         "Events", "Infos", "Seminare"
       ],
-// Advertisement data
 
       selectedCategory: "Events",
 
@@ -243,13 +242,9 @@ export default {
       let query = this.$route.query
       // Check if there are no parameters in the query
       if (Object.keys(query).length === 0) {
-        console.log("query")
         return
       }
-
-
       // Check if both 'card' and 'selectedCategory' parameters are present in the query
-
       if (query.card && query.selectedCategory) {
         console.log("triggered")
         console.log(this.$route.query.card)

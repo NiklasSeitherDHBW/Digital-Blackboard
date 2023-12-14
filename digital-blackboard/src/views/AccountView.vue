@@ -111,6 +111,7 @@
       location="start"
       :close-on-content-click="false"
   >
+
     <template v-slot:activator="{ props }">
 
       <v-btn
@@ -162,7 +163,19 @@ export default {
       'studyHub': 'mdi-school',
     },
   }),
-
+  /**
+   * Vue.js component template for the user account page.
+   * @typedef {Object} UserAccountComponent
+   * @property {string} titleRed - The red-colored part of the app bar title.
+   * @property {string} titleGrey - The grey-colored part of the app bar title.
+   * @property {Array} filteredAdvertisements - The array of filtered advertisements based on user, type, and search term.
+   * @property {string} selectedAdType - The currently selected advertisement type.
+   * @property {Array} advertisements - The array of all advertisements.
+   * @property {string} search - The search term for filtering advertisements.
+   * @property {Object} icons - An object containing icon names for different advertisement types.
+   * @property {boolean} mobile - A boolean indicating whether the display is in mobile mode.
+   */
+// Methods for the component
   methods: {
     scrollToCard() {
       const cardId = this.$route.query.card
@@ -183,35 +196,41 @@ export default {
         }
       }
     },
-
+    // Method to fetch advertisements from the database
     async fetchAds() {
       console.log("fetchAds aufgerufen")
       let adsDualLiving = await fetchAdsDualLiving();
       let adsEventsInfos = await fetchAdsEventsInfos();
       let adsStudyHub = await fetchAdsStudyHub();
 
+      // Concatenate advertisements from different types into a single array
       this.advertisements = adsDualLiving.concat(adsEventsInfos).concat(adsStudyHub)
     }
   },
-
+  // Lifecycle hook: called after the component is mounted
   async mounted() {
+    // Fetch advertisements and scroll to a specific card based on the route
     await this.fetchAds();
     this.scrollToCard()
   },
-
+// Computed property for filtering advertisements based on user, type, and search term
   computed: {
     filteredAdvertisements() {
       let filteredAds = this.advertisements.filter(ad => {
+        // Filter out advertisements not belonging to a specific user
         if (ad.userId !== 1) {
           return false
         }
 
+        // Filter out advertisements based on the selected ad type
         if (ad.adType !== this.selectedAdType) {
           return false;
         }
 
+        // Filter out advertisements based on the search term
         let keys = Object.keys(ad);
         let showItem = false;
+
 
         for (let key of keys) {
           if (String(ad[key]).toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
@@ -222,6 +241,7 @@ export default {
         return showItem;
       });
 
+      // Add an "editable" property to each filtered advertisement
       filteredAds.forEach((ad) => {
         ad["editable"] = true;
       })
