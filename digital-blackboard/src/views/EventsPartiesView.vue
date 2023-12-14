@@ -208,6 +208,7 @@ export default {
       eventCategories: [
         "Events", "Infos", "Seminare"
       ],
+
       selectedCategory: "Events",
 
       advertisements: [],
@@ -222,7 +223,7 @@ export default {
       if(!this.$route.query){
         return
       }
-      console.log(this.selectedCategory)
+      console.log("Da:" + this.selectedCategory)
       if (this.$route.query.card && this.$route.query.selectedCategory) {
       const cardCategory = this.$route.query.selectedCategory
       const cardId = this.$route.query.card

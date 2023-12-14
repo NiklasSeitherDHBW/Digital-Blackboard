@@ -156,7 +156,7 @@ import {fetchAdsDualLiving, fetchAdsEventsInfos, fetchAdsStudyHub} from '@/db'
 
 export default {
   data: () => ({
-    selectedAdType: null,
+    selectedAdType: "dualLiving",
     advertisements: [],
     search: "",
     icons: {

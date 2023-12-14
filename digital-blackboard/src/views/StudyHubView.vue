@@ -223,6 +223,7 @@ export default {
     ],
 
     selectedCategory: "Nachhilfe",
+
     selectedItem: "",
     advertisements: [],
 
