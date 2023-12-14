@@ -307,7 +307,7 @@ export default {
     scrollToCard() {
       const cardCategory = this.$route.query.selectedCategory
       const cardId = this.$route.query.card
-      if (cardId && cardCategory) {
+      if (cardId && cardCategory && this.selectedCategory) {
         this.selectedCategory = cardCategory
         // Warten bis die DOM alle Elemente fertig geladen hat
         this.$nextTick(() => {
