@@ -10,6 +10,7 @@
     >
 
       <v-tabs
+          v-if="this.selectedCategory"
           v-model="this.selectedCategory"
           bg-color="transparent"
           color="#E0001BFF"
@@ -217,6 +218,9 @@ export default {
   computed: {
     filteredAdvertisements() {
       return this.advertisements.filter(ad => {
+        if(!ad.category || !this.selectedCategory ) {
+          return
+        }
         if (ad.category !== this.selectedCategory) {
           return false;
         }
