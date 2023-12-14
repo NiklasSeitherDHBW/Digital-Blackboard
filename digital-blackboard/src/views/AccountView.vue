@@ -1,4 +1,5 @@
 <template>
+
   <AppBar
       titleRed="Dein"
       titleGrey="Account"
@@ -8,19 +9,29 @@
       style="width: 90%;"
   >
     <div class="d-flex">
+
       <v-divider></v-divider>
+
       <v-card-title>Deine Kontaktinformationen</v-card-title>
+
       <v-divider></v-divider>
+
     </div>
 
     <p>Name: Rebekka Weitkamp</p>
+
     <p>Username: User1</p>
+
     <p>Weiter Infos...</p>
 
     <div class="d-flex mt-5">
+
       <v-divider></v-divider>
+
       <v-card-title>Deine Inserate</v-card-title>
+
       <v-divider></v-divider>
+
     </div>
 
     <v-tabs
@@ -35,14 +46,18 @@
           :value="content"
       >
         <v-icon v-if="mobile">{{ icons[content] }}</v-icon>
+
         <p v-else>{{ content }}</p>
+
       </v-tab>
+
     </v-tabs>
 
     <v-container
         :fluid=true
     >
       <v-row>
+
         <v-col
             v-for="(item, index) in filteredAdvertisements"
             :key="index"
@@ -80,10 +95,15 @@
                 :item="item"
                 @itemsChanged="this.fetchAds"
             ></StudyHubGroupCard>
+
           </div>
+
         </v-col>
+
       </v-row>
+
     </v-container>
+
   </v-container>
 
   <v-menu
@@ -92,6 +112,7 @@
       :close-on-content-click="false"
   >
     <template v-slot:activator="{ props }">
+
       <v-btn
           style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
           v-bind="props"
@@ -99,9 +120,11 @@
           text="Suche"
           icon="mdi-magnify"
       ></v-btn>
+
     </template>
 
     <v-card min-width="300">
+
       <v-text-field
           v-model="search"
           hide-details
@@ -109,8 +132,11 @@
           class="search-bar my-5 mx-auto"
           placeholder="Suche..."
       ></v-text-field>
+
     </v-card>
+
   </v-menu>
+
 </template>
 
 <script setup>
@@ -139,6 +165,43 @@ export default {
       'studyHub': 'mdi-school',
     },
   }),
+
+  methods: {
+    scrollToCard() {
+      const cardId = this.$route.query.card
+      console.log(cardId)
+      if (cardId) {
+        const element = document.getElementById(cardId)
+        console.log(element)
+        if (element) {
+          element.scrollIntoView({behavior: 'smooth'})
+          // den Style zum hervorheben auswählen
+          element.style.border = '5px solid red';
+          // Timeout um das HErvorheben umzukehren
+          setTimeout(() => {
+            element.style.transition = 'border-width 0.5s ease, opacity 0.5s ease'; // Verzögerter Übergang in Originalzustand für Fade Effekt
+            element.style.border = '5px solid red';
+            element.style.borderWidth = '0';
+          }, 6000);
+        }
+      }
+    },
+
+    async fetchAds() {
+      console.log("fetchAds aufgerufen")
+      let adsDualLiving = await fetchAdsDualLiving();
+      let adsEventsInfos = await fetchAdsEventsInfos();
+      let adsStudyHub = await fetchAdsStudyHub();
+
+      this.advertisements = adsDualLiving.concat(adsEventsInfos).concat(adsStudyHub)
+    }
+  },
+
+  async mounted() {
+    await this.fetchAds();
+    this.scrollToCard()
+  },
+
   computed: {
     filteredAdvertisements() {
       let filteredAds = this.advertisements.filter(ad => {
@@ -169,39 +232,6 @@ export default {
       return filteredAds
     },
   },
-  methods: {
-    scrollToCard() {
-      const cardId = this.$route.query.card
-      console.log(cardId)
-      if (cardId) {
-        const element = document.getElementById(cardId)
-        console.log(element)
-        if (element) {
-          element.scrollIntoView({behavior: 'smooth'})
-          // den Style zum hervorheben auswählen
-          element.style.border = '5px solid red';
-          // Timeout um das HErvorheben umzukehren
-          setTimeout(() => {
-            element.style.transition = 'border-width 0.5s ease, opacity 0.5s ease'; // Verzögerter Übergang in Originalzustand für Fade Effekt
-            element.style.border = '5px solid red';
-            element.style.borderWidth = '0';
-          }, 6000);
-        }
-      }
-    },
-    async fetchAds() {
-      console.log("fetchAds aufgerufen")
-      let adsDualLiving = await fetchAdsDualLiving();
-      let adsEventsInfos = await fetchAdsEventsInfos();
-      let adsStudyHub = await fetchAdsStudyHub();
-
-      this.advertisements = adsDualLiving.concat(adsEventsInfos).concat(adsStudyHub)
-    }
-  },
-  async mounted() {
-    await this.fetchAds();
-    this.scrollToCard()
-  }
 }
 </script>
 

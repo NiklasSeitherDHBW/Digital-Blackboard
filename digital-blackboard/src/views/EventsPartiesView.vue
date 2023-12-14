@@ -65,7 +65,7 @@
           <v-btn
               v-bind="activatorProps"
               style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
-              :style="{ bottom: mobile ? '130px' : '15px' }"
+              :style="{ bottom: mobile ? '65px' : '15px' }"
               icon="mdi-plus"
               text="+"
           >
@@ -215,30 +215,9 @@ export default {
       search: "",
     }
   },
-  computed: {
-    filteredAdvertisements() {
-      return this.advertisements.filter(ad => {
-        if(!ad.category || !this.selectedCategory ) {
-          return
-        }
-        if (ad.category !== this.selectedCategory) {
-          return false;
-        }
 
-        let keys = Object.keys(ad);
-        let showItem = false;
-
-        for (let key of keys) {
-          if (String(ad[key]).toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
-            showItem = true;
-          }
-        }
-
-        return showItem;
-      });
-    },
-  },
   methods: {
+
     scrollToCard() {
       if(!this.$route.query){
         return
@@ -265,6 +244,7 @@ export default {
         });
       }
     },
+
     closeSnackbar() {
       this.snackbarVisible = false;
     },
@@ -272,6 +252,7 @@ export default {
     async exitDialogAddEvent() {
       this.showDialogAddEvent = false;
     },
+
     async closeDialogAddEvent(images, eventData) {
       this.showDialogAddEvent = false;
       this.snackbarVisible = true;
@@ -284,6 +265,7 @@ export default {
     async exitDialogAddInfo() {
       this.showDialogAddInfo = false;
     },
+
     async closeDialogAddInfo(images, infoData) {
       this.showDialogAddInfo = false;
       this.snackbarVisible = true;
@@ -296,6 +278,7 @@ export default {
     async exitDialogAddSeminar() {
       this.showDialogAddSeminar = false;
     },
+
     async closeDialogAddSeminar(images, seminarData) {
       this.showDialogAddSeminar = false;
       this.snackbarVisible = true;
@@ -309,11 +292,36 @@ export default {
       this.advertisements = await fetchAdsEventsInfos();
     },
   },
+
   async mounted() {
     await this.refreshItems()
     this.scrollToCard()
-  }
-}
+  },
+
+  computed: {
+    filteredAdvertisements() {
+      return this.advertisements.filter(ad => {
+        if(!ad.category || !this.selectedCategory ) {
+          return
+        }
+        if (ad.category !== this.selectedCategory) {
+          return false;
+        }
+
+        let keys = Object.keys(ad);
+        let showItem = false;
+
+        for (let key of keys) {
+          if (String(ad[key]).toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
+            showItem = true;
+          }
+        }
+
+        return showItem;
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
