@@ -8,11 +8,11 @@
   <v-app>
 
     <v-container
+        v-if="this.selectedCategory"
         style="width: 90%;"
     >
 
       <v-tabs
-          v-if="this.selectedCategory"
           v-model="this.selectedCategory"
           bg-color="transparent"
           color="#E0001BFF"
