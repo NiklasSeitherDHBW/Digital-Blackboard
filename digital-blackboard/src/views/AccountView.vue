@@ -141,28 +141,21 @@
 </template>
 
 
-<script setup>
-// Importing necessary components for the template setup.
+<script>
 import AppBar from "@/components/util/CustomAppBar.vue";
 import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue";
 import DualLivingCard from "@/components/dualLiving/DualLivingCard.vue";
 import StudyHubBuddyCard from "@/components/studyHub/StudyHubBuddyCard.vue";
 import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
-
+import {fetchAdsDualLiving, fetchAdsEventsInfos, fetchAdsStudyHub} from '@/db'
 import {useDisplay} from "vuetify";
 
-const {mobile} = useDisplay()
-</script>
-
-<script>
-// Importing functions to fetch advertisements from the database
-import {fetchAdsDualLiving, fetchAdsEventsInfos, fetchAdsStudyHub} from '@/db'
-
 export default {
-  // Data properties for the component
+  components: {AppBar, EventsPartiesCard, DualLivingCard, StudyHubBuddyCard, StudyHubGroupCard},
   data: () => ({
     selectedAdType: null,
     advertisements: [],
+    mobile: useDisplay(),
     search: "",
     icons: {
       'dualLiving': 'mdi-domain',
