@@ -4,6 +4,7 @@ import StudyBuddy from "../views/StudyHubView.vue"
 import EventsParties from "../views/EventsPartiesView.vue"
 import Account from "../views/AccountView.vue"
 import DualHousing from "../views/DualLivingView.vue"
+
 const routes = [
   {
     path: '/',
