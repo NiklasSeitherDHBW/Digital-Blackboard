@@ -189,6 +189,7 @@ import {createAdEvents, createAdInfo, createAdSeminar, fetchAdsEventsInfos} from
 import AddInfoDialog from "@/components/eventsParties/AddInfoDialog.vue";
 import AddSeminarDialog from "@/components/eventsParties/AddSeminarDialog.vue";
 import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue";
+import AddEventDialog from "@/components/eventsParties/AddEventDialog.vue";
 /**
  * Vue component definition for the events and parties component.
  * @typedef {Object} EventsPartiesComponent
@@ -198,7 +199,7 @@ import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue"
  * @property {function} mounted - Lifecycle hook called after the component is mounted.
  */
 export default {
-  components: {EventsPartiesCard, AddSeminarDialog, AddInfoDialog, CustomAppBar},
+  components: {AddEventDialog, EventsPartiesCard, AddSeminarDialog, AddInfoDialog, CustomAppBar},
   // Component's data properties
   data() {
     return {
