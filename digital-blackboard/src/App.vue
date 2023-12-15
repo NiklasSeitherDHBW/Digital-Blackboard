@@ -1,5 +1,5 @@
 <template>
-
+<SpeedInsights/>
   <v-app>
 
     <v-main>
@@ -16,6 +16,7 @@
 
 <script setup>
 import CustomNavBar from "@/components/util/CustomNavBar.vue";
+import {SpeedInsights} from "@vercel/speed-insights/vue";
 </script>
 
 <!-- Implementierung eines Chatbots mithilfe von OpenAI Assistants, Inspiration: Liam Ottley, Youtube, https://www.youtube.com/watch?v=Uk5f3ajkfSs -->
