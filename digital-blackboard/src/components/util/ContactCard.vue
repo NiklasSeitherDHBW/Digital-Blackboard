@@ -32,7 +32,7 @@
           <v-img
               :src="avatarSrc"
               alt="Avatar"
-              cover
+              cover="true"
           ></v-img>
 
         </v-avatar>

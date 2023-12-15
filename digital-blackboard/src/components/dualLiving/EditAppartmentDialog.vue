@@ -587,8 +587,8 @@ export default {
       location: this.item.location,
       price: this.item.price,
       area: this.item.area,
-      furniture: this.item.furniture === "Ja" ? true : false,
-      community: communityParts.length > 1 ? true : false,
+      furniture: this.item.furniture === "Ja",
+      community: communityParts.length > 1,
       rooms: this.item.rooms,
       selectedGender: communityParts.length > 1 ? communityParts[1] : "",
       images: this.item.images,
@@ -620,7 +620,7 @@ export default {
   width: 100%;
   z-index: 1000; /* Adjust the z-index as needed */
   background-color: white; /* Adjust the background color as needed */
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
   /* Additional styles as needed */
 }
 

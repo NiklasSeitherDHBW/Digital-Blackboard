@@ -32,7 +32,7 @@ import {SpeedInsights} from "@vercel/speed-insights/vue";
  */
 (function (d, t) {
   // Create a script chatbot element
-  var v = d.createElement(t),
+  let v = d.createElement(t),
       // Get the first script tag in the document
       s = d.getElementsByTagName(t)[0];
 

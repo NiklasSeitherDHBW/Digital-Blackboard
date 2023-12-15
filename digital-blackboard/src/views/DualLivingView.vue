@@ -155,12 +155,16 @@ export default {
     // Method to scroll to a specific card on component load.
     scrollToCard() {
       const cardId = this.$route.query.card
+
       if (cardId) {
         const element = document.getElementById(cardId)
+
         if (element) {
           element.scrollIntoView({behavior: 'smooth'})
+
           // Select the style for highlighting
           element.style.border = '5px solid red';
+
           // Timeout to reverse the highlighting.
           setTimeout(() => {
             element.style.transition = 'border-width 0.5s ease, opacity 0.5s ease'; // Verzögerter Übergang in Originalzustand für Fade Effekt

@@ -375,6 +375,6 @@ export default {
   top: 0;
   width: 100%;
   z-index: 1000;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 </style>
