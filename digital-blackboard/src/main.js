@@ -3,11 +3,10 @@ import App from './App.vue'
 import router from './router'
 import vuetify from './plugins/vuetify'
 import {loadFonts} from './plugins/webfontloader'
-
-loadFonts()
-
 // main.js or your entry file
 import 'vuetify/dist/vuetify.min.css';
+
+loadFonts()
 
 createApp(App)
     .use(router)

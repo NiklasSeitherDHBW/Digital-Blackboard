@@ -41,49 +41,49 @@
       <v-window v-model="step">
         <v-window-item :value="1">
           <v-form @submit.prevent>
-          <v-card-text>
-            <v-text-field
-                label="Titel des Buddys *"
-                variant="outlined"
-                class="mt-2"
-                maxlength="50"
-                v-model="buddyData.title"
-                :rules="titleRules"
-                counter
-                required
-            ></v-text-field>
+            <v-card-text>
+              <v-text-field
+                  label="Titel des Buddys *"
+                  variant="outlined"
+                  class="mt-2"
+                  maxlength="50"
+                  v-model="buddyData.title"
+                  :rules="titleRules"
+                  counter
+                  required
+              ></v-text-field>
 
-            <v-text-field
-                label="Beschreibung"
-                variant="outlined"
-                maxlength="200"
-                v-model="buddyData.description"
-                counter
-            ></v-text-field>
+              <v-text-field
+                  label="Beschreibung"
+                  variant="outlined"
+                  maxlength="200"
+                  v-model="buddyData.description"
+                  counter
+              ></v-text-field>
 
-            <v-text-field
-                label="Preis pro Stunde *"
-                prefix="€"
-                variant="outlined"
-                v-model="buddyData.price"
-                :rules="numRules"
-            ></v-text-field>
+              <v-text-field
+                  label="Preis pro Stunde *"
+                  prefix="€"
+                  variant="outlined"
+                  v-model="buddyData.price"
+                  :rules="numRules"
+              ></v-text-field>
 
-            <v-text-field
-                label="Fächer *"
-                variant="outlined"
-                :rules="generalRules"
-                v-model="buddyData.subject"
-            ></v-text-field>
+              <v-text-field
+                  label="Fächer *"
+                  variant="outlined"
+                  :rules="generalRules"
+                  v-model="buddyData.subject"
+              ></v-text-field>
 
-            <v-text-field
-                label="Verfügbarkeit"
-                placeholder="Nach Absprache"
-                variant="outlined"
-                v-model="buddyData.availability"
-            ></v-text-field>
+              <v-text-field
+                  label="Verfügbarkeit"
+                  placeholder="Nach Absprache"
+                  variant="outlined"
+                  v-model="buddyData.availability"
+              ></v-text-field>
 
-          </v-card-text>
+            </v-card-text>
             <v-card-actions>
               <v-btn
                   color="#eb1b2a"
@@ -130,50 +130,50 @@
 
         <v-window-item :value="3">
           <v-form @submit.prevent>
-          <v-text-field
-              label="Vor-/Nachname *"
-              placeholder="Maxime Musterfrau"
-              variant="outlined"
-              class="mt-2"
-              :rules="nameRules"
-              v-model="contactData.name"
-          ></v-text-field>
+            <v-text-field
+                label="Vor-/Nachname *"
+                placeholder="Maxime Musterfrau"
+                variant="outlined"
+                class="mt-2"
+                :rules="nameRules"
+                v-model="contactData.name"
+            ></v-text-field>
 
-          <v-text-field
-              label="Telefon"
-              placeholder="+49123456789"
-              variant="outlined"
-              type="tel"
-              :rules="phoneRules"
-              v-model="contactData.phone"
-          ></v-text-field>
+            <v-text-field
+                label="Telefon"
+                placeholder="+49123456789"
+                variant="outlined"
+                type="tel"
+                :rules="phoneRules"
+                v-model="contactData.phone"
+            ></v-text-field>
 
-          <v-text-field
-              label="E-Mail *"
-              placeholder="john@google.com"
-              variant="outlined"
-              type="email"
-              :rules="emailRules"
-              v-model="contactData.email"
-          ></v-text-field>
-          <span class="text-caption text-grey-darken-1">
+            <v-text-field
+                label="E-Mail *"
+                placeholder="john@google.com"
+                variant="outlined"
+                type="email"
+                :rules="emailRules"
+                v-model="contactData.email"
+            ></v-text-field>
+            <span class="text-caption text-grey-darken-1">
               Diese Daten werden Interessenten zur Verfügung gestellt um Kontakt aufzunehmen.
         </span>
-          <v-card-actions>
-            <v-btn variant="outlined" @click="step--">Zurück</v-btn>
+            <v-card-actions>
+              <v-btn variant="outlined" @click="step--">Zurück</v-btn>
 
-            <v-spacer></v-spacer>
-            <!-- only visible as long as you are on the 3rd page, validates the input made on page 3 -->
-            <v-btn
-                color="#eb1b2a"
-                class="float right"
-                type="submit"
-                variant="outlined"
-                @click="validateContactForm()"
-            >
-              Zusammenfassung
-            </v-btn>
-          </v-card-actions>
+              <v-spacer></v-spacer>
+              <!-- only visible as long as you are on the 3rd page, validates the input made on page 3 -->
+              <v-btn
+                  color="#eb1b2a"
+                  class="float right"
+                  type="submit"
+                  variant="outlined"
+                  @click="validateContactForm()"
+              >
+                Zusammenfassung
+              </v-btn>
+            </v-card-actions>
           </v-form>
         </v-window-item>
 
@@ -330,17 +330,17 @@ export default {
       (value) => /\d+$/.test(value) ? true : 'Die angegebene Information darf nur Zahlen (0-9) beinhalten!',
     ],
 
-    nameRules : [
+    nameRules: [
       (value) => value ? true : 'Bitte gebe einen Vor- und Nachnamen an!',
       (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
     ],
-    phoneRules : [
+    phoneRules: [
       (value) => value ? true : 'Bitte gebe eine Telefonnummer an!',
       // rule for forcing '+' and numeric values of minimum length 5
       (value) => /^\+?\d+$/.test(value) ? true : 'Die Telefonnummer darf nur Zahlen und das Pluszeichen enthalten!',
       (value) => value.length >= 5 ? true : 'Die Telefonnummer muss mindestens 5 Zeichen lang sein!',
     ],
-    emailRules : [
+    emailRules: [
       (value) => value ? true : 'Bitte gebe eine E-Mail-Adresse an!',
       // rule to force a valid e-mail address: aaa@bbb.ccc
       (value) => /\S+@\S+\.\S+/.test(value) ? true : 'Die E-Mail-Adresse ist ungültig!',
@@ -386,9 +386,9 @@ export default {
     validateDataForm() {
       // critical data is validated by rules, if all fields are filled in correctly the next page can be reached
       const isValid = this.validateFields([
-        { value: this.buddyData.title, rules: this.titleRules },
-        { value: this.buddyData.subject, rules: this.generalRules },
-        { value: this.buddyData.price, rules: this.numRules },
+        {value: this.buddyData.title, rules: this.titleRules},
+        {value: this.buddyData.subject, rules: this.generalRules},
+        {value: this.buddyData.price, rules: this.numRules},
       ]);
       if (isValid) {
         return this.step++
@@ -402,8 +402,8 @@ export default {
      */
     validateContactForm() {
       const isValid = this.validateFields([
-        { value: this.contactData.name, rules: this.nameRules },
-        { value: this.contactData.email, rules: this.emailRules },
+        {value: this.contactData.name, rules: this.nameRules},
+        {value: this.contactData.email, rules: this.emailRules},
       ]);
       if (isValid) {
         return this.step++
@@ -494,14 +494,19 @@ export default {
      * @memberOf BuddyErstellung.computed
      * @returns {string} - the current title for the tap step.
      */
-    currentTitle () {
+    currentTitle() {
       // steps of the steppers
       switch (this.step) {
-        case 1: return 'Informationsangaben';
-        case 2: return 'Fotos';
-        case 3: return 'Kontaktdaten';
-        case 4: return 'Zusammenfassung';
-        default: return 'Information wurde erfolgreich geteilt!';
+        case 1:
+          return 'Informationsangaben';
+        case 2:
+          return 'Fotos';
+        case 3:
+          return 'Kontaktdaten';
+        case 4:
+          return 'Zusammenfassung';
+        default:
+          return 'Information wurde erfolgreich geteilt!';
       }
     },
 
@@ -516,7 +521,7 @@ export default {
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
         let value = this.buddyData[attribute];
-        eventInfos.push({ label: this.dictionary[attribute], value: value });
+        eventInfos.push({label: this.dictionary[attribute], value: value});
       }
       return eventInfos;
     },
@@ -547,7 +552,7 @@ export default {
   width: 100%;
   z-index: 1000;
   background-color: white;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .v-stepper-window {

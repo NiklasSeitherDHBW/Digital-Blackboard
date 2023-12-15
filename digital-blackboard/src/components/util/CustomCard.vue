@@ -283,10 +283,10 @@ export default {
         this.customClick();
       } else {
         // If not, the adType is dualLiving we append the corresponding route to the Side followed by the individual Card Id
-          const link = window.location.origin + '/dualliving' + '?card=' + this.item.id
-          navigator.clipboard.writeText(link);
-          // The Snackbar is called in the Parent, where its Text is assigned
-          this.snackbarVisible = true;
+        const link = window.location.origin + '/dualliving' + '?card=' + this.item.id
+        navigator.clipboard.writeText(link);
+        // The Snackbar is called in the Parent, where its Text is assigned
+        this.snackbarVisible = true;
 
       }
     },

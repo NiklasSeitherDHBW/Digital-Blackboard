@@ -17,7 +17,7 @@
       <div v-if="item.category !== 'group'">
 
         <v-rating
-            readonly
+            readonly="true"
             color="#7C868DFF"
             active-color="#eb1b2a"
             density="comfortable"
@@ -111,6 +111,7 @@ const {mobile} = useDisplay()
 
 <script>
 import {deleteAd, editAdStudyBuddy} from "@/db";
+
 export default {
 
   props: {

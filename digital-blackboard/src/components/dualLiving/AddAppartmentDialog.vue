@@ -353,9 +353,9 @@
 </template>
 
 <script setup>
-import { useDisplay } from "vuetify";
+import {useDisplay} from "vuetify";
 
-const { mobile } = useDisplay()
+const {mobile} = useDisplay()
 </script>
 
 <script>
@@ -417,7 +417,7 @@ export default {
       infosContact: [
         "name", "phone", "email"
       ],
-      // rules for validation the formular fields
+      // rules for validation of the formular fields
       titleRules: [
         (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
         (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
@@ -521,7 +521,7 @@ export default {
 
       if (isValid) {
         // going to the next page if all fields are correctly filled
-        return this.step++
+        this.step++
       }
     },
     /**
@@ -631,8 +631,7 @@ export default {
   width: 100%;
   z-index: 1000;
   background-color: white;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .v-stepper-window {

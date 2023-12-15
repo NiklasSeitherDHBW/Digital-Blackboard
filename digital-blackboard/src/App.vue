@@ -1,5 +1,5 @@
 <template>
-<SpeedInsights/>
+  <SpeedInsights/>
   <v-app>
 
     <v-main>
@@ -30,17 +30,17 @@ import {SpeedInsights} from "@vercel/speed-insights/vue";
  * @param {Document} d - The document object.
  * @param {string} t - The script tag type.
  */
-(function(d, t) {
+(function (d, t) {
   // Create a script chatbot element
-  var v = d.createElement(t),
+  let v = d.createElement(t),
       // Get the first script tag in the document
       s = d.getElementsByTagName(t)[0];
 
   // Set the onload event handler for the script
-  v.onload = function() {
+  v.onload = function () {
     // Load the Voiceflow chat widget with specified configuration
     window.voiceflow.chat.load({
-      verify: { projectID: '65728f6fc94f5325502680b2' },
+      verify: {projectID: '65728f6fc94f5325502680b2'},
       url: 'https://general-runtime.voiceflow.com',
       versionID: 'production'
     });

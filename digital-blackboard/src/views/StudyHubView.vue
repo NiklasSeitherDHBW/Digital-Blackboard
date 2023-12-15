@@ -16,7 +16,7 @@
           v-model="this.selectedCategory"
           bg-color="transparent"
           color="#E0001BFF"
-          grow
+          grow="true"
       >
         <v-tab
             v-for="category in studyhubCategories"
@@ -157,7 +157,7 @@
 
       </template>
 
-      <v-card min-width="300" >
+      <v-card min-width="300">
 
         <v-text-field
             v-model="search"
@@ -213,7 +213,7 @@ export default {
     showDialogImages: false,
 
     studyhubCategories: [
-        "Nachhilfe", "Gruppe"
+      "Nachhilfe", "Gruppe"
     ],
 
     selectedCategory: "Nachhilfe",
@@ -231,12 +231,12 @@ export default {
     },
 
     scrollToCard() {
-      if(!this.$route.query){
+      if (!this.$route.query) {
         return
       }
       if (this.$route.query.card && this.$route.query.selectedCategory) {
-      const cardCategory = this.$route.query.selectedCategory
-      const cardId = this.$route.query.card
+        const cardCategory = this.$route.query.selectedCategory
+        const cardId = this.$route.query.card
         this.selectedCategory = cardCategory
         // Warten bis die DOM alle Elemente fertig geladen hat
         this.$nextTick(() => {
@@ -303,11 +303,11 @@ export default {
     this.scrollToCard()
   },
 
-  computed : {
+  computed: {
 
     filteredAdvertisements() {
       return this.advertisements.filter(ad => {
-        if (!ad.categories || !this.selectedCategory){
+        if (!ad.categories || !this.selectedCategory) {
           return
         }
         if (ad.categories !== this.selectedCategory) {

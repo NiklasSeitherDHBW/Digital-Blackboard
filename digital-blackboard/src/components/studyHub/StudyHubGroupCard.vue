@@ -78,6 +78,7 @@ const {mobile} = useDisplay()
 <script>
 import {db, deleteAd, editAdStudyGroup} from "@/db";
 import {doc, getDoc, setDoc} from "firebase/firestore";
+
 export default {
 
   props: {
@@ -98,11 +99,11 @@ export default {
       showDialogEditAd: false,
 
       basicInfosKeywords: [
-          "subject", "members"
+        "subject", "members"
       ],
 
       extraInfosKeywords: [
-          "description", "activities"
+        "description", "activities"
       ],
 
       dictionary: {
@@ -190,7 +191,7 @@ export default {
       this.showDialogEditAd = false;
     },
 
-     /**
+    /**
      * Asynchronously closes the edit ad dialog, displays a success message in a Snackbar,
      * and emits an event to trigger the items to reload after change.
      *

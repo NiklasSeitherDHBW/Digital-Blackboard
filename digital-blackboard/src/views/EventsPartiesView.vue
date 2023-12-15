@@ -13,7 +13,7 @@
           v-if="this.selectedCategory" v-model="this.selectedCategory"
           bg-color="transparent"
           color="#E0001BFF"
-          grow
+          grow="true"
       >
         <v-tab
             v-for="category in eventCategories"
@@ -189,6 +189,7 @@ import AddSeminarDialog from "@/components/eventsParties/AddSeminarDialog.vue";
 import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue";
 import AddEventDialog from "@/components/eventsParties/AddEventDialog.vue";
 import {useDisplay} from "vuetify";
+
 /**
  * Vue component definition for the events and parties component.
  * @typedef {Object} EventsPartiesComponent
@@ -260,7 +261,7 @@ export default {
           // Check if the element exists
           if (element) {
             // Scroll to the selected card with a smooth behavior
-            element.scrollIntoView({ behavior: 'smooth' })
+            element.scrollIntoView({behavior: 'smooth'})
 
             // Apply a red border to highlight the selected card
             element.style.border = '5px solid red';
@@ -346,7 +347,7 @@ export default {
   computed: {
     filteredAdvertisements() {
       return this.advertisements.filter(ad => {
-        if(!ad.category || !this.selectedCategory ) {
+        if (!ad.category || !this.selectedCategory) {
           return
         }
         if (ad.category !== this.selectedCategory) {
