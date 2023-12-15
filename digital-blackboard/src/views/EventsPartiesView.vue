@@ -64,7 +64,7 @@
           <v-btn
               v-bind="activatorProps"
               style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
-              :style="{ bottom: mobile ? '65px' : '15px' }"
+              :style="{ bottom: ismobil() ? '65px' : '15px' }"
               icon="mdi-plus"
               text="+"
           >
@@ -104,7 +104,7 @@
       <v-dialog
           transition="dialog-bottom-transition"
           v-model="showDialogAddEvent"
-          :style="{ maxWidth: mobile ? '100%' : '60%' }"
+          :style="{ maxWidth: ismobil() ? '100%' : '60%' }"
       >
         <AddEventDialog
             @exit-dialog="exitDialogAddEvent"
@@ -115,7 +115,7 @@
       <v-dialog
           transition="dialog-bottom-transition"
           v-model="showDialogAddInfo"
-          :style="{ maxWidth: mobile ? '100%' : '60%' }"
+          :style="{ maxWidth: ismobil() ? '100%' : '60%' }"
       >
         <AddInfoDialog
             @exit-dialog="exitDialogAddInfo"
@@ -126,7 +126,7 @@
       <v-dialog
           transition="dialog-bottom-transition"
           v-model="showDialogAddSeminar"
-          :style="{ maxWidth: mobile ? '100%' : '60%' }"
+          :style="{ maxWidth: ismobil() ? '100%' : '60%' }"
       >
         <AddSeminarDialog
             @exit-dialog="exitDialogAddSeminar"
@@ -144,7 +144,7 @@
         <v-btn
             style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
             v-bind="props"
-            :style="{ bottom: mobile ? '75px' : '20px' }"
+            :style="{ bottom: ismobil() ? '75px' : '20px' }"
             text="Suche"
             icon="mdi-magnify"
         >
@@ -188,6 +188,7 @@ import AddInfoDialog from "@/components/eventsParties/AddInfoDialog.vue";
 import AddSeminarDialog from "@/components/eventsParties/AddSeminarDialog.vue";
 import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue";
 import AddEventDialog from "@/components/eventsParties/AddEventDialog.vue";
+import {useDisplay} from "vuetify";
 /**
  * Vue component definition for the events and parties component.
  * @typedef {Object} EventsPartiesComponent
@@ -233,6 +234,10 @@ export default {
    * @property {function} refreshItems - Method to refresh displayed items by fetching from the database.
    */
   methods: {
+    ismobil() {
+      const display = useDisplay();
+      return display.mobile.value;
+    },
     // Method to scroll to a specific card on component load
     scrollToCard() {
       // Log the value of the 'card' parameter in the route query
@@ -365,12 +370,6 @@ export default {
     },
   },
 };
-</script>
-
-<script setup>
-import {useDisplay} from "vuetify";
-
-const {mobile} = useDisplay()
 </script>
 
 <style>

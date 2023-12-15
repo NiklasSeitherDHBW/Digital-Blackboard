@@ -81,7 +81,7 @@
           <v-btn
               v-bind="activatorProps"
               style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
-              :style="{ bottom: mobile ? '65px' : '15px' }"
+              :style="{ bottom: ismobil() ? '65px' : '15px' }"
               icon="mdi-plus"
               text="+"
           >
@@ -114,7 +114,7 @@
       <v-dialog
           transition="dialog-bottom-transition"
           v-model="showDialogAddStudyBuddy"
-          :style="{ maxWidth: mobile ? '100%' : '60%' }"
+          :style="{ maxWidth: ismobil() ? '100%' : '60%' }"
       >
         <AddStudyBuddyDialog
             @close-dialog="closeDialogAddStudyBuddy"
@@ -126,7 +126,7 @@
       <v-dialog
           transition="dialog-bottom-transition"
           v-model="showDialogAddStudyHub"
-          :style="{ maxWidth: mobile ? '100%' : '60%' }"
+          :style="{ maxWidth: ismobil() ? '100%' : '60%' }"
       >
         <AddStudyHubDialog
             @close-dialog="closeDialogAddStudyHub"
@@ -147,7 +147,7 @@
         <v-btn
             style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
             v-bind="props"
-            :style="{ bottom: mobile ? '75px' : '20px' }"
+            :style="{ bottom: ismobil ? '75px' : '20px' }"
             text="Suche"
             icon="mdi-magnify"
         >
@@ -201,6 +201,8 @@ import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
 import AddStudyBuddyDialog from "@/components/studyHub/AddStudyBuddyDialog.vue";
 import AddStudyHubDialog from "@/components/studyHub/AddStudyHubDialog.vue";
 import CustomAppBar from "@/components/util/CustomAppBar.vue";
+import {useDisplay} from "vuetify";
+
 export default {
   components: {AddStudyHubDialog, AddStudyBuddyDialog, StudyHubGroupCard, StudyHubBuddyCard, CustomAppBar},
   data: () => ({
@@ -223,6 +225,11 @@ export default {
   }),
 
   methods: {
+    ismobil() {
+      const display = useDisplay();
+      return display.mobile.value;
+    },
+
     scrollToCard() {
       if(!this.$route.query){
         return
@@ -320,12 +327,6 @@ export default {
     },
   },
 };
-</script>
-
-<script setup>
-import {useDisplay} from "vuetify";
-
-const {mobile} = useDisplay()
 </script>
 
 <style scoped>
