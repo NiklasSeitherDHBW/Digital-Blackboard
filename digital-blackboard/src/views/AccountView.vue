@@ -153,7 +153,7 @@ import {useDisplay} from "vuetify";
 export default {
   components: {AppBar, EventsPartiesCard, DualLivingCard, StudyHubBuddyCard, StudyHubGroupCard},
   data: () => ({
-    selectedAdType: null,
+    selectedAdType: "dualLiving",
     advertisements: [],
     mobile: useDisplay(),
     search: "",
@@ -179,10 +179,8 @@ export default {
   methods: {
     scrollToCard() {
       const cardId = this.$route.query.card
-      console.log(cardId)
       if (cardId) {
         const element = document.getElementById(cardId)
-        console.log(element)
         if (element) {
           element.scrollIntoView({behavior: 'smooth'})
           // den Style zum hervorheben auswählen
@@ -198,7 +196,6 @@ export default {
     },
     // Method to fetch advertisements from the database
     async fetchAds() {
-      console.log("fetchAds aufgerufen")
       let adsDualLiving = await fetchAdsDualLiving();
       let adsEventsInfos = await fetchAdsEventsInfos();
       let adsStudyHub = await fetchAdsStudyHub();
