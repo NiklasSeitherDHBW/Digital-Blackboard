@@ -353,9 +353,9 @@
 </template>
 
 <script setup>
-import { useDisplay } from "vuetify";
+import {useDisplay} from "vuetify";
 
-const { mobile } = useDisplay()
+const {mobile} = useDisplay()
 </script>
 
 <script>
@@ -417,7 +417,7 @@ export default {
       infosContact: [
         "name", "phone", "email"
       ],
-      // rules for validation the formular fields
+      // rules for validation of the formular fields
       titleRules: [
         (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
         (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',

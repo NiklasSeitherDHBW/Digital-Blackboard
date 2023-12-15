@@ -300,10 +300,10 @@ export default {
     validateDataForm() {
       // kritische Eventdaten werden durch rules validiert, wenn alle felder richtig ausgefüllt werden kann die nächste seite erreich werden
       const isValid = this.validateFields([
-        { value: this.seminarData.title, rules: this.titleRules },
-        { value: this.seminarData.location, rules: this.generalRules },
-        { value: this.seminarData.price, rules: this.numRules },
-        { value: this.seminarData.community, rules: this.generalRules },
+        {value: this.seminarData.title, rules: this.titleRules},
+        {value: this.seminarData.location, rules: this.generalRules},
+        {value: this.seminarData.price, rules: this.numRules},
+        {value: this.seminarData.community, rules: this.generalRules},
       ]);
       if (isValid) {
         return this.step++
@@ -356,13 +356,17 @@ export default {
   },
 
   computed: {
-    currentTitle () {
+    currentTitle() {
       // einzelnen Schritte des Steppers
       switch (this.step) {
-        case 1: return 'Angaben zum Seminar';
-        case 2: return 'Fotos';
-        case 3: return 'Zusammenfassung';
-        default: return 'Seminar wurde erfolgreich geteilt!';
+        case 1:
+          return 'Angaben zum Seminar';
+        case 2:
+          return 'Fotos';
+        case 3:
+          return 'Zusammenfassung';
+        default:
+          return 'Seminar wurde erfolgreich geteilt!';
       }
     },
 
@@ -371,7 +375,7 @@ export default {
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
         let value = this.seminarData[attribute];
-        eventInfos.push({ label: this.dictionary[attribute], value: value });
+        eventInfos.push({label: this.dictionary[attribute], value: value});
       }
       return eventInfos;
     },

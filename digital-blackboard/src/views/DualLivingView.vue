@@ -21,9 +21,9 @@
           xxl="3"
       >
         <div
-          :id = "item.id"
-          class="rounded"
-          style="height: 100%;">
+            :id="item.id"
+            class="rounded"
+            style="height: 100%;">
           <DualLivingCard
               :item="item"
           ></DualLivingCard>
@@ -111,6 +111,7 @@ const {mobile} = useDisplay()
 
 <script>
 import {createAdDualLiving, fetchAdsDualLiving} from '@/db'
+
 /**
  * Vue component definition for the dual living ads component.
  * @typedef {Object} DualLivingAdsComponent

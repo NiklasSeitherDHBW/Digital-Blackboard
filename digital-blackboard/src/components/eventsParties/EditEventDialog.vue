@@ -296,11 +296,11 @@ export default {
     // kritische Eventdaten werden durch rules validiert, wenn alle felder richtig ausgefüllt werden kann die nächste seite erreich werden
     validateDataForm() {
       const isValid = this.validateFields([
-        { value: this.eventData.title, rules: this.titleRules },
-        { value: this.eventData.location, rules: this.generalRules },
-        { value: this.eventData.date, rules: this.dateRules},
-        { value: this.eventData.price, rules: this.numRules },
-        { value: this.eventData.community, rules: this.generalRules },
+        {value: this.eventData.title, rules: this.titleRules},
+        {value: this.eventData.location, rules: this.generalRules},
+        {value: this.eventData.date, rules: this.dateRules},
+        {value: this.eventData.price, rules: this.numRules},
+        {value: this.eventData.community, rules: this.generalRules},
 
       ]);
       if (isValid) {
@@ -349,12 +349,16 @@ export default {
   },
   computed: {
     // einzelnen Schritte des Steppers
-    currentTitle () {
+    currentTitle() {
       switch (this.step) {
-        case 1: return 'Angaben zum Event';
-        case 2: return 'Fotos';
-        case 3: return 'Zusammenfassung';
-        default: return 'Event wurde erfolgreich geteilt!';
+        case 1:
+          return 'Angaben zum Event';
+        case 2:
+          return 'Fotos';
+        case 3:
+          return 'Zusammenfassung';
+        default:
+          return 'Event wurde erfolgreich geteilt!';
       }
     },
     eventInfos() {
@@ -362,7 +366,7 @@ export default {
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
         let value = this.eventData[attribute];
-        eventInfos.push({ label: this.dictionary[attribute], value: value });
+        eventInfos.push({label: this.dictionary[attribute], value: value});
       }
       return eventInfos;
     },

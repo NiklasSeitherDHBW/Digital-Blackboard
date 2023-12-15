@@ -46,7 +46,8 @@
 </template>
 
 <script setup>
-import { useTheme } from 'vuetify'
+import {useTheme} from 'vuetify'
+
 const theme = useTheme()
 
 /**
@@ -65,7 +66,7 @@ const toggleDarkMode = () => {
 </script>
 
 <script>
-import { colorDhbwRed, colorDhbwGrey } from '@/colors.js';
+import {colorDhbwRed, colorDhbwGrey} from '@/colors.js';
 
 
 /**

@@ -279,10 +279,10 @@ export default {
     // kritische Eventdaten werden durch rules validiert, wenn alle felder richtig ausgefüllt werden kann die nächste seite erreich werden
     validateDataForm() {
       const isValid = this.validateFields([
-        { value: this.infoData.title, rules: this.titleRules },
-        { value: this.infoData.community, rules: this.generalRules },
-        { value: this.infoData.date, rules: this.dateRules},
-        { value: this.infoData.location, rules: this.generalRules },
+        {value: this.infoData.title, rules: this.titleRules},
+        {value: this.infoData.community, rules: this.generalRules},
+        {value: this.infoData.date, rules: this.dateRules},
+        {value: this.infoData.location, rules: this.generalRules},
 
       ]);
       if (isValid) {
@@ -329,13 +329,17 @@ export default {
     }
   },
   computed: {
-    currentTitle () {
+    currentTitle() {
       // einzelnen Schritte des Steppers
       switch (this.step) {
-        case 1: return 'Angaben zur Information';
-        case 2: return 'Fotos';
-        case 3: return 'Zusammenfassung';
-        default: return 'Information wurde erfolgreich geteilt!';
+        case 1:
+          return 'Angaben zur Information';
+        case 2:
+          return 'Fotos';
+        case 3:
+          return 'Zusammenfassung';
+        default:
+          return 'Information wurde erfolgreich geteilt!';
       }
     },
     eventInfos() {
@@ -343,7 +347,7 @@ export default {
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
         let value = this.infoData[attribute];
-        eventInfos.push({ label: this.dictionary[attribute], value: value });
+        eventInfos.push({label: this.dictionary[attribute], value: value});
       }
       return eventInfos;
     },

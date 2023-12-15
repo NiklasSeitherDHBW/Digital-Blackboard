@@ -7,14 +7,15 @@
     </v-card-title>
 
     <v-card-text>
-      Möchten Sie das Inserat {{title}} wirklich löschen?
+      Möchten Sie das Inserat {{ title }} wirklich löschen?
     </v-card-text>
 
     <v-card-actions>
       <v-btn
           variant="outlined"
           @click="exitDialog"
-      >Abbrechen</v-btn>
+      >Abbrechen
+      </v-btn>
 
       <v-spacer></v-spacer>
 
@@ -22,7 +23,8 @@
           color="#eb1b2a"
           variant="outlined"
           @click="deleteAdClicked"
-      >Löschen</v-btn>
+      >Löschen
+      </v-btn>
 
     </v-card-actions>
 

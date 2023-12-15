@@ -93,7 +93,7 @@ export default {
       // Check if itemValue is provided
       if (itemValue) {
         // Use Vue Router to navigate to the specified route
-        this.$router.push({ path: itemValue });
+        this.$router.push({path: itemValue});
       }
     },
   },

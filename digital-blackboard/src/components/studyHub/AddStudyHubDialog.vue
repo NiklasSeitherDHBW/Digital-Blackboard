@@ -33,40 +33,40 @@
       <v-window v-model="step">
         <v-window-item :value="1">
           <v-form @submit.prevent>
-          <v-card-text>
-            <v-text-field
-                label="Titel der Gruppe *"
-                variant="outlined"
-                class="mt-2"
-                maxlength="50"
-                v-model="hubData.title"
-                :rules="titleRules"
-                counter
-                required
-            ></v-text-field>
+            <v-card-text>
+              <v-text-field
+                  label="Titel der Gruppe *"
+                  variant="outlined"
+                  class="mt-2"
+                  maxlength="50"
+                  v-model="hubData.title"
+                  :rules="titleRules"
+                  counter
+                  required
+              ></v-text-field>
 
-            <v-text-field
-                label="Beschreibung"
-                variant="outlined"
-                maxlength="200"
-                v-model="hubData.description"
-                counter
-            ></v-text-field>
+              <v-text-field
+                  label="Beschreibung"
+                  variant="outlined"
+                  maxlength="200"
+                  v-model="hubData.description"
+                  counter
+              ></v-text-field>
 
-            <v-text-field
-                label="Thema *"
-                variant="outlined"
-                v-model="hubData.subject"
-                :rules="generalRules"
-            ></v-text-field>
+              <v-text-field
+                  label="Thema *"
+                  variant="outlined"
+                  v-model="hubData.subject"
+                  :rules="generalRules"
+              ></v-text-field>
 
-            <v-text-field
-                label="Aktivitäten"
-                variant="outlined"
-                v-model="hubData.activities"
-            ></v-text-field>
+              <v-text-field
+                  label="Aktivitäten"
+                  variant="outlined"
+                  v-model="hubData.activities"
+              ></v-text-field>
 
-          </v-card-text>
+            </v-card-text>
             <v-card-actions>
               <v-btn
                   color="#eb1b2a"
@@ -225,13 +225,13 @@ export default {
        * @param {string} value - input value
        * @returns {(boolean|string)} - validation result or error message
        */
-      (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
+          (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
       /**
        * check if the title has a minimum length of 3 characters
        * @param {string} value - input value
        * @returns {(boolean|string)} - validation result or error message
        */
-      (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
+          (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
     ],
     generalRules: [
       (value) => value ? true : 'Bitte gebe weitere Informationen an!'
@@ -244,7 +244,7 @@ export default {
       (value) => /\d+$/.test(value) ? true : 'Die angegebene Information darf nur Zahlen (0-9) beinhalten!',
     ],
 
-     // data object for storing Hub information
+    // data object for storing Hub information
     hubData: {
       title: '',
       description: '',
@@ -271,8 +271,8 @@ export default {
     validateDataForm() {
       // critical data is validated by rules, if all fields are filled in correctly the next page can be reached
       const isValid = this.validateFields([
-        { value: this.hubData.title, rules: this.titleRules },
-        { value: this.hubData.subject, rules: this.generalRules },
+        {value: this.hubData.title, rules: this.titleRules},
+        {value: this.hubData.subject, rules: this.generalRules},
       ]);
       if (isValid) {
         return this.step++
@@ -339,12 +339,16 @@ export default {
      * @method
      * @returns {string} - current step title
      */
-    currentTitle () {
+    currentTitle() {
       switch (this.step) {
-        case 1: return 'Angaben zur Gruppe';
-        case 2: return 'Fotos';
-        case 3: return 'Zusammenfassung';
-        default: return 'Gruppe wurde erfolgreich erstellt!';
+        case 1:
+          return 'Angaben zur Gruppe';
+        case 2:
+          return 'Fotos';
+        case 3:
+          return 'Zusammenfassung';
+        default:
+          return 'Gruppe wurde erfolgreich erstellt!';
       }
     },
 
@@ -358,7 +362,7 @@ export default {
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
         let value = this.hubData[attribute];
-        eventInfos.push({ label: this.dictionary[attribute], value: value });
+        eventInfos.push({label: this.dictionary[attribute], value: value});
       }
       return eventInfos;
     },

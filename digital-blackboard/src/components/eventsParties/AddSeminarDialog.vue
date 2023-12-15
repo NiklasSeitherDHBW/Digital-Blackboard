@@ -34,63 +34,63 @@
         <v-window-item :value="1">
           <v-form @submit.prevent>
             <v-card-text>
-            <v-text-field
-                label="Titel des Seminars *"
-                variant="outlined"
-                class="mt-2"
-                maxlength="50"
-                v-model="seminarData.title"
-                :rules="titleRules"
-                counter
-                required
-            ></v-text-field>
+              <v-text-field
+                  label="Titel des Seminars *"
+                  variant="outlined"
+                  class="mt-2"
+                  maxlength="50"
+                  v-model="seminarData.title"
+                  :rules="titleRules"
+                  counter
+                  required
+              ></v-text-field>
 
-            <v-text-field
-                label="Beschreibung"
-                variant="outlined"
-                maxlength="200"
-                v-model="seminarData.description"
-                counter
-            ></v-text-field>
+              <v-text-field
+                  label="Beschreibung"
+                  variant="outlined"
+                  maxlength="200"
+                  v-model="seminarData.description"
+                  counter
+              ></v-text-field>
 
-            <v-text-field
-                label="Datum *"
-                placeholder="TT.MM.JJJJ"
-                variant="outlined"
-                type="date"
-                :rules="dateRules"
-                v-model="seminarData.date"
-            ></v-text-field>
+              <v-text-field
+                  label="Datum *"
+                  placeholder="TT.MM.JJJJ"
+                  variant="outlined"
+                  type="date"
+                  :rules="dateRules"
+                  v-model="seminarData.date"
+              ></v-text-field>
 
-            <v-text-field
-                label="Ort *"
-                placeholder="Coblitzallee 1-9, 68163 Mannheim"
-                variant="outlined"
-                v-model="seminarData.location"
-                :rules="generalRules"
-            ></v-text-field>
+              <v-text-field
+                  label="Ort *"
+                  placeholder="Coblitzallee 1-9, 68163 Mannheim"
+                  variant="outlined"
+                  v-model="seminarData.location"
+                  :rules="generalRules"
+              ></v-text-field>
 
-            <v-text-field
-                label="Preis p.p. *"
-                variant="outlined"
-                prefix="€"
-                :rules="numRules"
-                v-model="seminarData.price"
-            ></v-text-field>
+              <v-text-field
+                  label="Preis p.p. *"
+                  variant="outlined"
+                  prefix="€"
+                  :rules="numRules"
+                  v-model="seminarData.price"
+              ></v-text-field>
 
-            <v-text-field
-                label="Zielgruppe *"
-                variant="outlined"
-                v-model="seminarData.community"
-                :rules="generalRules"
-            ></v-text-field>
+              <v-text-field
+                  label="Zielgruppe *"
+                  variant="outlined"
+                  v-model="seminarData.community"
+                  :rules="generalRules"
+              ></v-text-field>
 
-            <v-text-field
-                label="maximale Teilnehmeranzahl"
-                variant="outlined"
-                v-model="seminarData.maxParticipantsLimit"
-            ></v-text-field>
-          </v-card-text>
+              <v-text-field
+                  label="maximale Teilnehmeranzahl"
+                  variant="outlined"
+                  v-model="seminarData.maxParticipantsLimit"
+              ></v-text-field>
+            </v-card-text>
 
             <v-card-actions>
               <v-btn
@@ -208,6 +208,7 @@ const {mobile} = useDisplay()
 
 <script>
 import UploadImagesStep from "@/components/util/UploadImagesStep.vue";
+
 /**
  * Vue.js-component for creating seminar content
  *
@@ -238,7 +239,7 @@ export default {
        * @param {string} value - value to be checked
        * @returns {boolean|string} - `true`, if the condition is fulfilled, otherwise the error message.
        */
-      (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
+          (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
       (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
     ],
 
@@ -283,10 +284,10 @@ export default {
     validateDataForm() {
       // critical event data is validated by rules, if all fields are filled in correctly the next page can be reached
       const isValid = this.validateFields([
-        { value: this.seminarData.title, rules: this.titleRules },
-        { value: this.seminarData.location, rules: this.generalRules },
-        { value: this.seminarData.price, rules: this.numRules },
-        { value: this.seminarData.community, rules: this.generalRules },
+        {value: this.seminarData.title, rules: this.titleRules},
+        {value: this.seminarData.location, rules: this.generalRules},
+        {value: this.seminarData.price, rules: this.numRules},
+        {value: this.seminarData.community, rules: this.generalRules},
       ]);
       if (isValid) {
         return this.step++
@@ -344,13 +345,17 @@ export default {
      *
      * @returns {string} - the title of the current tap step
      */
-    currentTitle () {
+    currentTitle() {
       // steps of the steppers
       switch (this.step) {
-        case 1: return 'Angaben zum Seminar';
-        case 2: return 'Fotos';
-        case 3: return 'Zusammenfassung';
-        default: return 'Seminar wurde erfolgreich geteilt!';
+        case 1:
+          return 'Angaben zum Seminar';
+        case 2:
+          return 'Fotos';
+        case 3:
+          return 'Zusammenfassung';
+        default:
+          return 'Seminar wurde erfolgreich geteilt!';
       }
     },
 
@@ -364,7 +369,7 @@ export default {
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
         let value = this.seminarData[attribute];
-        eventInfos.push({ label: this.dictionary[attribute], value: value });
+        eventInfos.push({label: this.dictionary[attribute], value: value});
       }
       return eventInfos;
     },

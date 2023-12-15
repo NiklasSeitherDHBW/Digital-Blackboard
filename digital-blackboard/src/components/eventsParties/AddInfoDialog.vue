@@ -33,51 +33,51 @@
       <v-window v-model="step">
         <v-window-item :value="1">
           <v-form @submit.prevent>
-          <v-card-text>
-            <v-text-field
-                label="Titel der Information *"
-                variant="outlined"
-                class="mt-2"
-                maxlength="50"
-                v-model="infoData.title"
-                :rules="titleRules"
-                counter
-                required
-            ></v-text-field>
+            <v-card-text>
+              <v-text-field
+                  label="Titel der Information *"
+                  variant="outlined"
+                  class="mt-2"
+                  maxlength="50"
+                  v-model="infoData.title"
+                  :rules="titleRules"
+                  counter
+                  required
+              ></v-text-field>
 
-            <v-text-field
-                label="Beschreibung"
-                variant="outlined"
-                maxlength="200"
-                v-model="infoData.description"
-                counter
-            ></v-text-field>
+              <v-text-field
+                  label="Beschreibung"
+                  variant="outlined"
+                  maxlength="200"
+                  v-model="infoData.description"
+                  counter
+              ></v-text-field>
 
-            <v-text-field
-                label="Ort *"
-                placeholder="Coblitzallee 1-9, 68163 Mannheim"
-                variant="outlined"
-                v-model="infoData.location"
-                :rules="generalRules"
-            ></v-text-field>
+              <v-text-field
+                  label="Ort *"
+                  placeholder="Coblitzallee 1-9, 68163 Mannheim"
+                  variant="outlined"
+                  v-model="infoData.location"
+                  :rules="generalRules"
+              ></v-text-field>
 
-            <v-text-field
-                label="Zielgruppe *"
-                variant="outlined"
-                v-model="infoData.community"
-                :rules="generalRules"
-            ></v-text-field>
+              <v-text-field
+                  label="Zielgruppe *"
+                  variant="outlined"
+                  v-model="infoData.community"
+                  :rules="generalRules"
+              ></v-text-field>
 
-            <v-text-field
-                label="Datum *"
-                placeholder="TT.MM.JJJJ"
-                variant="outlined"
-                type="date"
-                :rules="dateRules"
-                v-model="infoData.date"
-            ></v-text-field>
+              <v-text-field
+                  label="Datum *"
+                  placeholder="TT.MM.JJJJ"
+                  variant="outlined"
+                  type="date"
+                  :rules="dateRules"
+                  v-model="infoData.date"
+              ></v-text-field>
 
-          </v-card-text>
+            </v-card-text>
             <v-card-actions>
               <v-btn
                   color="#eb1b2a"
@@ -234,7 +234,7 @@ export default {
        * @param {string} value - the value to be checked
        * @returns {boolean|string} - `true`, if the condition is fulfilled, otherwise the error message
        */
-      (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
+          (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
       (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
     ],
     generalRules: [
@@ -276,10 +276,10 @@ export default {
     // critical event data is validated by rules, if all fields are filled in correctly the next page can be reached
     validateDataForm() {
       const isValid = this.validateFields([
-        { value: this.infoData.title, rules: this.titleRules },
-        { value: this.infoData.community, rules: this.generalRules },
-        { value: this.infoData.date, rules: this.dateRules},
-        { value: this.infoData.location, rules: this.generalRules },
+        {value: this.infoData.title, rules: this.titleRules},
+        {value: this.infoData.community, rules: this.generalRules},
+        {value: this.infoData.date, rules: this.dateRules},
+        {value: this.infoData.location, rules: this.generalRules},
 
       ]);
       if (isValid) {
@@ -337,13 +337,17 @@ export default {
      *
      * @returns {string} - the title of the current tap step
      */
-    currentTitle () {
+    currentTitle() {
       // steps of steppers
       switch (this.step) {
-        case 1: return 'Angaben zur Information';
-        case 2: return 'Fotos';
-        case 3: return 'Zusammenfassung';
-        default: return 'Information wurde erfolgreich geteilt!';
+        case 1:
+          return 'Angaben zur Information';
+        case 2:
+          return 'Fotos';
+        case 3:
+          return 'Zusammenfassung';
+        default:
+          return 'Information wurde erfolgreich geteilt!';
       }
     },
 
@@ -357,7 +361,7 @@ export default {
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
         let value = this.infoData[attribute];
-        eventInfos.push({ label: this.dictionary[attribute], value: value });
+        eventInfos.push({label: this.dictionary[attribute], value: value});
       }
       return eventInfos;
     },

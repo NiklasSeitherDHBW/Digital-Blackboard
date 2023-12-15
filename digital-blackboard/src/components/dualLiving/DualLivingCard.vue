@@ -156,7 +156,7 @@ export default {
       this.showDialogEditAd = false;
     },
 
-/**
+    /**
      * Asynchronously closes the edit ad dialog, displays a success message in a Snackbar,
      * and emits an event to trigger the items to reload after change.
      *

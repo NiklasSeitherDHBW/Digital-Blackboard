@@ -1,5 +1,5 @@
 import {initializeApp} from 'firebase/app'
-import {getFirestore, setDoc} from 'firebase/firestore'
+import {addDoc, collection, deleteDoc, doc, getDocs, getFirestore, setDoc, Timestamp} from 'firebase/firestore'
 
 const firebaseConfig = {
     apiKey: "AIzaSyBPCSF20BXJ_qysy7MRnYpfwa08Yplo6sw",
@@ -14,8 +14,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 export {db};
-
-import {collection, getDocs, addDoc, deleteDoc, doc, Timestamp} from 'firebase/firestore'
 
 
 // All database operations regarding dual living page
@@ -293,7 +291,7 @@ export async function editAdInfo(id, images, infoData) {
         date: Timestamp.fromDate(new Date(dateParts[0], dateParts[1] - 1, dateParts[2])), // parts[1] - 1 because JavaScript counts months from 0 (January - 1, Februaray - 2, etc.)
         community: infoData.community,
 
-        description: infoData.description ,
+        description: infoData.description,
         location: infoData.location,
 
         category: infoData.category,

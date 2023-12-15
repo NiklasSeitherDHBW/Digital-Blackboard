@@ -33,64 +33,64 @@
       <v-window v-model="step">
         <v-window-item :value="1">
           <v-form @submit.prevent>
-          <v-card-text>
-            <v-text-field
-                label="Name des Events *"
-                variant="outlined"
-                class="mt-2"
-                maxlength="50"
-                v-model="eventData.title"
-                :rules="titleRules"
-                counter
-                required
-            ></v-text-field>
+            <v-card-text>
+              <v-text-field
+                  label="Name des Events *"
+                  variant="outlined"
+                  class="mt-2"
+                  maxlength="50"
+                  v-model="eventData.title"
+                  :rules="titleRules"
+                  counter
+                  required
+              ></v-text-field>
 
-            <v-text-field
-                label="Beschreibung"
-                variant="outlined"
-                maxlength="200"
-                v-model="eventData.description"
-                counter
-            ></v-text-field>
+              <v-text-field
+                  label="Beschreibung"
+                  variant="outlined"
+                  maxlength="200"
+                  v-model="eventData.description"
+                  counter
+              ></v-text-field>
 
-            <v-text-field
-                label="Datum *"
-                placeholder="TT.MM.JJJJ"
-                variant="outlined"
-                type="date"
-                :rules="dateRules"
-                v-model="eventData.date"
-            ></v-text-field>
+              <v-text-field
+                  label="Datum *"
+                  placeholder="TT.MM.JJJJ"
+                  variant="outlined"
+                  type="date"
+                  :rules="dateRules"
+                  v-model="eventData.date"
+              ></v-text-field>
 
-            <v-text-field
-                label="Ort *"
-                placeholder="Coblitzallee 1-9, 68163 Mannheim"
-                variant="outlined"
-                :rules="generalRules"
-                v-model="eventData.location"
-            ></v-text-field>
+              <v-text-field
+                  label="Ort *"
+                  placeholder="Coblitzallee 1-9, 68163 Mannheim"
+                  variant="outlined"
+                  :rules="generalRules"
+                  v-model="eventData.location"
+              ></v-text-field>
 
-            <v-text-field
-                label="Zielgruppe *"
-                variant="outlined"
-                :rules="generalRules"
-                v-model="eventData.community"
-            ></v-text-field>
+              <v-text-field
+                  label="Zielgruppe *"
+                  variant="outlined"
+                  :rules="generalRules"
+                  v-model="eventData.community"
+              ></v-text-field>
 
-            <v-text-field
-                label="Preis p.p. *"
-                variant="outlined"
-                prefix="€"
-                :rules="numRules"
-                v-model="eventData.price"
-            ></v-text-field>
+              <v-text-field
+                  label="Preis p.p. *"
+                  variant="outlined"
+                  prefix="€"
+                  :rules="numRules"
+                  v-model="eventData.price"
+              ></v-text-field>
 
-            <v-text-field
-                label="maximale Teilnehmeranzahl"
-                variant="outlined"
-                v-model="eventData.maxParticipantsLimit"
-            ></v-text-field>
-          </v-card-text>
+              <v-text-field
+                  label="maximale Teilnehmeranzahl"
+                  variant="outlined"
+                  v-model="eventData.maxParticipantsLimit"
+              ></v-text-field>
+            </v-card-text>
 
             <v-card-actions>
               <v-btn
@@ -203,11 +203,11 @@
 
 <script setup>
 /**
-* The `setup` block script imports `useDisplay` from Vuetify and destructures the result to extract `mobile`.
-* @typedef {import('vuetify').useDisplay} useDisplay
-* @type {Object}
-* @property {boolean} mobile - a Boolean value that indicates whether the display is on a mobile device.
-*/
+ * The `setup` block script imports `useDisplay` from Vuetify and destructures the result to extract `mobile`.
+ * @typedef {import('vuetify').useDisplay} useDisplay
+ * @type {Object}
+ * @property {boolean} mobile - a Boolean value that indicates whether the display is on a mobile device.
+ */
 
 // use of useDisplay from Vuetify for mobile responsiveness
 import {useDisplay} from "vuetify";
@@ -259,7 +259,7 @@ export default {
     ],
     // validation rules for form fields
     titleRules: [
-        // something must be entered in the field, min length 3 characters
+      // something must be entered in the field, min length 3 characters
       (value) => value ? true : 'Bitte gebe einen Titel für dein Inserat an!',
       (value) => value.length >= 3 ? true : 'Der Name muss mindestens 3 Zeichen lang sein!',
     ],
@@ -271,7 +271,7 @@ export default {
     ],
     numRules: [
       (value) => value ? true : 'Bitte gebe weitere Informationen an!',
-        // only numbers allowed
+      // only numbers allowed
       (value) => /\d+$/.test(value) ? true : 'Die angegebene Information darf nur Zahlen (0-9) beinhalten!',
     ],
     // data structure for event information
@@ -303,11 +303,11 @@ export default {
     // critical event data is validated by rules, if all fields are filled in correctly the next page can be reached
     validateDataForm() {
       const isValid = this.validateFields([
-        { value: this.eventData.title, rules: this.titleRules },
-        { value: this.eventData.location, rules: this.generalRules },
-        { value: this.eventData.date, rules: this.dateRules},
-        { value: this.eventData.price, rules: this.numRules },
-        { value: this.eventData.community, rules: this.generalRules },
+        {value: this.eventData.title, rules: this.titleRules},
+        {value: this.eventData.location, rules: this.generalRules},
+        {value: this.eventData.date, rules: this.dateRules},
+        {value: this.eventData.price, rules: this.numRules},
+        {value: this.eventData.community, rules: this.generalRules},
 
       ]);
       if (isValid) {
@@ -361,12 +361,16 @@ export default {
   computed: {
     // dynamic display of the current step in the stepper
     // steps of the stepper
-    currentTitle () {
+    currentTitle() {
       switch (this.step) {
-        case 1: return 'Angaben zum Event';
-        case 2: return 'Fotos';
-        case 3: return 'Zusammenfassung';
-        default: return 'Event wurde erfolgreich geteilt!';
+        case 1:
+          return 'Angaben zum Event';
+        case 2:
+          return 'Fotos';
+        case 3:
+          return 'Zusammenfassung';
+        default:
+          return 'Event wurde erfolgreich geteilt!';
       }
     },
     // preview of the event information
@@ -375,7 +379,7 @@ export default {
       let eventInfos = [];
       for (const attribute of this.infosEvent) {
         let value = this.eventData[attribute];
-        eventInfos.push({ label: this.dictionary[attribute], value: value });
+        eventInfos.push({label: this.dictionary[attribute], value: value});
       }
       return eventInfos;
     },

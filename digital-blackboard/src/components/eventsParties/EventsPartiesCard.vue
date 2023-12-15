@@ -222,7 +222,7 @@ export default {
       }
 
       // Overwriting the current value of the document with the updated data.
-      await setDoc(docRef, data, { merge: true });
+      await setDoc(docRef, data, {merge: true});
 
       // Emitting an event to trigger the items to reload after change.
       this.$emit("itemChanged");
@@ -258,7 +258,7 @@ export default {
       }
 
       // Overwriting the current value of the document with the updated data.
-      await setDoc(docRef, data, { merge: true });
+      await setDoc(docRef, data, {merge: true});
 
       // Emitting an event to trigger the items to reload after change.
       this.$emit("itemChanged");

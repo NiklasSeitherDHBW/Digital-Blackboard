@@ -1,210 +1,210 @@
 <template>
 
-    <AppBar
+  <AppBar
       titleRed="Digital"
       titleGrey="Blackboard"
       subtitle="Letzte Ereignisse"
   ></AppBar>
 
+  <v-container
+      style="width: 100%;"
+  >
+
     <v-container
-        style="width: 100%;"
+        :fluid=true
     >
+      <v-row>
 
-      <v-container
-          :fluid=true
-      >
-        <v-row>
-
-          <v-col
-              v-for="(item, index) in filteredAdvertisements"
-              :key="index"
-              sm="12"
-              md="6"
-              lg="6"
-              xl="4"
-              xxl="3"
+        <v-col
+            v-for="(item, index) in filteredAdvertisements"
+            :key="index"
+            sm="12"
+            md="6"
+            lg="6"
+            xl="4"
+            xxl="3"
+        >
+          <div
+              :id="item.id"
+              style="height: 100%;"
           >
-            <div
-                :id="item.id"
-                style="height: 100%;"
-            >
-              <DualLivingCard
-                  v-if="item.adType === 'dualLiving'"
-                  :item="item"
-              ></DualLivingCard>
+            <DualLivingCard
+                v-if="item.adType === 'dualLiving'"
+                :item="item"
+            ></DualLivingCard>
 
-              <EventsPartiesCard
-                  v-if="item.adType === 'events'"
-                  :item="item"
-              ></EventsPartiesCard>
+            <EventsPartiesCard
+                v-if="item.adType === 'events'"
+                :item="item"
+            ></EventsPartiesCard>
 
-              <StudyHubBuddyCard
-                  v-if="item.adType === 'studyHub' && item.category === 'buddy'"
-                  :item="item"
-              ></StudyHubBuddyCard>
+            <StudyHubBuddyCard
+                v-if="item.adType === 'studyHub' && item.category === 'buddy'"
+                :item="item"
+            ></StudyHubBuddyCard>
 
-              <StudyHubGroupCard
-                  v-if="item.adType === 'studyHub' && item.category === 'group'"
-                  :item="item"
-              ></StudyHubGroupCard>
+            <StudyHubGroupCard
+                v-if="item.adType === 'studyHub' && item.category === 'group'"
+                :item="item"
+            ></StudyHubGroupCard>
 
-            </div>
+          </div>
 
-          </v-col>
+        </v-col>
 
-        </v-row>
-
-      </v-container>
+      </v-row>
 
     </v-container>
 
-    <v-menu
-        transition="slide-x-transition-reverse"
-        location="start"
-        :close-on-content-click="false"
-    >
-      <template v-slot:activator="{ props }">
+  </v-container>
 
-        <v-btn
-            style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
-            v-bind="props"
-            :style="{ bottom: mobile ? '75px' : '20px' }"
-            text="Suche"
-            icon="mdi-magnify"
-        >
-          <v-icon>mdi-magnify</v-icon>
+  <v-menu
+      transition="slide-x-transition-reverse"
+      location="start"
+      :close-on-content-click="false"
+  >
+    <template v-slot:activator="{ props }">
 
-        </v-btn>
+      <v-btn
+          style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
+          v-bind="props"
+          :style="{ bottom: mobile ? '75px' : '20px' }"
+          text="Suche"
+          icon="mdi-magnify"
+      >
+        <v-icon>mdi-magnify</v-icon>
 
-      </template>
+      </v-btn>
 
-      <v-card min-width="300">
+    </template>
 
-        <v-text-field
-            v-model="search"
-            hide-details
-            prepend-inner-icon="mdi-magnify"
-            class="search-bar my-5 mx-auto"
-            placeholder="Suche..."
-        ></v-text-field>
+    <v-card min-width="300">
 
-      </v-card>
+      <v-text-field
+          v-model="search"
+          hide-details
+          prepend-inner-icon="mdi-magnify"
+          class="search-bar my-5 mx-auto"
+          placeholder="Suche..."
+      ></v-text-field>
 
-    </v-menu>
+    </v-card>
 
-  </template>
+  </v-menu>
 
-  <script setup>
-    import AppBar from "@/components/util/CustomAppBar.vue";
-    import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue";
-    import DualLivingCard from "@/components/dualLiving/DualLivingCard.vue";
-    import StudyHubBuddyCard from "@/components/studyHub/StudyHubBuddyCard.vue";
-    import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
+</template>
 
-    import {useDisplay} from "vuetify";
+<script setup>
+import AppBar from "@/components/util/CustomAppBar.vue";
+import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue";
+import DualLivingCard from "@/components/dualLiving/DualLivingCard.vue";
+import StudyHubBuddyCard from "@/components/studyHub/StudyHubBuddyCard.vue";
+import StudyHubGroupCard from "@/components/studyHub/StudyHubGroupCard.vue";
 
-    const {mobile} = useDisplay()
-  </script>
+import {useDisplay} from "vuetify";
 
-  <script>
-    import {fetchAdsDualLiving, fetchAdsEventsInfos, fetchAdsStudyHub} from '@/db'
-    /**
-     * @typedef {Object} Advertisement
-     * @property {number} id - The unique identifier of the advertisement.
-     * @property {string} adType - The type of advertisement (dualLiving, events, studyHub).
-     * @property {string} category - The category of the studyHub advertisement (buddy, group).
-     * @property {string} date_created - The creation date of the advertisement (in the format dd.mm.yyyy).
-     * @property {number} userId - The user ID associated with the advertisement.
-     * @property {string} [additionalProperty] - Additional properties of the advertisement.
-     */
+const {mobile} = useDisplay()
+</script>
 
-    /**
-     * @typedef {Object} Icons
-     * @property {string} dualLiving - The icon for dualLiving advertisements.
-     * @property {string} events - The icon for events advertisements.
-     * @property {string} studyHub - The icon for studyHub advertisements.
-     */
+<script>
+import {fetchAdsDualLiving, fetchAdsEventsInfos, fetchAdsStudyHub} from '@/db'
+/**
+ * @typedef {Object} Advertisement
+ * @property {number} id - The unique identifier of the advertisement.
+ * @property {string} adType - The type of advertisement (dualLiving, events, studyHub).
+ * @property {string} category - The category of the studyHub advertisement (buddy, group).
+ * @property {string} date_created - The creation date of the advertisement (in the format dd.mm.yyyy).
+ * @property {number} userId - The user ID associated with the advertisement.
+ * @property {string} [additionalProperty] - Additional properties of the advertisement.
+ */
 
-    /**
-     * Vue.js component for displaying advertisements.
-     * @property {string | null} selectedAdType - The selected type of advertisement.
-     * @property {Advertisement[]} advertisements - The list of fetched advertisements.
-     * @property {string} search - The search term used for filtering advertisements.
-     * @property {Icons} icons - Icons corresponding to different advertisement types.
-     */
-    export default {
-      data: () => ({
-        selectedAdType: null,
-        advertisements: [],
-        search: "",
-        icons: {
-          'dualLiving': 'mdi-domain',
-          'events': 'mdi-calendar-clock',
-          'studyHub': 'mdi-school',
-        },
-      }),
+/**
+ * @typedef {Object} Icons
+ * @property {string} dualLiving - The icon for dualLiving advertisements.
+ * @property {string} events - The icon for events advertisements.
+ * @property {string} studyHub - The icon for studyHub advertisements.
+ */
 
-      computed: {
+/**
+ * Vue.js component for displaying advertisements.
+ * @property {string | null} selectedAdType - The selected type of advertisement.
+ * @property {Advertisement[]} advertisements - The list of fetched advertisements.
+ * @property {string} search - The search term used for filtering advertisements.
+ * @property {Icons} icons - Icons corresponding to different advertisement types.
+ */
+export default {
+  data: () => ({
+    selectedAdType: null,
+    advertisements: [],
+    search: "",
+    icons: {
+      'dualLiving': 'mdi-domain',
+      'events': 'mdi-calendar-clock',
+      'studyHub': 'mdi-school',
+    },
+  }),
 
-        filteredAdvertisements() {
-          const now = new Date();
-          const fourteenDaysAgo = new Date(now);
-          fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 7);
+  computed: {
 
-          return this.advertisements.filter(ad => {
+    filteredAdvertisements() {
+      const now = new Date();
+      const fourteenDaysAgo = new Date(now);
+      fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 7);
 
-            // Parse the date_created string into a Date object
-            const adCreationDateParts = ad.date_created.split('.');
-            const adCreationDate = new Date(
-                adCreationDateParts[2], // Year
-                adCreationDateParts[1] - 1, // Month (months are 0-indexed in JavaScript)
-                adCreationDateParts[0] // Day
-            );
+      return this.advertisements.filter(ad => {
 
-            // Check if the ad was created less than 14 days ago
-            if (adCreationDate < fourteenDaysAgo) {
-              return false;
-            }
+        // Parse the date_created string into a Date object
+        const adCreationDateParts = ad.date_created.split('.');
+        const adCreationDate = new Date(
+            adCreationDateParts[2], // Year
+            adCreationDateParts[1] - 1, // Month (months are 0-indexed in JavaScript)
+            adCreationDateParts[0] // Day
+        );
 
-            // Check if any property contains the search term
-            let keys = Object.keys(ad);
-            let showItem = false;
+        // Check if the ad was created less than 14 days ago
+        if (adCreationDate < fourteenDaysAgo) {
+          return false;
+        }
 
-            for (let key of keys) {
-              if (String(ad[key]).toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
-                showItem = true;
-              }
-            }
+        // Check if any property contains the search term
+        let keys = Object.keys(ad);
+        let showItem = false;
 
-            return showItem;
-          });
-        },
-      },
+        for (let key of keys) {
+          if (String(ad[key]).toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
+            showItem = true;
+          }
+        }
 
-      async mounted() {
-        let test = await fetchAdsDualLiving();
-        let test2 = await fetchAdsEventsInfos();
-        let test3 = await fetchAdsStudyHub();
+        return showItem;
+      });
+    },
+  },
 
-        this.advertisements = test.concat(test2).concat(test3)
-      }
-    }
-  </script>
+  async mounted() {
+    let test = await fetchAdsDualLiving();
+    let test2 = await fetchAdsEventsInfos();
+    let test3 = await fetchAdsStudyHub();
+
+    this.advertisements = test.concat(test2).concat(test3)
+  }
+}
+</script>
 
 
-  <style scoped>
-    .search-bar {
-      width: 85%;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      transition: box-shadow 0.3s ease-in-out;
-    }
+<style scoped>
+.search-bar {
+  width: 85%;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
 
-    .search-bar input {
-      padding: 10px;
-    }
+.search-bar input {
+  padding: 10px;
+}
 
-    .search-bar:hover {
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-  </style>
+.search-bar:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+</style>

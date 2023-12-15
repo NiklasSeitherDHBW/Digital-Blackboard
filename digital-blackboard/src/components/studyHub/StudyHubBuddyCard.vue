@@ -111,6 +111,7 @@ const {mobile} = useDisplay()
 
 <script>
 import {deleteAd, editAdStudyBuddy} from "@/db";
+
 export default {
 
   props: {
