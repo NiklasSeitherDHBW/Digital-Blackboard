@@ -180,7 +180,7 @@ export default {
       navigator.clipboard.writeText(link);
 
       // Assigning a success message to be displayed in the Snackbar.
-      this.snackbarText = "Ihr Inserat wurde erfolgreich geteilt!";
+      this.snackbarText = "Der Link wurde in deine Zwischenablage kopiert!";
 
       // Showing the Snackbar.
       this.snackbar = true;

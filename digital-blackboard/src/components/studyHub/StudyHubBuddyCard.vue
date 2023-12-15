@@ -159,7 +159,7 @@ export default {
       // Copy the link to the clipboard
       navigator.clipboard.writeText(link);
       // The Snackbar is assigned a special Text and then called
-      this.snackbarText = "Ihr Inserat wurde erfolgreich geteilt!"
+      this.snackbarText = "Der Link wurde in deine Zwischenablage kopiert!";
       this.snackbar = true;
     },
 
