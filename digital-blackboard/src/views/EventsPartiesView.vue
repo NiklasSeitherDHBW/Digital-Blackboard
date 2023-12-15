@@ -64,7 +64,7 @@
           <v-btn
               v-bind="activatorProps"
               style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
-              :style="{ bottom: this.mobile ? '65px' : '15px' }"
+              :style="{ bottom: mobile ? '65px' : '15px' }"
               icon="mdi-plus"
               text="+"
           >
@@ -104,7 +104,7 @@
       <v-dialog
           transition="dialog-bottom-transition"
           v-model="showDialogAddEvent"
-          :style="{ maxWidth: this.mobile ? '100%' : '60%' }"
+          :style="{ maxWidth: mobile ? '100%' : '60%' }"
       >
         <AddEventDialog
             @exit-dialog="exitDialogAddEvent"
@@ -115,7 +115,7 @@
       <v-dialog
           transition="dialog-bottom-transition"
           v-model="showDialogAddInfo"
-          :style="{ maxWidth: this.mobile ? '100%' : '60%' }"
+          :style="{ maxWidth: mobile ? '100%' : '60%' }"
       >
         <AddInfoDialog
             @exit-dialog="exitDialogAddInfo"
@@ -126,7 +126,7 @@
       <v-dialog
           transition="dialog-bottom-transition"
           v-model="showDialogAddSeminar"
-          :style="{ maxWidth: this.mobile ? '100%' : '60%' }"
+          :style="{ maxWidth: mobile ? '100%' : '60%' }"
       >
         <AddSeminarDialog
             @exit-dialog="exitDialogAddSeminar"
@@ -144,7 +144,7 @@
         <v-btn
             style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
             v-bind="props"
-            :style="{ bottom: this.mobile ? '75px' : '20px' }"
+            :style="{ bottom: mobile ? '75px' : '20px' }"
             text="Suche"
             icon="mdi-magnify"
         >
@@ -182,8 +182,6 @@
 <script>
 // Importing functions
 import CustomAppBar from "@/components/util/CustomAppBar.vue";
-import {useDisplay} from "vuetify"
-
 // Importing functions from the database module
 import {createAdEvents, createAdInfo, createAdSeminar, fetchAdsEventsInfos} from "@/db";
 import AddInfoDialog from "@/components/eventsParties/AddInfoDialog.vue";
@@ -209,7 +207,6 @@ export default {
       showDialogAddEvent: false,
       showDialogAddInfo: false,
       showDialogAddSeminar: false,
-      mobile: useDisplay(),
       // Event categories and selected category
       eventCategories: [
         "Events", "Infos", "Seminare"
@@ -368,6 +365,12 @@ export default {
     },
   },
 };
+</script>
+
+<script setup>
+import {useDisplay} from "vuetify";
+
+const {mobile} = useDisplay()
 </script>
 
 <style>
