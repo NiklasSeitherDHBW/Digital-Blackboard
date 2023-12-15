@@ -304,7 +304,7 @@ export default {
         { value: this.seminarData.location, rules: this.generalRules },
         { value: this.seminarData.price, rules: this.numRules },
         { value: this.seminarData.community, rules: this.generalRules },
-      ]);  console.log(isValid)
+      ]);
       if (isValid) {
         return this.step++
       }

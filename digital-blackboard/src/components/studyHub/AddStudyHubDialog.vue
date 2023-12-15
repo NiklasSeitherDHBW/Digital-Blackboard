@@ -273,7 +273,7 @@ export default {
       const isValid = this.validateFields([
         { value: this.hubData.title, rules: this.titleRules },
         { value: this.hubData.subject, rules: this.generalRules },
-      ]);  console.log(isValid)
+      ]);
       if (isValid) {
         return this.step++
       }

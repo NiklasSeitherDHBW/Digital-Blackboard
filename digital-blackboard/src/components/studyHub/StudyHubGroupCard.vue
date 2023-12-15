@@ -178,7 +178,6 @@ export default {
      * @method
      */
     openDialogEditAd() {
-      console.log(this.item);
       this.showDialogEditAd = true;
     },
 

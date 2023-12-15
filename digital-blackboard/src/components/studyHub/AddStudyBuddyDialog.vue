@@ -389,7 +389,7 @@ export default {
         { value: this.buddyData.title, rules: this.titleRules },
         { value: this.buddyData.subject, rules: this.generalRules },
         { value: this.buddyData.price, rules: this.numRules },
-      ]);  console.log(isValid)
+      ]);
       if (isValid) {
         return this.step++
       }
