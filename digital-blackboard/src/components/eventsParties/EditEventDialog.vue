@@ -302,7 +302,7 @@ export default {
         { value: this.eventData.price, rules: this.numRules },
         { value: this.eventData.community, rules: this.generalRules },
 
-      ]);  console.log(isValid)
+      ]);
       if (isValid) {
         return this.step++
       }

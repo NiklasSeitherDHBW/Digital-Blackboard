@@ -284,7 +284,7 @@ export default {
         { value: this.infoData.date, rules: this.dateRules},
         { value: this.infoData.location, rules: this.generalRules },
 
-      ]);  console.log(isValid)
+      ]);
       if (isValid) {
         return this.step++
       }

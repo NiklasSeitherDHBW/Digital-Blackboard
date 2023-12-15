@@ -241,7 +241,6 @@ export default {
     // Method to scroll to a specific card on component load
     scrollToCard() {
       // Log the value of the 'card' parameter in the route query
-      console.log(this.$route.query.card)
       let query = this.$route.query
       // Check if there are no parameters in the query
       if (Object.keys(query).length === 0) {
@@ -249,8 +248,6 @@ export default {
       }
       // Check if both 'card' and 'selectedCategory' parameters are present in the query
       if (query.card && query.selectedCategory) {
-        console.log("triggered")
-        console.log(this.$route.query.card)
         const cardCategory = this.$route.query.selectedCategory
         const cardId = this.$route.query.card
         // Set the component's 'selectedCategory' to the value from the query
@@ -294,7 +291,7 @@ export default {
       // Call the createAdEvents function to add the event data to the database
       await createAdEvents(images, eventData);
 // Refresh the displayed items by fetching from the database
-      this.refreshItems();
+      await this.refreshItems();
     },
 // Method to handle exiting the 'Add Info' dialog
     async exitDialogAddInfo() {
