@@ -405,14 +405,8 @@ export default {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000; /* Adjust the z-index as needed */
-  background-color: white; /* Adjust the background color as needed */
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
-  /* Additional styles as needed */
-}
-
-/* Add padding to the content below the fixed header */
-.v-stepper-window {
-  padding-top: 60px; /* Adjust the value based on the height of your fixed header */
+  z-index: 1000;
+  background-color: white;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 </style>

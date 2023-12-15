@@ -114,9 +114,4 @@ export default {
 .subtitle {
   color: #7C868DFF;
 }
-
-.d-flex {
-  display: flex;
-  align-items: center;
-}
 </style>

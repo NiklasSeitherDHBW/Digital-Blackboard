@@ -22,7 +22,7 @@ export async function fetchAdsDualLiving() {
     const querySnapshot = await getDocs(collection(db, "dual-living"));
 
     // Convert the QueryDocumentSnapshots into an array of dictionaries
-    const transformedData = querySnapshot.docs.map((doc) => {
+    return querySnapshot.docs.map((doc) => {
         let tmp = doc.data();
 
         // Prepare data for displaying in card
@@ -56,8 +56,6 @@ export async function fetchAdsDualLiving() {
 
         return tmp;
     });
-
-    return transformedData;
 }
 
 export function createDualLivingAdItem(formData, images, contactData) {
@@ -66,7 +64,7 @@ export function createDualLivingAdItem(formData, images, contactData) {
     let untilParts = formData.availableTill.split("-")
 
     // Create new document
-    let new_item = {
+    return {
         title: formData.title,
         date_created: Timestamp.fromDate(new Date()),
 
@@ -90,9 +88,7 @@ export function createDualLivingAdItem(formData, images, contactData) {
         email: contactData.email,
 
         userId: 1,
-    }
-
-    return new_item;
+    };
 }
 
 
@@ -144,10 +140,8 @@ export async function editAdDualLiving(id, formData, images, contactData) {
 export async function fetchAdsEventsInfos() {
     const querySnapshot = await getDocs(collection(db, "events-parties"));
 
-
-
     // Convert the QueryDocumentSnapshots into an array of dictionaries
-    const transformedData = querySnapshot.docs.map((doc) => {
+    return querySnapshot.docs.map((doc) => {
         let tmp = doc.data();
 
         // Prepare data for displaying in card
@@ -180,8 +174,6 @@ export async function fetchAdsEventsInfos() {
 
         return tmp;
     });
-
-    return transformedData;
 }
 
 //// Events
@@ -189,7 +181,7 @@ export function createEventsAdItem(images, eventData) {
     // Split date by every component to create a date object for firebase
     let dateParts = eventData.date.split("-")
 
-    let new_item = {
+    return {
         images: images,
 
         title: eventData.title,
@@ -210,8 +202,6 @@ export function createEventsAdItem(images, eventData) {
 
         userId: 1,
     }
-
-    return new_item
 }
 
 export async function createAdEvents(images, eventData) {
@@ -255,7 +245,7 @@ export async function editAdEvents(id, images, eventData) {
 export function createInfoAdItem(images, infoData) {
     let dateParts = infoData.date.split("-")
 
-    let new_item = {
+    return {
         images: images,
 
         title: infoData.title,
@@ -271,8 +261,6 @@ export function createInfoAdItem(images, infoData) {
 
         userId: 1,
     }
-
-    return new_item
 }
 
 export async function createAdInfo(images, infoData) {
@@ -308,7 +296,7 @@ export async function editAdInfo(id, images, infoData) {
 export function createSeminarAdItem(images, seminarData) {
     let dateParts = seminarData.date.split("-")
 
-    let new_item = {
+    return {
         images: images,
 
         title: seminarData.title,
@@ -328,9 +316,7 @@ export function createSeminarAdItem(images, seminarData) {
 
         likes: 0,
         userId: 1
-    }
-
-    return new_item;
+    };
 }
 
 export async function createAdSeminar(images, seminarData) {
@@ -378,7 +364,7 @@ export async function fetchAdsStudyHub() {
     const querySnapshot = await getDocs(collection(db, "study-hub"));
 
     // Convert the QueryDocumentSnapshots into an array of dictionaries
-    const transformedData = querySnapshot.docs.map((doc) => {
+    return querySnapshot.docs.map((doc) => {
         let tmp = doc.data();
 
         // Prepare data for displaying in card
@@ -400,14 +386,12 @@ export async function fetchAdsStudyHub() {
         tmp["adType"] = "studyHub"
 
         return tmp;
-    });
-
-    return transformedData
+    })
 }
 
 //// StudyBuddy
 export function createStudyBuddyAdItem(buddyData, images, contactData) {
-    let new_item = {
+    return {
         images: images,
 
         title: buddyData.title,
@@ -428,8 +412,6 @@ export function createStudyBuddyAdItem(buddyData, images, contactData) {
 
         userId: 1,
     }
-
-    return new_item
 }
 
 export async function createAdStudyBuddy(buddyData, images, contactData) {
@@ -468,7 +450,7 @@ export async function editAdStudyBuddy(id, buddyData, images, contactData) {
 
 //// StudyGroup
 export function createStudyGroupItem(hubData, images) {
-    let new_item = {
+    return {
         images: images,
 
         title: hubData.title,
@@ -486,8 +468,6 @@ export function createStudyGroupItem(hubData, images) {
 
         userId: 1,
     }
-
-    return new_item
 }
 
 export async function createAdStudyGroup(hubData, images) {

@@ -13,7 +13,7 @@
           v-if="this.selectedCategory" v-model="this.selectedCategory"
           bg-color="transparent"
           color="#E0001BFF"
-          grow
+          grow="true"
       >
         <v-tab
             v-for="category in eventCategories"
