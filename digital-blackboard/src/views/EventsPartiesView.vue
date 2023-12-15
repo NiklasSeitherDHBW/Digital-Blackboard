@@ -44,10 +44,10 @@
                 :id="item.id"
                 class="rounded"
                 style="height: 100%;">
-            <EventsPartiesCard
-                :item="item"
-                @itemChanged="refreshItems"
-            ></EventsPartiesCard>
+              <EventsPartiesCard
+                  :item="item"
+                  @itemChanged="refreshItems"
+              ></EventsPartiesCard>
             </div>
           </v-col>
         </v-row>
@@ -64,7 +64,7 @@
           <v-btn
               v-bind="activatorProps"
               style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
-              :style="{ bottom: mobile ? '65px' : '15px' }"
+              :style="{ bottom: this.mobile ? '65px' : '15px' }"
               icon="mdi-plus"
               text="+"
           >
@@ -104,7 +104,7 @@
       <v-dialog
           transition="dialog-bottom-transition"
           v-model="showDialogAddEvent"
-          :style="{ maxWidth: mobile ? '100%' : '60%' }"
+          :style="{ maxWidth: this.mobile ? '100%' : '60%' }"
       >
         <AddEventDialog
             @exit-dialog="exitDialogAddEvent"
@@ -115,7 +115,7 @@
       <v-dialog
           transition="dialog-bottom-transition"
           v-model="showDialogAddInfo"
-          :style="{ maxWidth: mobile ? '100%' : '60%' }"
+          :style="{ maxWidth: this.mobile ? '100%' : '60%' }"
       >
         <AddInfoDialog
             @exit-dialog="exitDialogAddInfo"
@@ -126,7 +126,7 @@
       <v-dialog
           transition="dialog-bottom-transition"
           v-model="showDialogAddSeminar"
-          :style="{ maxWidth: mobile ? '100%' : '60%' }"
+          :style="{ maxWidth: this.mobile ? '100%' : '60%' }"
       >
         <AddSeminarDialog
             @exit-dialog="exitDialogAddSeminar"
@@ -144,7 +144,7 @@
         <v-btn
             style="border-radius: 5px; color: #E0001BFF; position: fixed; right: 0.5rem; top: 7rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
             v-bind="props"
-            :style="{ bottom: mobile ? '75px' : '20px' }"
+            :style="{ bottom: this.mobile ? '75px' : '20px' }"
             text="Suche"
             icon="mdi-magnify"
         >
@@ -163,38 +163,33 @@
     </v-menu>
   </v-app>
   <v-snackbar v-model="snackbarVisible" :timeout="timeout">
-      Ihr Inserat wurde erfolgreich geteilt!
-      <template v-slot:actions>
-        <v-btn
-            color="#eb1b2a"
-            variant="text"
-            float-right
-            size="small"
-            class="mr-1"
-            @click="closeSnackbar"
-        >
-          Schließen
-        </v-btn>
-      </template>
-    </v-snackbar>
+    Ihr Inserat wurde erfolgreich geteilt!
+    <template v-slot:actions>
+      <v-btn
+          color="#eb1b2a"
+          variant="text"
+          float-right
+          size="small"
+          class="mr-1"
+          @click="closeSnackbar"
+      >
+        Schließen
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
-<script setup>
+<script>
 // Importing functions
 import CustomAppBar from "@/components/util/CustomAppBar.vue";
-import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue";
-import AddEventDialog from "@/components/eventsParties/AddEventDialog.vue";
-import AddInfoDialog from "@/components/eventsParties/AddInfoDialog.vue";
-import AddSeminarDialog from "@/components/eventsParties/AddSeminarDialog.vue";
+import {useDisplay} from "vuetify"
 
-import {useDisplay} from "vuetify";
-
-const {mobile} = useDisplay()
-</script>
-
-<script>
 // Importing functions from the database module
 import {createAdEvents, createAdInfo, createAdSeminar, fetchAdsEventsInfos} from "@/db";
+import AddInfoDialog from "@/components/eventsParties/AddInfoDialog.vue";
+import AddSeminarDialog from "@/components/eventsParties/AddSeminarDialog.vue";
+import EventsPartiesCard from "@/components/eventsParties/EventsPartiesCard.vue";
+import AddEventDialog from "@/components/eventsParties/AddEventDialog.vue";
 /**
  * Vue component definition for the events and parties component.
  * @typedef {Object} EventsPartiesComponent
@@ -204,6 +199,7 @@ import {createAdEvents, createAdInfo, createAdSeminar, fetchAdsEventsInfos} from
  * @property {function} mounted - Lifecycle hook called after the component is mounted.
  */
 export default {
+  components: {AddEventDialog, EventsPartiesCard, AddSeminarDialog, AddInfoDialog, CustomAppBar},
   // Component's data properties
   data() {
     return {
@@ -213,12 +209,11 @@ export default {
       showDialogAddEvent: false,
       showDialogAddInfo: false,
       showDialogAddSeminar: false,
-// Event categories and selected category
-
+      mobile: useDisplay(),
+      // Event categories and selected category
       eventCategories: [
         "Events", "Infos", "Seminare"
       ],
-// Advertisement data
 
       selectedCategory: "Events",
 
@@ -248,13 +243,9 @@ export default {
       let query = this.$route.query
       // Check if there are no parameters in the query
       if (Object.keys(query).length === 0) {
-        console.log("query")
         return
       }
-
-
       // Check if both 'card' and 'selectedCategory' parameters are present in the query
-
       if (query.card && query.selectedCategory) {
         console.log("triggered")
         console.log(this.$route.query.card)
@@ -379,7 +370,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .search-bar {
   width: 85%;
   border-radius: 5px;

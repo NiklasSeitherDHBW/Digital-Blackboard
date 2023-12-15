@@ -61,7 +61,7 @@
 
   <v-btn
       style="border-radius: 5px; color:#E0001BFF; position: fixed; right:0.5rem; box-shadow: 10px 10px 10px rgba(0,0,0,0.5); border: 1px solid #E0001BFF"
-      :style="{ bottom: mobile ? '130px' : '15px' }"
+      :style="{ bottom: mobile ? '65px' : '15px' }"
       icon="mdi-plus"
       text="+"
   >
